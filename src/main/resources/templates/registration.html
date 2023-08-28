@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+<body>
+<h1>Регистрация</h1>
+<br><br>
+<form th:action="@{/registration}" method="post" th:object="${user}">
+    <p>
+        <label for="first_name">Имя: </label>
+        <input th:field="*{first_name}" type="text" name="first_name" id="first_name" placeholder="Имя">
+    </p>
+
+    <p>
+        <label for="last_name">Фамилия: </label>
+        <input th:field="*{last_name}" type="text" name="last_name" id="last_name" placeholder="Фамилия">
+    </p>
+
+    <p>
+        <label for="login">Логин: </label>
+        <input th:field="*{login}" type="text" name="login" id="login" placeholder="Логин">
+    </p>
+
+    <p>
+        <label for="email">Почта: </label>
+        <input th:field="*{email}" type="text" name="email" id="email" placeholder="Почта">
+    </p>
+
+    <p>
+        <label for="date">Дата рождения: </label>
+        <input th:field="*{date_of_birth}" type="date" name="date" id="date" placeholder="Имя">
+    </p>
+
+
+        <label for="role">Дата рождения: </label>
+        <div>
+            <input type="radio" id="role1" name="role" value="STUDENT_ROLE" />
+            <label for="role1">Ученик</label>
+            <input type="radio" id="role2" name="role" value="TEACHER_ROLE" />
+            <label for="role2">Учитель</label>
+        </div>
+
+
+    <p>
+        <label for="password">Пароль: </label>
+        <input th:field="*{password}" type="password" name="password" id="password" placeholder="Пароль">
+    </p>
+
+    <br>
+
+    <input type="submit" value="Зарегистрироваться">
+</form>
+
+</body>
+</html>
