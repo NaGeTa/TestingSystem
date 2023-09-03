@@ -11,32 +11,37 @@
     <p>
         <label for="first_name">Имя: </label>
         <input th:field="*{first_name}" type="text" name="first_name" id="first_name" placeholder="Имя">
+        <div style="color: red" th:if="${#fields.hasErrors('first_name')}" th:errors="*{first_name}"></div>
     </p>
 
     <p>
         <label for="last_name">Фамилия: </label>
         <input th:field="*{last_name}" type="text" name="last_name" id="last_name" placeholder="Фамилия">
+        <div style="color: red" th:if="${#fields.hasErrors('last_name')}" th:errors="*{last_name}"></div>
     </p>
 
     <p>
         <label for="login">Логин: </label>
         <input th:field="*{login}" type="text" name="login" id="login" placeholder="Логин">
+        <p style="color: red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></p>
     </p>
 
     <p>
         <label for="email">Почта: </label>
         <input th:field="*{email}" type="text" name="email" id="email" placeholder="Почта">
+        <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
     </p>
 
     <p>
-        <label for="date">Дата рождения: </label>
-        <input th:field="*{date_of_birth}" type="date" name="date" id="date" placeholder="Имя">
+        <label for="date_of_birth">Дата рождения: </label>
+        <input th:field="*{date_of_birth}" type="date" name="date_of_birth" id="date_of_birth">
+        <div style="color: red" th:if="${#fields.hasErrors('date_of_birth')}" th:errors="*{date_of_birth}"></div>
     </p>
 
 
-        <label for="role">Дата рождения: </label>
+        <label for="role1">Выберите кто вы: </label>
         <div>
-            <input type="radio" id="role1" name="role" value="STUDENT_ROLE" />
+            <input type="radio" id="role1" name="role" checked value="STUDENT_ROLE" />
             <label for="role1">Ученик</label>
             <input type="radio" id="role2" name="role" value="TEACHER_ROLE" />
             <label for="role2">Учитель</label>
@@ -46,6 +51,7 @@
     <p>
         <label for="password">Пароль: </label>
         <input th:field="*{password}" type="password" name="password" id="password" placeholder="Пароль">
+        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
     </p>
 
     <br>

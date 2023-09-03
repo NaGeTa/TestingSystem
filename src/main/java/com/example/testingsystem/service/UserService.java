@@ -20,4 +20,12 @@ public class UserService {
         user.setPassword(encoder().encode(user.getPassword()));
         userRepository.save(user);
     }
+
+    public int countUsersByLogin(String value){
+        return userRepository.countUsersByLogin(value);
+    }
+
+    public int countUsersByEmail(String value) {
+        return userRepository.countUsersByEmail(value);
+    }
 }
