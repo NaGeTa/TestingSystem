@@ -5,7 +5,11 @@
     <title>Меню</title>
 </head>
 <body>
-<!--<h1 th:text="Здравствуйте, + ${#authentication.getPrincipal().getName()}"></h1>-->
-<h1>Menu</h1>
+<h1 th:text="'Здравствуйте, ' + ${#authentication.getPrincipal().getFirst_name}"></h1>
+<hr>
+<br><br>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Выйти">
+</form>
 </body>
 </html>

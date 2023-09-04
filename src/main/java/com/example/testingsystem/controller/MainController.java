@@ -19,6 +19,11 @@ public class MainController {
     UserService userService;
 
     @GetMapping("/")
+    public String getMainPage(){
+        return "main";
+    }
+
+    @GetMapping("/menu")
     public String getMenuPage(){
         return "menu";
     }
