@@ -6,9 +6,9 @@
 <body>
 <h1>Вход</h1>
 <br><br>
-<div th:if="${param.error}">
+<div style="color: red" th:if="${param.error}">
     Неверные логин или пароль.</div>
-<div th:if="${param.logout}">
+<div style="color: darkgray" th:if="${param.logout}">
     Выход из аккаунта.</div>
 <form th:action="@{/login}" method="post">
     <div>

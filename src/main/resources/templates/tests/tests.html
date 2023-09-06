@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="test_block.css" rel="stylesheet" type="text/css">
+    <title>Тесты</title>
+    <style>
+        .test-block {
+            background-color: #f3f3f3;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        .test-block h2 {
+            margin-top: 0;
+        }
+
+        .test-block p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Список тестов</h1>
+<br><br>
+    <div th:each="test: ${tests}">
+        <div class="test-block">
+            <h2 th:text="${test.getTitle()}"></h2>
+            <p th:text="'Категория: ' + ${test.getCategory.getTitle()}"></p>
+            <p th:text="'Количество вопросов: ' + ${test.getCount_of_questions}"></p>
+            <br>
+            <form th:action="@{/tests/{id}(id=${test.getId()})}" method="get">
+                <input type="submit" value="Пройти">
+            </form>
+        </div>
+        <br><br>
+    </div>
+</body>
+</html>

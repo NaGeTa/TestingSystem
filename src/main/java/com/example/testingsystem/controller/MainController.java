@@ -20,23 +20,23 @@ public class MainController {
 
     @GetMapping("/")
     public String getMainPage(){
-        return "main";
+        return "logic/main";
     }
 
     @GetMapping("/menu")
     public String getMenuPage(){
-        return "menu";
+        return "logic/menu";
     }
 
     @GetMapping("/login")
     public String getLoginPage(){
-        return "login";
+        return "logic/login";
     }
 
     @GetMapping("/registration")
     public String getRegPage(Model model){
         model.addAttribute("user", new User());
-        return "registration";
+        return "logic/registration";
     }
 
     @PostMapping("/registration")
@@ -54,12 +54,11 @@ public class MainController {
         }
 
         if(bindingResult.hasErrors()){
-            return "/registration";
+            return "/logic/registration";
         }
         userService.save(user);
 
-//        return "redirect:/login";
-        return "/login";
+        return "redirect:/login";
     }
 
 }

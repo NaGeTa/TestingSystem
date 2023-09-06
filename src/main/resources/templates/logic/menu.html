@@ -8,6 +8,8 @@
 <h1 th:text="'Здравствуйте, ' + ${#authentication.getPrincipal().getFirst_name}"></h1>
 <hr>
 <br><br>
+<a href="/tests">Пройти тесты</a>
+<br><br><br>
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Выйти">
 </form>

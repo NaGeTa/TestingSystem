@@ -1,0 +1,15 @@
+.test-block {
+    background-color: #f3f3f3;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.test-block h2 {
+    margin-top: 0;
+}
+
+.test-block p {
+    margin: 0;
+}
