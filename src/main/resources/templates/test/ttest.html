@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${answersList.getAnswers().get(0).getTest().getTitle()}"></title>
+  <style>
+    .test-block {
+      background-color: #f3f3f3;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 300px;
+    }
+
+    .test-block h2 {
+      margin-top: 0;
+    }
+
+    .test-block p {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+<div class="test-block">
+  <h2 th:text="${answersList.getAnswers().get(0).getTest().getTitle()}"></h2>
+  <p th:text="'Категория: ' + ${answersList.getAnswers().get(0).getTest().getCategory.getTitle()}"></p>
+  <p th:text="'Количество вопросов: ' + ${answersList.getAnswers().get(0).getTest().getCount_of_questions}"></p>
+</div>
+<hr>
+<br><br><br>
+
+<form th:action="@{/tests}" method="post" th:object="${answersList}">
+
+  <div th:each="question, stat: *{answers}">
+    <div>
+
+      <h3 th:text="${question.getNumOfQuestion()} + '. ' + ${question.getTitle()}"></h3>
+
+      <br>
+      <input type="radio" th:field="*{answers[__${stat.index}__].choiceAnswer}" th:value="1"/>
+      <label th:text="${question.getFirstAnswer()}"></label>
+      <br>
+
+      <input type="radio" th:field="*{answers[__${stat.index}__].choiceAnswer}" th:value="2"/>
+      <label th:text="${question.getSecondAnswer()}"></label>
+      <br>
+
+      <input type="radio" th:field="*{answers[__${stat.index}__].choiceAnswer}" th:value="3"/>
+      <label th:text="${question.getThirdAnswer()}"></label>
+      <br>
+
+      <input type="radio" th:field="*{answers[__${stat.index}__].choiceAnswer}" th:value="4"/>
+      <label th:text="${question.getFourthAnswer()}"></label>
+      <br>
+
+
+    </div>
+    <br><br><br>
+  </div>
+  <input type="submit" value="Завершить">
+</form>
+
+</body>
+</html>

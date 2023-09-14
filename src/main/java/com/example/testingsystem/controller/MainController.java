@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @AllArgsConstructor
 public class MainController {
 
-    UserService userService;
+    private final UserService userService;
 
     @GetMapping("/")
     public String getMainPage(){

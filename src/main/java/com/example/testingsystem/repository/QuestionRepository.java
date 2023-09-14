@@ -1,10 +1,10 @@
 package com.example.testingsystem.repository;
 
 import com.example.testingsystem.entity.Question;
-import com.example.testingsystem.entity.Test;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface TestRepository extends JpaRepository<Test, Integer> {
+public interface QuestionRepository extends JpaRepository<Question, Integer> {
+    List<Question> findQuestionsByTestId(int id);
 }
