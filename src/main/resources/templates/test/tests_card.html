@@ -33,6 +33,8 @@
 
 <form th:action="@{/tests}" method="post" th:object="${answersList}">
 
+  <input type="hidden" th:field="*{answers[__${0}__].test}" />
+
   <div th:each="question, stat: *{answers}">
     <div>
 
@@ -55,6 +57,7 @@
       <label th:text="${question.getFourthAnswer()}"></label>
       <br>
 
+      <input type="hidden" th:field="*{answers[__${stat.index}__].rightAnswer}" />
 
     </div>
     <br><br><br>

@@ -1,23 +1,28 @@
 package com.example.testingsystem.controller;
 
-import com.example.testingsystem.entity.Question;
+import com.example.testingsystem.entity.Solution;
 import com.example.testingsystem.model.AnswersList;
 import com.example.testingsystem.service.QuestionService;
+import com.example.testingsystem.service.SolutionService;
 import com.example.testingsystem.service.TestService;
+import com.example.testingsystem.service.UserService;
 import lombok.AllArgsConstructor;
 
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 @Controller
 @AllArgsConstructor
 public class TestsController {
 
+    private final UserService userService;
     private final TestService testService;
     private final QuestionService questionService;
+    private final SolutionService solutionService;
 
     @GetMapping("/tests")
     public String getTests(Model model) {
@@ -34,16 +39,40 @@ public class TestsController {
 
         model.addAttribute("answersList", answersList);
 
-        return "test/ttest";
+        return "test/tests_card";
     }
 
     @PostMapping("/tests")
     public String finishTestsSolution(@ModelAttribute("answersList") AnswersList answersList) {
 
+        Solution solution = new Solution();
 
-        answersList.getAnswers().stream().map(question -> question.getChoiceAnswer())
-                .forEach((answer) -> System.out.println(answer));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        solution.setUser(userService.getUserByLogin(login));
+        solution.setTest(answersList.getAnswers().get(0).getTest());
 
-        return "test/test_result";
+        answersList.getAnswers().forEach((question) -> {
+            if(question.isRight()){
+                solution.setCountOfRightAnswers(solution.getCountOfRightAnswers()+1);
+            }
+            solution.setCountOfQuestions(solution.getCountOfQuestions()+1);
+        });
+
+
+//        for (Question question: answersList.getAnswers()) {
+//            if(question.isRight()){
+//                solution.setCountOfRightAnswers(solution.getCountOfRightAnswers()+1);
+//            }
+//            solution.setCountOfQuestions(solution.getCountOfQuestions()+1);
+//        }
+
+        solution.rating();
+
+        solutionService.saveSolution(solution);
+
+//        System.out.println(solution);
+
+        return "test/tests_result";
     }
 }
