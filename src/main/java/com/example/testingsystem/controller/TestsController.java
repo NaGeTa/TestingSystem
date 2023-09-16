@@ -43,7 +43,7 @@ public class TestsController {
     }
 
     @PostMapping("/tests")
-    public String finishTestsSolution(@ModelAttribute("answersList") AnswersList answersList) {
+    public String finishTestsSolution(@ModelAttribute("answersList") AnswersList answersList, Model model) {
 
         Solution solution = new Solution();
 
@@ -71,7 +71,7 @@ public class TestsController {
 
         solutionService.saveSolution(solution);
 
-//        System.out.println(solution);
+        model.addAttribute("solution", solution);
 
         return "test/tests_result";
     }

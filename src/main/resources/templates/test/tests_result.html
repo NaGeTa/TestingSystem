@@ -5,7 +5,12 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Map Example</h1>
-
+<h1>Результат</h1>
+<br><br>
+<p th:text="'Дата: ' + ${solution.getDateOfSolution()}"></p>
+<p th:text="'Количество правильных ответов: '+${solution.getCountOfRightAnswers()}+'/'+${solution.getCountOfQuestions()}"></p>
+<p th:text="'Оценка: ' + ${solution.getMark()}"></p>
+<br><br><br>
+<a href="/tests">Вернуться</a>
 </body>
 </html>
