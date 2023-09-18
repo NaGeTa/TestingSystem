@@ -5,6 +5,8 @@ import com.example.testingsystem.repository.SolutionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class SolutionService {
@@ -13,5 +15,9 @@ public class SolutionService {
 
     public void saveSolution(Solution solution){
         solutionRepository.save(solution);
+    }
+
+    public List<Solution> getSolutionsByUserId(int id){
+        return solutionRepository.findAllByUserId(id);
     }
 }

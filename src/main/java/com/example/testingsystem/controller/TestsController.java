@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @AllArgsConstructor
 public class TestsController {
@@ -74,5 +76,19 @@ public class TestsController {
         model.addAttribute("solution", solution);
 
         return "test/tests_result";
+    }
+
+    @GetMapping("/statistic")
+    public String getStatistic(Model model){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        int id = userService.getUserByLogin(login).getId();
+
+        List<Solution> solutions = solutionService.getSolutionsByUserId(id);
+
+        model.addAttribute("solutions", solutions);
+
+        return "test/my_solutions";
     }
 }
