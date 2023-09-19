@@ -82,6 +82,9 @@
         <form th:action="@{/statistic}">
             <input type="submit" value="Мои результаты">
         </form>
+        <form action="@{/newTest}" sec:authorize="hasAuthority('TEACHER_ROLE')">
+            <input type="submit" value="Создать новый тест">
+        </form>
     </div>
 </div>
 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание теста</title>
+</head>
+<body>
+
+<form action="@{/newTest}" method="post" th:object="${test}">
+    <div>
+        <label for="title">Название теста: </label>
+        <input th:field="*{title}" type="text" name="title" id="title" placeholder="Название теста">
+    </div>
+    <br><br>
+    <div>
+        <label for="category">Категория теста: </label>
+        <select id="category" name="categories">
+            <option value="apple">Яблоко</option>
+            <option value="banana">Банан</option>
+            <option value="orange">Апельсин</option>
+        </select>
+    </div>
+
+</form>
+
+/body>
+</html>

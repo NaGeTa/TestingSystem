@@ -1,6 +1,7 @@
 package com.example.testingsystem.controller;
 
 import com.example.testingsystem.entity.Solution;
+import com.example.testingsystem.entity.Test;
 import com.example.testingsystem.model.AnswersList;
 import com.example.testingsystem.service.QuestionService;
 import com.example.testingsystem.service.SolutionService;
@@ -90,5 +91,12 @@ public class TestsController {
         model.addAttribute("solutions", solutions);
 
         return "test/my_solutions";
+    }
+
+    @GetMapping("/newTest")
+    public String createNewTest(Model model){
+        model.addAttribute("test", new Test());
+
+        return "test/test_create";
     }
 }
