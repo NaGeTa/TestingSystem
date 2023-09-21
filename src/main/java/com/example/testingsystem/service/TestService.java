@@ -23,4 +23,8 @@ public class TestService {
     public Test getTest(int id){
         return testRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
     }
+
+    public void saveTest(Test test){
+        testRepository.save(test);
+    }
 }

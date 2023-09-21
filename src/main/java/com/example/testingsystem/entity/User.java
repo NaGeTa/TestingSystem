@@ -51,7 +51,7 @@ public class User {
     @NotNull(message = "Укажите дату рождения")
     private Date date_of_birth;
 
-    @Column(name = "time_of_registration"fdafdfsadcfasfdafa
+    @Column(name = "time_of_registration")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date_of_registration = new Date();
 

@@ -44,13 +44,13 @@ public class Solution {
         double percent = ((double)countOfRightAnswers)/((double)countOfQuestions);
 
         if(percent>=0.86){
-            mark = Mark.ОТЛ;
+            mark = Mark.A;
         } else if(percent>=0.66){
-            mark = Mark.ХОР;
+            mark = Mark.B;
         } else if(percent>=0.51) {
-            mark = Mark.УДОВ;
+            mark = Mark.C;
         } else {
-            mark = Mark.НЕУД;
+            mark = Mark.D;
         }
 
     }

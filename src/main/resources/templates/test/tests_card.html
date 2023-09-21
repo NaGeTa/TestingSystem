@@ -112,8 +112,8 @@
 
 <div class="test-block">
   <h2 th:text="${answersList.getAnswers().get(0).getTest().getTitle()}"></h2>
-  <p th:text="'Категория: ' + ${answersList.getAnswers().get(0).getTest().getCategory.getTitle()}"></p>
-  <p th:text="'Количество вопросов: ' + ${answersList.getAnswers().get(0).getTest().getCount_of_questions}"></p>
+  <p th:text="'Категория: ' + ${answersList.getAnswers().get(0).getTest().getCategory().value}"></p>
+  <p th:text="'Количество вопросов: ' + ${answersList.getAnswers().get(0).getTest().getCountOfQuestions}"></p>
 </div>
 <hr>
 <br><br><br>

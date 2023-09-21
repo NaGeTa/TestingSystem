@@ -6,22 +6,36 @@
 </head>
 <body>
 
-<form action="@{/newTest}" method="post" th:object="${test}">
+<h1>Создание нового теста</h1>
+<br><br><br>
+<form th:action="@{/newTest/questions}" method="post" th:object="${test}">
     <div>
         <label for="title">Название теста: </label>
         <input th:field="*{title}" type="text" name="title" id="title" placeholder="Название теста">
     </div>
-    <br><br>
+    <br>
     <div>
         <label for="category">Категория теста: </label>
-        <select id="category" name="categories">
-            <option value="apple">Яблоко</option>
-            <option value="banana">Банан</option>
-            <option value="orange">Апельсин</option>
+        <select id="category" name="categories" th:field="*{category}">
+            <option value="MATH">Математика</option>
+            <option value="BIOLOGY">Биология</option>
+            <option value="INFORMATICS">Информатика</option>
+            <option value="RUSSIAN">Русский язык</option>
+            <option value="PHYSICS">Физика</option>
+            <option value="CHEMISTRY">Химия</option>
+            <option value="LITERATURE">Литература</option>
+            <option value="FOREIGN">Иностранный язык</option>
+            <option value="HISTORY">История</option>
         </select>
     </div>
-
+    <br>
+    <div>
+        <label for="title">Количество вопросов: </label>
+        <input th:field="*{countOfQuestions}" type="number">
+    </div>
+    <br><br>
+    <input type="submit" value="Создать вопросы">
 </form>
 
-/body>
+</body>
 </html>

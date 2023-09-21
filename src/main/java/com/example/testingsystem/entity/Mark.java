@@ -6,7 +6,7 @@ public enum Mark {
     C("УДОВ"),
     D("НЕУД");
 
-    String value;
+    public final String value;
 
     Mark(String value){
         this.value=value;

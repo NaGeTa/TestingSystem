@@ -82,7 +82,7 @@
         <form th:action="@{/statistic}">
             <input type="submit" value="Мои результаты">
         </form>
-        <form action="@{/newTest}" sec:authorize="hasAuthority('TEACHER_ROLE')">
+        <form th:action="@{/newTest}" sec:authorize="hasAuthority('TEACHER_ROLE')">
             <input type="submit" value="Создать новый тест">
         </form>
     </div>
@@ -120,8 +120,8 @@
 <div th:each="test: *{tests}">
     <div class="test-block">
         <h2 th:text="${test.getTitle()}"></h2>
-        <p th:text="'Категория: ' + ${test.getCategory.getTitle()}"></p>
-        <p th:text="'Количество вопросов: ' + ${test.getCount_of_questions}"></p>
+        <p th:text="'Категория: ' + ${test.getCategory().value}"></p>
+        <p th:text="'Количество вопросов: ' + ${test.getCountOfQuestions}"></p>
         <br>
         <form th:action="@{/tests/{id}(id=${test.getId()})}" method="get">
             <input type="submit" value="Пройти">

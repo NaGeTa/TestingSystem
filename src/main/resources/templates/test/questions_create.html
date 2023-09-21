@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание теста</title>
+</head>
+<body>
+
+<h1>Создание теста</h1>
+<h2>Cоздайте вопросы: </h2>
+<br>
+
+<form th:action="@{/newTest}" method="post" th:object="${answersList}">
+
+    <input type="hidden" th:field="*{answers[__${0}__].test.title}">
+    <input type="hidden" th:field="*{answers[__${0}__].test.countOfQuestions}">
+    <input type="hidden" th:field="*{answers[__${0}__].test.category}">
+    <input type="hidden" th:field="*{answers[__${0}__].test.creator}">
+
+    <div th:each="question, stat: *{answers}">
+
+<!--        <input type="hidden" th:field="*{answers[__${stat.index}__].test}"/>-->
+        <input type="hidden" th:field="*{answers[__${stat.index}__].numOfQuestion}"/>
+
+        <hr>
+        <div>
+            <label th:text="'Введите текст вопроса №' + ${stat.index + 1} + ': '"></label>
+            <input type="text" th:field="*{answers[__${stat.index}__].title}">
+            <br><br>
+
+            <div>
+                <label>Введите варианты ответов: </label>
+                <br><br>
+
+                <label>Вариант 1: </label>
+                <input type="text" th:field="*{answers[__${stat.index}__].firstAnswer}">
+
+                <label>     Вариант 2: </label>
+                <input type="text" th:field="*{answers[__${stat.index}__].secondAnswer}">
+                <br>
+
+                <label>Вариант 3: </label>
+                <input type="text" th:field="*{answers[__${stat.index}__].thirdAnswer}">
+
+                <label>     Вариант 4: </label>
+                <input type="text" th:field="*{answers[__${stat.index}__].fourthAnswer}">
+
+            </div>
+            <br><br>
+            <label for="rightAnswer">Выберите номер правильного ответа: </label>
+            <select id="rightAnswer" name="rightAnswer" th:field="*{answers[__${stat.index}__].rightAnswer}">
+                <option value="1">Вариант 1</option>
+                <option value="2">Вариант 2</option>
+                <option value="3">Вариант 3</option>
+                <option value="4">Вариант 4</option>
+            </select>
+
+        </div>
+        <br><br><br>
+
+    </div>
+    <input type="submit" value="Создать тест">
+</form>
+</body>
+</html>
