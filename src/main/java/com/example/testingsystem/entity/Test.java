@@ -1,7 +1,7 @@
 package com.example.testingsystem.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,18 +19,19 @@ public class Test {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank
     @Column(name = "title")
+    @NotBlank(message = "Тест должен иметь название")
     private String title;
 
     @Column(name = "count_of_questions")
+    @Min(value = 1, message = "Кол-во вопросов должно начинаться от 1")
     private int countOfQuestions;
 
     @Column(name = "count_of_decisions")
     private int countOfSolutions;
 
     @Column(name = "date_of_creation")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dateOfCreation = new Date(); //проверить при получении из БД меняется ли дата, сказать балычу
 
     @ManyToOne

@@ -8,6 +8,7 @@ import com.example.testingsystem.service.QuestionService;
 import com.example.testingsystem.service.SolutionService;
 import com.example.testingsystem.service.TestService;
 import com.example.testingsystem.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 
@@ -15,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -30,7 +33,14 @@ public class TestsController {
     private final SolutionService solutionService;
 
     @GetMapping("/tests")
-    public String getTests(Model model) {
+    public String getTests(@ModelAttribute("test_for_search") Test test, Model model) {
+
+        model.addAttribute("test_for_search", new Test());
+
+        if (test.getTitle()!=null){
+            model.addAttribute("tests", testService.getTestByTitle(test.getTitle()));
+            return "test/tests";
+        }
 
         model.addAttribute("tests", testService.getAllTests());
 
@@ -58,15 +68,15 @@ public class TestsController {
         solution.setTest(answersList.getAnswers().get(0).getTest());
 
         answersList.getAnswers().forEach((question) -> {
-            if(question.isRight()){
-                solution.setCountOfRightAnswers(solution.getCountOfRightAnswers()+1);
+            if (question.isRight()) {
+                solution.setCountOfRightAnswers(solution.getCountOfRightAnswers() + 1);
             }
-            solution.setCountOfQuestions(solution.getCountOfQuestions()+1);
+            solution.setCountOfQuestions(solution.getCountOfQuestions() + 1);
         });
 
         solution.rating();
         solutionService.saveSolution(solution);
-        solution.getTest().setCountOfSolutions(solution.getTest().getCountOfSolutions()+1);
+        solution.getTest().setCountOfSolutions(solution.getTest().getCountOfSolutions() + 1);
 
         model.addAttribute("solution", solution);
 
@@ -74,7 +84,7 @@ public class TestsController {
     }
 
     @GetMapping("/statistic")
-    public String getStatistic(Model model){
+    public String getStatistic(Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -88,14 +98,24 @@ public class TestsController {
     }
 
     @GetMapping("/newTest")
-    public String createTest(Model model){
+    public String createTest(Model model) {
         model.addAttribute("test", new Test());
 
         return "test/test_create";
     }
 
     @PostMapping("/newTest/questions")
-    public String createQuestion(@ModelAttribute("test") Test test, Model model){
+    public String createQuestion(@ModelAttribute("test") @Valid Test test,
+                                 BindingResult bindingResult, Model model) {
+
+        if (testService.countTestByTitle(test.getTitle()) > 0) {
+            bindingResult.addError(new FieldError("test.getTitle()", "title",
+                    "Тест с таким названием уже существует"));
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "test/test_create";
+        }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -104,7 +124,7 @@ public class TestsController {
 
         AnswersList answersList = new AnswersList(new ArrayList<>());
         int count = test.getCountOfQuestions();
-        for(int i = 0; i<count; i++){
+        for (int i = 0; i < count; i++) {
             answersList.getAnswers().add(new Question());
             answersList.getAnswers().get(i).setTest(test);
             answersList.getAnswers().get(i).setNumOfQuestion(i + 1);
@@ -116,15 +136,18 @@ public class TestsController {
     }
 
     @PostMapping("/newTest")
-    public String saveTest(@ModelAttribute("answersList") AnswersList answersList){
+    public String saveTest(@ModelAttribute("answersList") @Valid AnswersList answersList,
+                           BindingResult bindingResult) {
 
+        if (bindingResult.hasErrors()) {
+            return "test/questions_create";
+        }
 
         Test test = answersList.getAnswers().get(0).getTest();
 
         testService.saveTest(test);
 
         answersList.getAnswers().forEach(question -> {
-//            testService.saveTest(question.getTest());
             question.setTest(test);
             questionService.saveQuestion(question);
         });

@@ -26,6 +26,8 @@
         <div>
             <label th:text="'Введите текст вопроса №' + ${stat.index + 1} + ': '"></label>
             <input type="text" th:field="*{answers[__${stat.index}__].title}">
+            <div style="color: red" th:if="${#fields.hasErrors('answers['+__${stat.index}__+'].title')}"
+                 th:errors="*{answers[__${stat.index}__].title}"></div>
             <br><br>
 
             <div>
@@ -34,16 +36,23 @@
 
                 <label>Вариант 1: </label>
                 <input type="text" th:field="*{answers[__${stat.index}__].firstAnswer}">
-
-                <label>     Вариант 2: </label>
-                <input type="text" th:field="*{answers[__${stat.index}__].secondAnswer}">
+                <div style="color: red" th:if="${#fields.hasErrors('answers['+__${stat.index}__+'].firstAnswer')}"
+                     th:errors="*{answers[__${stat.index}__].firstAnswer}"></div>
                 <br>
-
+                <label>Вариант 2: </label>
+                <input type="text" th:field="*{answers[__${stat.index}__].secondAnswer}">
+                <div style="color: red" th:if="${#fields.hasErrors('answers['+__${stat.index}__+'].secondAnswer')}"
+                     th:errors="*{answers[__${stat.index}__].secondAnswer}"></div>
+                <br>
                 <label>Вариант 3: </label>
                 <input type="text" th:field="*{answers[__${stat.index}__].thirdAnswer}">
-
-                <label>     Вариант 4: </label>
+                <div style="color: red" th:if="${#fields.hasErrors('answers['+__${stat.index}__+'].thirdAnswer')}"
+                     th:errors="*{answers[__${stat.index}__].thirdAnswer}"></div>
+                <br>
+                <label>Вариант 4: </label>
                 <input type="text" th:field="*{answers[__${stat.index}__].fourthAnswer}">
+                <div style="color: red" th:if="${#fields.hasErrors('answers['+__${stat.index}__+'].fourthAnswer')}"
+                     th:errors="*{answers[__${stat.index}__].fourthAnswer}"></div>
 
             </div>
             <br><br>

@@ -12,6 +12,7 @@
     <div>
         <label for="title">Название теста: </label>
         <input th:field="*{title}" type="text" name="title" id="title" placeholder="Название теста">
+        <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
     </div>
     <br>
     <div>
@@ -32,6 +33,7 @@
     <div>
         <label for="title">Количество вопросов: </label>
         <input th:field="*{countOfQuestions}" type="number">
+        <div style="color: red" th:if="${#fields.hasErrors('countOfQuestions')}" th:errors="*{countOfQuestions}"></div>
     </div>
     <br><br>
     <input type="submit" value="Создать вопросы">

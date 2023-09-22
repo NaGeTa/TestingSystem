@@ -2,10 +2,7 @@ package com.example.testingsystem.entity;
 
 import jakarta.persistence.*;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -48,6 +45,7 @@ public class User {
     @Column(name = "year_of_birth")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @Past(message = "Эта дата еще на настала")
     @NotNull(message = "Укажите дату рождения")
     private Date date_of_birth;
 

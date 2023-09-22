@@ -1,6 +1,7 @@
 package com.example.testingsystem.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,6 +18,7 @@ public class Question {
     private int id;
 
     @Column(name = "title")
+    @NotBlank(message = "Поле для вопроса не может быть пустым")
     private String title;
 
     @Column(name = "number_of_question")
@@ -26,15 +28,19 @@ public class Question {
     private int rightAnswer;
 
     @Column(name = "first_answer")
+    @NotBlank(message = "Вариант ответа не может быть пустым")
     private String firstAnswer;
 
     @Column(name = "second_answer")
+    @NotBlank(message = "Вариант ответа не может быть пустым")
     private String secondAnswer;
 
     @Column(name = "third_answer")
+    @NotBlank(message = "Вариант ответа не может быть пустым")
     private String thirdAnswer;
 
     @Column(name = "fourth_answer")
+    @NotBlank(message = "Вариант ответа не может быть пустым")
     private String fourthAnswer;
 
     @ManyToOne
@@ -44,10 +50,10 @@ public class Question {
     @Transient
     private int choiceAnswer;
 
-    public boolean isRight(){
-        if(choiceAnswer==0){
+    public boolean isRight() {
+        if (choiceAnswer == 0) {
             return false;
         }
-        return choiceAnswer==rightAnswer;
+        return choiceAnswer == rightAnswer;
     }
 }
