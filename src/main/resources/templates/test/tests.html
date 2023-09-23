@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <link href="test_block.css" rel="stylesheet">
@@ -52,19 +52,6 @@
             background-color: #eee;
         }
 
-        .popup {
-            display: none; /* Начально скрываем окошко */
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 20px;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
         .search-form {
             display: flex;
         }
@@ -90,60 +77,115 @@
             color: inherit; /* наследует цвет ссылки */
         }
 
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            z-index: 1;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
     </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var dropdown = document.querySelector(".dropdown");
+            var dropdownContent = document.querySelector(".dropdown-content");
+
+            dropdown.addEventListener("click", function () {
+                dropdownContent.style.display = dropdownContent.style.display === "block" ? "none" : "block";
+            });
+
+            document.addEventListener("click", function (event) {
+                var targetElement = event.target; // элемент, на который был выполнен клик
+
+                // Проверяем, является ли цель клика рабочей областью меню
+                if (!dropdown.contains(targetElement)) {
+                    // Если нет, скрываем меню
+                    dropdownContent.style.display = "none";
+                }
+            });
+        });
+    </script>
+
 </head>
 <body>
+<header>
+    <div class="header">
+        <div class="logo"><a href="http://localhost:8080/menu">Testing System</a></div>
 
-<div class="header">
-    <div class="logo"><a href="http://localhost:8080/menu">Testing System</a></div>
-    <div>
-        <form class="search-form" th:action="@{/tests}">
-            <input type="text" name="searchTitle" placeholder="Поиск">
-            <button type="submit">Найти</button>
-        </form>
+        <div>
+            <form class="search-form" th:action="@{/tests}">
+                <input type="text" name="searchTitle" placeholder="Поиск">
+                <button type="submit">Найти</button>
+            </form>
+        </div>
+
+        <div class="menu-buttons">
+            <div class="dropdown">
+
+                <button>Тесты</button>
+                <div class="dropdown-content">
+                    <ul>
+                        <li>
+                            <form th:action="@{/tests}">
+                                <input type="submit" value="Пройти тесты">
+                            </form>
+                        </li>
+                        <li>
+                            <form th:action="@{/statistic}">
+                                <input type="submit" value="Мои результаты">
+                            </form>
+                        </li>
+                        <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+                            <form th:action="@{/newTest}">
+                                <input type="submit" value="Создать новый тест">
+                            </form>
+                        </li>
+                        <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+                            <form th:action="@{/myTests}">
+                                <input type="submit" value="Мои тесты">
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+
+                <button>Профиль</button>
+            </div>
+        </div>
+
+
+        <!--        <div class="menu-buttons">-->
+        <!--            <button onclick="openPopup()">Тесты</button>-->
+        <!--            <button>Профиль</button>-->
+        <!--        </div>-->
+        <!--        <div id="popup" class="popup">-->
+        <!--            <form th:action="@{/tests}">-->
+        <!--                <input type="submit" value="Пройти тесты">-->
+        <!--            </form>-->
+        <!--            <form th:action="@{/statistic}">-->
+        <!--                <input type="submit" value="Мои результаты">-->
+        <!--            </form>-->
+        <!--            <form th:action="@{/newTest}" sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">-->
+        <!--                        <input type="submit" value="Создать новый тест">-->
+        <!--                    </form>-->
+        <!--                    <form th:action="@{/myTests}" sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">-->
+        <!--                        <input type="submit" value="Мои тесты">-->
+        <!--                    </form>-->
+        <!--                </div>-->
     </div>
-    <div class="menu-buttons">
-        <button onclick="openPopup()">Тесты</button>
-        <button>Профиль</button>
-    </div>
-    <div id="popup" class="popup">
-        <form th:action="@{/tests}">
-            <input type="submit" value="Пройти тесты">
-        </form>
-        <form th:action="@{/statistic}">
-            <input type="submit" value="Мои результаты">
-        </form>
-        <form th:action="@{/newTest}" sec:authorize="hasAuthority('TEACHER_ROLE')">
-            <input type="submit" value="Создать новый тест">
-        </form>
-    </div>
-</div>
-
-<script>
-    function openPopup() {
-        var popup = document.getElementById("popup");
-        // Получаем позицию кнопки
-        var buttonPos = document.getElementsByTagName("button")[0].getBoundingClientRect();
-        // Устанавливаем позицию окошка рядом с кнопкой
-        popup.style.left = buttonPos.left + buttonPos.width - 20 + "px";
-        popup.style.top = buttonPos.top + 100 + "px";
-        popup.style.display = "block"; // Показываем окошко
-
-        // Добавляем обработчик события на клик по документу
-        document.addEventListener("click", closePopup);
-    }
-
-    function closePopup(event) {
-        var popup = document.getElementById("popup");
-        var button = document.getElementsByTagName("button")[0];
-        // Проверяем, кликнули ли мы вне окошка или кнопки
-        if (!popup.contains(event.target) && event.target !== button) {
-            popup.style.display = "none"; // Скрываем окошко
-            // Удаляем обработчик события клика по документу
-            document.removeEventListener("click", closePopup);
-        }
-    }
-</script>
+</header>
 
 
 <h1>Список тестов</h1>

@@ -76,8 +76,8 @@ public class TestsController {
         });
 
         solution.rating();
-        solutionService.saveSolution(solution);
         solution.getTest().setCountOfSolutions(solution.getTest().getCountOfSolutions() + 1);
+        solutionService.saveSolution(solution);
 
         model.addAttribute("solution", solution);
 
@@ -162,5 +162,21 @@ public class TestsController {
         });
 
         return "redirect:/tests";
+    }
+
+    @GetMapping("/myTests")
+    public String getMyTests(Model model){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        User user = userService.getUserByLogin(login);
+
+        if(user.getRole() == Role.STUDENT_ROLE){
+            return "test/error";
+        }
+
+        model.addAttribute("tests", testService.getAllTestsByCreatorId(user.getId()));
+
+        return "test/my_tests";
     }
 }

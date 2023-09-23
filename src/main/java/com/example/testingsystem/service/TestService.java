@@ -28,4 +28,8 @@ public class TestService {
     public List<Test> getTestByTitle(String title){
         return testRepository.findAllByTitle(title);
     }
+
+    public List<Test> getAllTestsByCreatorId(int id){
+        return testRepository.findAllByCreatorId(id);
+    }
 }
