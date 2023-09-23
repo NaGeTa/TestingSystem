@@ -65,6 +65,26 @@
       box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     }
 
+    .search-form {
+      display: flex;
+    }
+
+    .search-form input[type="text"] {
+      height: 30px;
+      padding: 5px;
+      border-radius: 5px 0 0 5px;
+      border: 1px solid #ccc;
+    }
+
+    .search-form button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #ccc;
+      color: #333;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
   </style>
 </head>
 
@@ -72,6 +92,12 @@
 
 <div class="header">
   <div class="logo"><a href="../logic/main">Testing System</a></div>
+
+  <form class="search-form" th:action="@{/tests}">
+    <input type="text" name="searchTitle" placeholder="Поиск">
+    <button type="submit">Найти</button>
+  </form>
+
   <div class="menu-buttons">
     <button onclick="openPopup()">Тесты</button>
     <button>Профиль</button>
@@ -82,38 +108,13 @@
   </div>
 </div>
 
-<script>
-  function openPopup() {
-    var popup = document.getElementById("popup");
-    // Получаем позицию кнопки
-    var buttonPos = document.getElementsByTagName("button")[0].getBoundingClientRect();
-    // Устанавливаем позицию окошка рядом с кнопкой
-    popup.style.left = buttonPos.left + buttonPos.width - 20 + "px";
-    popup.style.top = buttonPos.top + 100 +"px";
-    popup.style.display = "block"; // Показываем окошко
-
-    // Добавляем обработчик события на клик по документу
-    document.addEventListener("click", closePopup);
-  }
-
-  function closePopup(event) {
-    var popup = document.getElementById("popup");
-    var button = document.getElementsByTagName("button")[0];
-    // Проверяем, кликнули ли мы вне окошка или кнопки
-    if (!popup.contains(event.target) && event.target !== button) {
-      popup.style.display = "none"; // Скрываем окошко
-      // Удаляем обработчик события клика по документу
-      document.removeEventListener("click", closePopup);
-    }
-  }
-</script>
-
-
 
 <div class="test-block">
   <h2 th:text="${answersList.getAnswers().get(0).getTest().getTitle()}"></h2>
-  <p th:text="'Категория: ' + ${answersList.getAnswers().get(0).getTest().getCategory.getTitle()}"></p>
-  <p th:text="'Количество вопросов: ' + ${answersList.getAnswers().get(0).getTest().getCount_of_questions}"></p>
+  <p th:text="'Категория: ' + ${answersList.getAnswers().get(0).getTest().getCategory().value}"></p>
+  <p th:text="'Количество вопросов: ' + ${answersList.getAnswers().get(0).getTest().getCountOfQuestions}"></p>
+  <p th:text="'Автор: ' + ${answersList.getAnswers().get(0).getTest().creator.getFirst_name()} + ' ' + ${answersList.getAnswers().get(0).getTest().creator.getLast_name()}"></p>
+  <p th:text="'Дата создания: ' + ${answersList.getAnswers().get(0).getTest().getDateOfCreation()}"></p>
 </div>
 <hr>
 <br><br><br>

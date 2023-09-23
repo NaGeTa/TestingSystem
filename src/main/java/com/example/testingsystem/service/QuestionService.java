@@ -17,4 +17,8 @@ public class QuestionService {
         return questionRepository.findQuestionsByTestId(id);
     }
 
+    public void saveQuestion(Question question){
+        questionRepository.save(question);
+    }
+
 }

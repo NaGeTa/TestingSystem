@@ -9,7 +9,7 @@
 <br><br>
 <p th:text="'Дата: ' + ${solution.getDateOfSolution()}"></p>
 <p th:text="'Количество правильных ответов: '+${solution.getCountOfRightAnswers()}+'/'+${solution.getCountOfQuestions()}"></p>
-<p th:text="'Оценка: ' + ${solution.getMark()}"></p>
+<p th:text="'Оценка: ' + ${solution.getMark().value}"></p>
 <br><br><br>
 <a href="/tests">Вернуться</a>
 </body>
