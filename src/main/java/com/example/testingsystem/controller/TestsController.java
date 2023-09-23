@@ -1,8 +1,6 @@
 package com.example.testingsystem.controller;
 
-import com.example.testingsystem.entity.Question;
-import com.example.testingsystem.entity.Solution;
-import com.example.testingsystem.entity.Test;
+import com.example.testingsystem.entity.*;
 import com.example.testingsystem.model.AnswersList;
 import com.example.testingsystem.service.QuestionService;
 import com.example.testingsystem.service.SolutionService;
@@ -33,16 +31,19 @@ public class TestsController {
     private final SolutionService solutionService;
 
     @GetMapping("/tests")
-    public String getTests(@ModelAttribute("test_for_search") Test test, Model model) {
+    public String getTests(@RequestParam(required = false, value = "searchTitle") String searchTitle , Model model) {
 
-        model.addAttribute("test_for_search", new Test());
+//        model.addAttribute("test_for_search", new Test());
+//        if (test.getTitle() != null) {
+//            model.addAttribute("tests", testService.getTestByTitle(test.getTitle()));
+//            return "test/tests";
+//        }
 
-        if (test.getTitle()!=null){
-            model.addAttribute("tests", testService.getTestByTitle(test.getTitle()));
-            return "test/tests";
+        if ((searchTitle==null) || (searchTitle.equals(""))){
+            model.addAttribute("tests", testService.getAllTests());
+        } else{
+            model.addAttribute("tests", testService.getTestByTitle(searchTitle));
         }
-
-        model.addAttribute("tests", testService.getAllTests());
 
         return "test/tests";
     }
@@ -99,9 +100,17 @@ public class TestsController {
 
     @GetMapping("/newTest")
     public String createTest(Model model) {
-        model.addAttribute("test", new Test());
 
-        return "test/test_create";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        User user = userService.getUserByLogin(login);
+
+        if (user.getRole() != Role.STUDENT_ROLE) {
+            model.addAttribute("test", new Test());
+            return "test/test_create";
+        } else {
+            return "test/error";
+        }
     }
 
     @PostMapping("/newTest/questions")

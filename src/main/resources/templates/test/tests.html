@@ -85,15 +85,20 @@
             cursor: pointer;
         }
 
+        a {
+            text-decoration: none; /* уберет подчеркивание */
+            color: inherit; /* наследует цвет ссылки */
+        }
+
     </style>
 </head>
 <body>
 
 <div class="header">
-    <div class="logo">Testing System</div>
+    <div class="logo"><a href="http://localhost:8080/menu">Testing System</a></div>
     <div>
-        <form class="search-form" th:action="@{/tests}" th:object="${test_for_search}">
-            <input type="text" name="searchTitle" th:field="*{title}" placeholder="Поиск">
+        <form class="search-form" th:action="@{/tests}">
+            <input type="text" name="searchTitle" placeholder="Поиск">
             <button type="submit">Найти</button>
         </form>
     </div>
@@ -149,7 +154,7 @@
         <p th:text="'Категория: ' + ${test.getCategory().value}"></p>
         <p th:text="'Количество вопросов: ' + ${test.getCountOfQuestions}"></p>
         <br>
-        <form th:action="@{/tests/{id}(id=${test.getId()})}" method="get">
+        <form th:action="@{/tests/{id}(id=${test.getId()})}">
             <input type="submit" value="Пройти">
         </form>
     </div>
