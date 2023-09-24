@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+</head>
+<body>
+<h1>Профиль</h1>
+<p th:text="'ID: ' + ${user.getId()}"></p>
+<p th:text="'Имя: ' + ${user.getFirst_name()}"></p>
+<p th:text="'Фамилия: ' + ${user.getLast_name()}"></p>
+<p th:text="'Логин: ' + ${user.getLogin()}"></p>
+<p th:text="'Почта: ' + ${user.getEmail()}"></p>
+<p th:text="'Дата рождения: ' + ${user.getDate_of_birth()}"></p>
+<p th:text="'Статус: ' + ${user.getRole()}"></p>
+<p th:text="'Дата регистрации: ' + ${user.getDate_of_registration()}"></p>
+<p>
+    <a th:text="'Количество решений тестов: ' + ${countOfSolutions}" href="http://localhost:8080/statistic"></a>
+</p>
+<span sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+    <a th:text="'Количество созданных тестов:' + ${countOfCreatedTests}" href="http://localhost:8080/myTests"></a>
+</span>
+<br><br>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Выйти из аккаунта">
+</form>
+</body>
+</html>

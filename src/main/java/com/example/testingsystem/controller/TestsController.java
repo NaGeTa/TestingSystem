@@ -33,12 +33,6 @@ public class TestsController {
     @GetMapping("/tests")
     public String getTests(@RequestParam(required = false, value = "searchTitle") String searchTitle , Model model) {
 
-//        model.addAttribute("test_for_search", new Test());
-//        if (test.getTitle() != null) {
-//            model.addAttribute("tests", testService.getTestByTitle(test.getTitle()));
-//            return "test/tests";
-//        }
-
         if ((searchTitle==null) || (searchTitle.equals(""))){
             model.addAttribute("tests", testService.getAllTests());
         } else{
@@ -165,7 +159,7 @@ public class TestsController {
     }
 
     @GetMapping("/myTests")
-    public String getMyTests(Model model){
+    public String getAllMyTests(Model model){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -178,5 +172,17 @@ public class TestsController {
         model.addAttribute("tests", testService.getAllTestsByCreatorId(user.getId()));
 
         return "test/my_tests";
+    }
+
+    @GetMapping("/myTests/{id}")
+    public String getMyTest(@PathVariable("id") int id , Model model){
+
+        Test test = testService.getTestById(id);
+        List<Solution> solutions = solutionService.getSolutionsByTestId(test.getId());
+
+        model.addAttribute("test", test);
+        model.addAttribute("solutions", solutions);
+
+        return "test/my_tests_solutions";
     }
 }

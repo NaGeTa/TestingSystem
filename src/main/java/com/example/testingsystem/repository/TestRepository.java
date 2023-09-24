@@ -11,4 +11,6 @@ public interface TestRepository extends JpaRepository<Test, Integer> {
     List<Test> findAllByTitle(String title);
 
     List<Test> findAllByCreatorId(int id);
+
+    int countTestByCreatorId(int id);
 }
