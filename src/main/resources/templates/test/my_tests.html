@@ -3,149 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>Мои тесты</title>
-    <style>
-        .test-block {
-            background-color: #f3f3f3;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 300px;
-        }
-
-        .test-block h2 {
-            margin-top: 0;
-        }
-
-        .test-block p {
-            margin: 0;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #f2f2f2;
-            padding: 20px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .menu-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .menu-buttons button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #ccc;
-            color: #333;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .menu-buttons button:hover {
-            background-color: #eee;
-        }
-
-        .popup {
-            display: none; /* Начально скрываем окошко */
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 20px;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-form {
-            display: flex;
-        }
-
-        .search-form input[type="text"] {
-            height: 30px;
-            padding: 5px;
-            border-radius: 5px 0 0 5px;
-            border: 1px solid #ccc;
-        }
-
-        .search-form button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #ccc;
-            color: #333;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        a {
-            text-decoration: none; /* уберет подчеркивание */
-            color: inherit; /* наследует цвет ссылки */
-        }
-
-    </style>
+    <link href="../../static/css/style.css" rel="stylesheet" th:href="@{css/style.css}">
+    <script src="../../static/js/script.js" th:src="@{js/script.js}"></script>
 </head>
 <body>
 
-<div class="header">
-    <div class="logo"><a href="http://localhost:8080/menu">Testing System</a></div>
-    <div>
-        <form class="search-form" th:action="@{/tests}">
-            <input type="text" name="searchTitle" placeholder="Поиск">
-            <button type="submit">Найти</button>
-        </form>
-    </div>
-    <div class="menu-buttons">
-        <button onclick="openPopup()">Тесты</button>
-        <button>Профиль</button>
-    </div>
-    <div id="popup" class="popup">
-        <form th:action="@{/tests}">
-            <input type="submit" value="Пройти тесты">
-        </form>
-        <form th:action="@{/statistic}">
-            <input type="submit" value="Мои результаты">
-        </form>
-        <form th:action="@{/newTest}" sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
-            <input type="submit" value="Создать новый тест">
-        </form>
-        <form th:action="@{/myTests}" sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
-            <input type="submit" value="Мои тесты">
-        </form>
-    </div>
-</div>
+<header>
+    <div class="header">
+        <div class="logo"><a href="http://localhost:8080/menu">Testing System</a></div>
 
-<script>
-    function openPopup() {
-        var popup = document.getElementById("popup");
-        // Получаем позицию кнопки
-        var buttonPos = document.getElementsByTagName("button")[0].getBoundingClientRect();
-        // Устанавливаем позицию окошка рядом с кнопкой
-        popup.style.left = buttonPos.left + buttonPos.width - 20 + "px";
-        popup.style.top = buttonPos.top + 100 + "px";
-        popup.style.display = "block"; // Показываем окошко
+        <div>
+            <form class="search-form" th:action="@{/tests}">
+                <input type="text" name="searchTitle" placeholder="Поиск">
+                <button type="submit">Найти</button>
+            </form>
+        </div>
 
-        // Добавляем обработчик события на клик по документу
-        document.addEventListener("click", closePopup);
-    }
+        <div class="menu-buttons">
+            <div class="dropdown">
 
-    function closePopup(event) {
-        var popup = document.getElementById("popup");
-        var button = document.getElementsByTagName("button")[0];
-        // Проверяем, кликнули ли мы вне окошка или кнопки
-        if (!popup.contains(event.target) && event.target !== button) {
-            popup.style.display = "none"; // Скрываем окошко
-            // Удаляем обработчик события клика по документу
-            document.removeEventListener("click", closePopup);
-        }
-    }
-</script>
+                <button>Тесты</button>
+                <div class="dropdown-content">
+                    <ul>
+                        <li>
+                            <div>
+                                <form th:action="@{/tests}">
+                                    <input class="menu-buttons" type="submit" value="Пройти тесты">
+                                </form>
+                            </div>
+                            <br>
+                        </li>
+                        <li>
+                            <div>
+                                <form th:action="@{/statistic}">
+                                    <input class="menu-buttons" type="submit" value="Мои результаты">
+                                </form>
+                            </div>
+                            <br>
+                        </li>
+                        <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+                            <div>
+                                <form th:action="@{/newTest}">
+                                    <input class="menu-buttons" type="submit" value="Создать новый тест">
+                                </form>
+                            </div>
+                            <br>
+                        </li>
+                        <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+                            <div>
+                                <form th:action="@{/myTests}">
+                                    <input class="menu-buttons" type="submit" value="Мои тесты">
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <button>Профиль</button>
+            </div>
+        </div>
+
+    </div>
+</header>
 
 
 <h1>Список ваших тестов</h1>

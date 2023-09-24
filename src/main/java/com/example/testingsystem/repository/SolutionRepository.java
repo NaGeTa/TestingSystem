@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface SolutionRepository extends JpaRepository<Solution, Integer> {
     List<Solution> findAllByUserId(int id);
+
+    List<Solution> findAllByTestId(int id);
+
+    int countSolutionByUserId(int i);
 }

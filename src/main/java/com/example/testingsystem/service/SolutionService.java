@@ -20,4 +20,12 @@ public class SolutionService {
     public List<Solution> getSolutionsByUserId(int id){
         return solutionRepository.findAllByUserId(id);
     }
+
+    public List<Solution> getSolutionsByTestId(int id){
+        return solutionRepository.findAllByTestId(id);
+    }
+
+    public int getCountOfSolutionsByUserId(int id){
+        return solutionRepository.countSolutionByUserId(id);
+    }
 }
