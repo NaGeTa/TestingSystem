@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @AllArgsConstructor
@@ -38,5 +39,22 @@ public class UserController {
         model.addAttribute("countOfSolutions", countOfSolutions);
 
         return "user/profile";
+    }
+
+    @GetMapping("/users")
+    public String getUsers(Model model){
+
+        model.addAttribute("users", userService.getAllUsers());
+
+        return "user/users";
+    }
+
+    @GetMapping("/users/{id}")
+    public String getUserCard(@PathVariable int id, Model model){ ////////////////////////////////fdsfdfs
+
+        model.addAttribute("user", userService.getUserById(id));
+
+        return "user/profile";
+
     }
 }
