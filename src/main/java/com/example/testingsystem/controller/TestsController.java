@@ -103,7 +103,7 @@ public class TestsController {
             model.addAttribute("test", new Test());
             return "test/test_create";
         } else {
-            return "test/error";
+            return "logic/error";
         }
     }
 
@@ -166,7 +166,7 @@ public class TestsController {
         User user = userService.getUserByLogin(login);
 
         if(user.getRole() == Role.STUDENT_ROLE){
-            return "test/error";
+            return "logic/error";
         }
 
         model.addAttribute("tests", testService.getAllTestsByCreatorId(user.getId()));

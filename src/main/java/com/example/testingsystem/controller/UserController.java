@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
+
 
 @Controller
 @AllArgsConstructor
@@ -22,7 +25,7 @@ public class UserController {
     private final TestService testService;
 
     @GetMapping("profile")
-    public String getProfile(Model model){
+    public String getProfile(Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -30,7 +33,7 @@ public class UserController {
 
         int countOfSolutions = solutionService.getCountOfSolutionsByUserId(user.getId());
 
-        if(user.getRole()!= Role.STUDENT_ROLE){
+        if (user.getRole() != Role.STUDENT_ROLE) {
             int countOfCreatedTests = testService.getCountOfCreatedTests(user.getId());
             model.addAttribute("countOfCreatedTests", countOfCreatedTests);
         }
@@ -42,7 +45,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String getUsers(Model model){
+    public String getUsers(Model model) {
 
         model.addAttribute("users", userService.getAllUsers());
 
@@ -50,11 +53,52 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public String getUserCard(@PathVariable int id, Model model){ ////////////////////////////////fdsfdfs
+    public String getUserCard(@PathVariable int id, Model model) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+
+        if(userService.getUserByLogin(login).getRole() != Role.ADMIN_ROLE){
+            return "logic/error";
+        }
+
+        User user = userService.getUserById(id);
+        int countOfSolutions = solutionService.getCountOfSolutionsByUserId(user.getId());
+        int countOfCreatedTests = testService.getCountOfCreatedTests(user.getId());
+
+        model.addAttribute("countOfCreatedTests", countOfCreatedTests);
+        model.addAttribute("countOfSolutions", countOfSolutions);
         model.addAttribute("user", userService.getUserById(id));
 
-        return "user/profile";
+        return "user/users_profile";
 
     }
+
+    @PostMapping("users/{id}")
+    public String banUser(@PathVariable int id){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+
+        if(userService.getUserByLogin(login).getRole() != Role.ADMIN_ROLE){
+            return "logic/error";
+        }
+
+        User user = userService.getUserById(id);
+
+        if(!user.isBlocked()){
+            user.setRole(Role.BLOCKED);
+
+            System.out.println(authentication.getAuthorities());
+
+        } else{
+            user.setRole(Role.STUDENT_ROLE);
+        }
+
+
+        userService.update(user);
+
+        return "redirect:/users/" + user.getId();
+    }
+
 }

@@ -2,6 +2,7 @@ package com.example.testingsystem.service;
 
 import com.example.testingsystem.entity.User;
 import com.example.testingsystem.repository.UserRepository;
+import com.example.testingsystem.security.UserDetailsServiceImp;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,6 +26,10 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void update(User user){
+        userRepository.save(user);
+    }
+
     public int countUsersByLogin(String value){
         return userRepository.countUsersByLogin(value);
     }
@@ -44,4 +49,6 @@ public class UserService {
     public User getUserById(int id){
         return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
     }
+
+
 }
