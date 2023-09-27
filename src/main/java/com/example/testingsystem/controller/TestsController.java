@@ -40,6 +40,8 @@ public class TestsController {
         }
 
         return "test/tests";
+
+        МУРАД ЛОШАРА
     }
 
     @GetMapping("/tests/{id}")
