@@ -57,4 +57,7 @@ public class User {
     @Column(name = "role")
     private Role role;
 
+    public boolean isBlocked(){
+        return role == Role.BLOCKED;
+    }
 }

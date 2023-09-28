@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Пользователи</title>
+</head>
+<body>
+<h1>Список всех пользователей</h1>
+<br><br><br>
+<div th:each="user: *{users}">
+    <h2 th:text="${user.getFirst_name()} + ' ' + ${user.getLast_name()}"></h2>
+    <p th:text="${user.getLogin()}"></p>
+    <p th:text="${user.getRole()}"></p>
+    <form th:action="@{users/{id}(id=${user.getId()})}">
+        <button type="submit">Открыть профиль</button>
+    </form>
+    <br><br>
+</div>
+
+</body>
+</html>

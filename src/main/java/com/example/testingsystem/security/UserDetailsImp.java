@@ -3,6 +3,7 @@ package com.example.testingsystem.security;
 import com.example.testingsystem.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,12 +25,12 @@ public class UserDetailsImp implements UserDetails {
     private Date date_of_birth;
     private Collection<? extends GrantedAuthority> authorities;
 
+
     public static UserDetailsImp build(User user) {
         List<GrantedAuthority> authorityList = List.of(new SimpleGrantedAuthority(user.getRole().name()));
-        return new UserDetailsImp(user.getId(), user.getFirst_name(),
-                user.getLast_name(), user.getLogin(),
-                user.getEmail(), user.getPassword(),
-                user.getDate_of_birth(), authorityList);
+
+        return new UserDetailsImp(user.getId(), user.getFirst_name(), user.getLast_name(), user.getLogin(),
+                user.getEmail(), user.getPassword(), user.getDate_of_birth(), authorityList);
     }
 
     @Override
@@ -67,7 +68,4 @@ public class UserDetailsImp implements UserDetails {
         return true;
     }
 
-//    public String getFirst_name() {
-//        return first_name;
-//    }
 }

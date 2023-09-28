@@ -2,11 +2,14 @@ package com.example.testingsystem.service;
 
 import com.example.testingsystem.entity.User;
 import com.example.testingsystem.repository.UserRepository;
+import com.example.testingsystem.security.UserDetailsServiceImp;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -23,6 +26,10 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void update(User user){
+        userRepository.save(user);
+    }
+
     public int countUsersByLogin(String value){
         return userRepository.countUsersByLogin(value);
     }
@@ -34,4 +41,14 @@ public class UserService {
     public User getUserByLogin(String login){
         return userRepository.findByLogin(login).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
     }
+
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
+
+    public User getUserById(int id){
+        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
+    }
+
+
 }
