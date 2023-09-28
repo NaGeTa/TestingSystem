@@ -22,13 +22,20 @@
         <div class="menu-buttons">
             <div class="dropdown">
 
+                <div>
+                    <form th:action="@{users}" sec:authorize="hasAuthority('ADMIN_ROLE')">
+                        <button class="menu-buttons" type="submit" value="Пользователи">Пользователи</button>
+                    </form>
+                </div>
+
                 <button>Тесты</button>
                 <div class="dropdown-content">
                     <ul>
                         <li>
                             <div>
                                 <form th:action="@{/tests}">
-                                    <input class="menu-buttons" type="submit" value="Пройти тесты">
+                                    <button class="menu-buttons" type="submit" value="Пройти тесты">Пройти тесты
+                                    </button>
                                 </form>
                             </div>
                             <br>
@@ -36,7 +43,8 @@
                         <li>
                             <div>
                                 <form th:action="@{/statistic}">
-                                    <input class="menu-buttons" type="submit" value="Мои результаты">
+                                    <button class="menu-buttons" type="submit" value="Мои результаты">Мои результаты
+                                    </button>
                                 </form>
                             </div>
                             <br>
@@ -44,7 +52,9 @@
                         <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
                             <div>
                                 <form th:action="@{/newTest}">
-                                    <input class="menu-buttons" type="submit" value="Создать новый тест">
+                                    <button class="menu-buttons" type="submit" value="Создать новый тест">Создать новый
+                                        тест
+                                    </button>
                                 </form>
                             </div>
                             <br>
@@ -52,7 +62,7 @@
                         <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
                             <div>
                                 <form th:action="@{/myTests}">
-                                    <input class="menu-buttons" type="submit" value="Мои тесты">
+                                    <button class="menu-buttons" type="submit" value="Мои тесты">Мои тесты</button>
                                 </form>
                             </div>
                         </li>
@@ -63,8 +73,8 @@
             <form th:action="@{profile}">
                 <button class="menu-buttons" type="submit" value="Профиль">Профиль</button>
             </form>
-        </div>
 
+        </div>
     </div>
 </header>
 

@@ -3,14 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <title>Пользователи</title>
+    <link href="../../static/css/style.css" rel="stylesheet" th:href="@{css/style.css}">
+    <script src="../../static/js/script.js" th:src="@{js/script.js}"></script>
 </head>
 <body>
+
+<header>
+    <div class="header">
+        <div class="logo"><a href="http://localhost:8080/menu">Testing System</a></div>
+
+<!--        <div>-->
+<!--            <form class="search-form" th:action="@{/users}">-->
+<!--                <input type="text" name="searchTitle" placeholder="Поиск пользователей">-->
+<!--                <button type="submit">Найти</button>-->
+<!--            </form>-->
+<!--        </div>-->
+
+        <div class="menu-buttons">
+            <div class="dropdown">
+
+                <div>
+                    <form th:action="@{users}" sec:authorize="hasAuthority('ADMIN_ROLE')">
+                        <button class="menu-buttons" type="submit" value="Пользователи">Пользователи</button>
+                    </form>
+                </div>
+
+                <button>Тесты</button>
+                <div class="dropdown-content">
+                    <ul>
+                        <li>
+                            <div>
+                                <form th:action="@{/tests}">
+                                    <button class="menu-buttons" type="submit" value="Пройти тесты">Пройти тесты
+                                    </button>
+                                </form>
+                            </div>
+                            <br>
+                        </li>
+                        <li>
+                            <div>
+                                <form th:action="@{/statistic}">
+                                    <button class="menu-buttons" type="submit" value="Мои результаты">Мои результаты
+                                    </button>
+                                </form>
+                            </div>
+                            <br>
+                        </li>
+                        <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+                            <div>
+                                <form th:action="@{/newTest}">
+                                    <button class="menu-buttons" type="submit" value="Создать новый тест">Создать новый
+                                        тест
+                                    </button>
+                                </form>
+                            </div>
+                            <br>
+                        </li>
+                        <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+                            <div>
+                                <form th:action="@{/myTests}">
+                                    <button class="menu-buttons" type="submit" value="Мои тесты">Мои тесты</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <form th:action="@{profile}">
+                <button class="menu-buttons" type="submit" value="Профиль">Профиль</button>
+            </form>
+
+        </div>
+    </div>
+</header>
+
 <h1>Список всех пользователей</h1>
 <br><br><br>
 <div th:each="user: *{users}">
     <h2 th:text="${user.getFirst_name()} + ' ' + ${user.getLast_name()}"></h2>
-    <p th:text="${user.getLogin()}"></p>
-    <p th:text="${user.getRole()}"></p>
+    <p th:text="'Логин: ' + ${user.getLogin()}"></p>
+    <p th:text="'Роль: ' + ${user.getRole().value}"></p>
     <form th:action="@{users/{id}(id=${user.getId()})}">
         <button type="submit">Открыть профиль</button>
     </form>

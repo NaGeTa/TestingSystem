@@ -11,9 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 
 
 @Controller
@@ -47,6 +47,13 @@ public class UserController {
     @GetMapping("/users")
     public String getUsers(Model model) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+
+        if(userService.getUserByLogin(login).getRole() != Role.ADMIN_ROLE){
+            return "logic/error";
+        }
+
         model.addAttribute("users", userService.getAllUsers());
 
         return "user/users";
@@ -75,7 +82,7 @@ public class UserController {
     }
 
     @PostMapping("users/{id}")
-    public String banUser(@PathVariable int id){
+    public String banUser(@PathVariable int id, @ModelAttribute("user") User userForRole){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -88,11 +95,10 @@ public class UserController {
 
         if(!user.isBlocked()){
             user.setRole(Role.BLOCKED);
-
             System.out.println(authentication.getAuthorities());
 
         } else{
-            user.setRole(Role.STUDENT_ROLE);
+            user.setRole(userForRole.getRole());
         }
 
 

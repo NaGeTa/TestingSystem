@@ -12,7 +12,7 @@
 <p th:text="'Логин: ' + ${user.getLogin()}"></p>
 <p th:text="'Почта: ' + ${user.getEmail()}"></p>
 <p th:text="'Дата рождения: ' + ${user.getDate_of_birth()}"></p>
-<p th:text="'Статус: ' + ${user.getRole()}"></p>
+<p th:text="'Статус: ' + ${user.getRole().value}"></p>
 <p th:text="'Дата регистрации: ' + ${user.getDate_of_registration()}"></p>
 <p>
     <a th:text="'Количество решений тестов: ' + ${countOfSolutions}" href="http://localhost:8080/statistic"></a>

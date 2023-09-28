@@ -12,7 +12,7 @@
 <p th:text="'Логин: ' + ${user.getLogin()}"></p>
 <p th:text="'Почта: ' + ${user.getEmail()}"></p>
 <p th:text="'Дата рождения: ' + ${user.getDate_of_birth()}"></p>
-<p th:text="'Статус: ' + ${user.getRole()}"></p>
+<p th:text="'Статус: ' + ${user.getRole().value}"></p>
 <p th:text="'Дата регистрации: ' + ${user.getDate_of_registration()}"></p>
 <p>
     <a th:text="'Количество решений тестов: ' + ${countOfSolutions}" href="http://localhost:8080/statistic"></a>
@@ -21,8 +21,14 @@
     <a th:text="'Количество созданных тестов:' + ${countOfCreatedTests}" href="http://localhost:8080/myTests"></a>
 </span>
 <br><br>
-<form th:action="@{/users/{id}(id=${user.getId()})}" method="post">
+<form th:action="@{/users/{id}(id=${user.getId()})}" method="post" th:object="${user}">
     <p th:if="${user.isBlocked()}">
+        <label for="role">Какая будет роль у пользователя: </label>
+        <select id="role" name="role" th:field="*{role}">
+            <option value="STUDENT_ROLE">Студент</option>
+            <option value="TEACHER_ROLE">Преподаватель</option>
+            <option value="ADMIN_ROLE">Админ</option>
+        </select><br>
         <input type="submit" value="Разблокировать">
     </p>
 
@@ -30,5 +36,7 @@
         <input type="submit" value="Заблокировать">
     </p>
 </form>
+<br><br>
+<a href="http://localhost:8080/users">Вернуться</a>
 </body>
 </html>
