@@ -2,96 +2,109 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <link href="../../static/css/style.css" rel="stylesheet" th:href="@{css/style.css}">
-    <script src="../../static/js/script.js" th:src="@{js/script.js}"></script>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <script src="../../static/js/bootstrap.bundle.min.js" th:src="@{js/bootstrap.bundle.min.js}"></script>
+<!--    <script src="../../static/js/color-modes.js" th:src="@{js/color-modes.js}"></script>-->
     <title>Тесты</title>
 
 </head>
 <body>
-<header>
-    <div class="header">
-        <div class="logo"><a href="http://localhost:8080/menu">Testing System</a></div>
-
-        <div>
-            <form class="search-form" th:action="@{/tests}">
-                <input type="text" name="searchTitle" placeholder="Поиск">
-                <button type="submit">Найти</button>
-            </form>
-        </div>
-
-        <div class="menu-buttons">
-            <div class="dropdown">
-
-                <div>
-                    <form th:action="@{users}" sec:authorize="hasAuthority('ADMIN_ROLE')">
-                        <button class="menu-buttons" type="submit" value="Пользователи">Пользователи</button>
-                    </form>
+<main>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/main}">Testing System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2"
+                    aria-controls="offcanvasNavbar2" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2"
+                 aria-labelledby="offcanvasNavbar2Label">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbar2Label">12345</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
                 </div>
-
-                <button>Тесты</button>
-                <div class="dropdown-content">
-                    <ul>
-                        <li>
-                            <div>
-                                <form th:action="@{/tests}">
-                                    <button class="menu-buttons" type="submit" value="Пройти тесты">Пройти тесты
-                                    </button>
-                                </form>
-                            </div>
-                            <br>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" th:href="@{/menu}">Главная</a>
                         </li>
-                        <li>
-                            <div>
-                                <form th:action="@{/statistic}">
-                                    <button class="menu-buttons" type="submit" value="Мои результаты">Мои результаты
-                                    </button>
-                                </form>
-                            </div>
-                            <br>
+                        <li class="nav-item">
+                            <a sec:authorize="hasAuthority('ADMIN_ROLE')" class="nav-link" th:href="@{/users}">Пользователи</a>
                         </li>
-                        <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
-                            <div>
-                                <form th:action="@{/newTest}">
-                                    <button class="menu-buttons" type="submit" value="Создать новый тест">Создать новый
-                                        тест
-                                    </button>
-                                </form>
-                            </div>
-                            <br>
-                        </li>
-                        <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
-                            <div>
-                                <form th:action="@{/myTests}">
-                                    <button class="menu-buttons" type="submit" value="Мои тесты">Мои тесты</button>
-                                </form>
-                            </div>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Тесты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" th:href="@{/tests}">Решить тесты</a></li>
+                                <li><a class="dropdown-item" th:href="@{/statistic}">Мои решения</a></li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a class="dropdown-item" th:href="@{/newTest}">Создать тест</a></li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a class="dropdown-item" th:href="@{/myTests}">Мои тесты</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/profile}">Профиль</a>
                         </li>
                     </ul>
+                    <form class="d-flex mt-3 mt-lg-0" role="search" th:action="@{/tests}">
+                        <input name="searchTitle" class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Найти</button>
+                    </form>
                 </div>
             </div>
-
-            <form th:action="@{profile}">
-                <button class="menu-buttons" type="submit" value="Профиль">Профиль</button>
-            </form>
-
+        </div>
+    </nav>
+</main>
+<br>
+<h1 class="no-style" align="center">Тесты</h1>
+<br>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <div th:each="test: *{tests}">
+        <div class="col">
+            <div class="card shadow-sm">
+                <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                     xmlns="http://www.w3.org/2000/svg"
+                     role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                     focusable="false">
+                    <rect width="100%" height="100%" fill="#55595c"/>
+                    <text x="10%" y="50%" fill="#eceeef" dy=".3em" th:text="${test.getTitle()}"></text>
+                </svg>
+                <div class="card-body">
+                    <p class="card-text">
+                    <p th:text="'Категория: ' + ${test.getCategory().value}"></p>
+                    <p th:text="'Количество вопросов: ' + ${test.getCountOfQuestions}"></p>
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <form th:action="@{/tests/{id}(id=${test.getId()})}">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">Пройти</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</header>
-
-
-<h1>Список тестов</h1>
-<br><br>
-<div th:each="test: *{tests}">
-    <div class="test-block">
-        <h2 th:text="${test.getTitle()}"></h2>
-        <p th:text="'Категория: ' + ${test.getCategory().value}"></p>
-        <p th:text="'Количество вопросов: ' + ${test.getCountOfQuestions}"></p>
-        <br>
-        <form th:action="@{/tests/{id}(id=${test.getId()})}">
-            <input type="submit" value="Пройти">
-        </form>
-    </div>
-    <br><br>
 </div>
+
+
+<!--<br><br>-->
+<!--<div th:each="test: *{tests}">-->
+<!--    <div class="test-block">-->
+<!--        <h2 th:text="${test.getTitle()}"></h2>-->
+<!--        <p th:text="'Категория: ' + ${test.getCategory().value}"></p>-->
+<!--        <p th:text="'Количество вопросов: ' + ${test.getCountOfQuestions}"></p>-->
+<!--        <br>-->
+<!--        <form th:action="@{/tests/{id}(id=${test.getId()})}">-->
+<!--            <input type="submit" value="Пройти">-->
+<!--        </form>-->
+<!--    </div>-->
+<!--    <br><br>-->
+<!--</div>-->
 </body>
 </html>

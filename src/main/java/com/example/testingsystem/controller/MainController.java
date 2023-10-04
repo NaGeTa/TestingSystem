@@ -33,6 +33,14 @@ public class MainController {
         return "logic/login";
     }
 
+    @PostMapping("/login")
+    public String doLogin(){
+
+        System.out.println("yesssssss\n\n\n");
+
+        return "logic/menu";
+    }
+
     @GetMapping("/registration")
     public String getRegPage(Model model){
         model.addAttribute("user", new User());

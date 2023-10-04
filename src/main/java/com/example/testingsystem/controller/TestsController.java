@@ -6,10 +6,17 @@ import com.example.testingsystem.service.QuestionService;
 import com.example.testingsystem.service.SolutionService;
 import com.example.testingsystem.service.TestService;
 import com.example.testingsystem.service.UserService;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,7 +24,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,17 +37,20 @@ import java.util.List;
 @AllArgsConstructor
 public class TestsController {
 
+
+    private final RestTemplate restTemplate;
     private final UserService userService;
     private final TestService testService;
     private final QuestionService questionService;
     private final SolutionService solutionService;
 
-    @GetMapping("/tests")
-    public String getTests(@RequestParam(required = false, value = "searchTitle") String searchTitle , Model model) {
 
-        if ((searchTitle==null) || (searchTitle.equals(""))){
+    @GetMapping("/tests")
+    public String getTests(@RequestParam(required = false, value = "searchTitle") String searchTitle, Model model) {
+
+        if ((searchTitle == null) || (searchTitle.equals(""))) {
             model.addAttribute("tests", testService.getAllTests());
-        } else{
+        } else {
             model.addAttribute("tests", testService.getTestByTitle(searchTitle));
         }
 
@@ -72,6 +87,12 @@ public class TestsController {
         solution.rating();
         solution.getTest().setCountOfSolutions(solution.getTest().getCountOfSolutions() + 1);
         solutionService.saveSolution(solution);
+
+        try {
+            restTemplate.postForEntity(new URI("http://localhost:8090/"), solution, Object.class);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
 
         model.addAttribute("solution", solution);
 
@@ -159,13 +180,13 @@ public class TestsController {
     }
 
     @GetMapping("/myTests")
-    public String getAllMyTests(Model model){
+    public String getAllMyTests(Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
         User user = userService.getUserByLogin(login);
 
-        if(user.getRole() == Role.STUDENT_ROLE){
+        if (user.getRole() == Role.STUDENT_ROLE) {
             return "logic/error";
         }
 
@@ -175,7 +196,7 @@ public class TestsController {
     }
 
     @GetMapping("/myTests/{id}")
-    public String getMyTest(@PathVariable("id") int id , Model model){
+    public String getMyTest(@PathVariable("id") int id, Model model) {
 
         Test test = testService.getTestById(id);
         List<Solution> solutions = solutionService.getSolutionsByTestId(test.getId());
@@ -185,4 +206,73 @@ public class TestsController {
 
         return "test/my_tests_solutions";
     }
+
+    @ResponseBody
+    @GetMapping("/saveResults/{id}")
+    public ResponseEntity<ByteArrayResource> saveResults(@PathVariable int id){
+
+        List<Solution> list = solutionService.getSolutionsByTestId(id);
+
+        if(list.isEmpty())
+            return null;
+
+        Document document = new Document();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        try {
+            PdfWriter.getInstance(document, outputStream);
+        } catch (DocumentException e) {
+            throw new RuntimeException(e);
+        }
+
+        document.open();
+
+        BaseFont baseFont;
+        String path = "static/font/font.ttf";
+        try {
+            baseFont = BaseFont.createFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true);
+        } catch (DocumentException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        Font font = new Font(baseFont, 16);
+
+        Paragraph paragraph;
+
+        paragraph = new Paragraph(list.get(0).getTest().getTitle() +
+                "\n  Категория: " + list.get(0).getTest().getCategory().value +
+                "\n  Кол-во вопросов: " + list.get(0).getTest().getCountOfQuestions() +
+                "\n  Кол-во решений: " + list.get(0).getTest().getCountOfSolutions() +
+                "\n  Дата создания: " + list.get(0).getTest().getDateOfCreation() + "\n" +
+                "\nРешения:\n\n", font);
+
+        try {
+            document.add(paragraph);
+        } catch (DocumentException e) {
+            throw new RuntimeException(e);
+        }
+
+        font = new Font(baseFont, 13);
+
+
+        for (Solution solution : list) {
+            paragraph = new Paragraph("\nСтудент: " + solution.getUser().getFirst_name()  + " " + solution.getUser().getLast_name()
+                    + "\n Оценка: " + solution.getMark().value
+                    + "\n Дата: " + solution.getDateOfSolution()
+                    + "\n Количество правильных ответов: " + solution.getCountOfRightAnswers(), font);
+            try {
+                document.add(paragraph);
+            } catch (DocumentException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        document.close();
+
+
+        return ResponseEntity
+                .ok()
+                .header("CONTENT-TYPE", MediaType.APPLICATION_PDF_VALUE)
+                .body(new ByteArrayResource(outputStream.toByteArray()));
+    }
+
 }

@@ -24,7 +24,7 @@ public class UserController {
     private final SolutionService solutionService;
     private final TestService testService;
 
-    @GetMapping("profile")
+    @GetMapping("/profile")
     public String getProfile(Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -188,6 +188,9 @@
     </div>
     <br><br>
 </div>
-
+<br><br>
+<form th:if="${!solutions.isEmpty()}" th:action="@{/saveResults/{id}(id=${test.getId()})}">
+    <input type="submit" value="Сохранить список в виде PDF">
+</form>
 </body>
 </html>

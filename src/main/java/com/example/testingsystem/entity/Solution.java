@@ -1,9 +1,7 @@
 package com.example.testingsystem.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
@@ -12,6 +10,8 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Solution {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class Solution {
     private Test test;
 
     @Column(name = "time_of_decision")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dateOfSolution = new Date();
 
     @Column(name = "count_of_right_answers")

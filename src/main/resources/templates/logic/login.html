@@ -1,28 +1,69 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
 <head>
-    <title>Вход</title>
-</head>
-<body>
-<h1>Вход</h1>
-<br><br>
-<div style="color: red" th:if="${param.error}">
-    Неверные логин или пароль.</div>
-<div style="color: darkgray" th:if="${param.logout}">
-    Выход из аккаунта.</div>
-<form th:action="@{/login}" method="post">
-    <div>
-        <input type="text" name="username" placeholder="Логин"/>
-    </div>
-    <br>
-    <div>
-        <input type="password" name="password" placeholder="Пароль"/>
-    </div>
-    <br><br>
-    <input type="submit" value="Войти" />
-</form>
 
-<br><br>
-<a href="/registration">Регистрация</a>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.115.4">
+    <title>Вход</title>
+
+    <style>
+
+
+        body {
+            height: 100%;
+        }
+
+        .form-signin {
+            max-width: 330px;
+            padding: 1rem;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+    </style>
+
+</head>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+<main class="form-signin w-100 m-auto">
+    <form th:action="@{/login}" method="post">
+        <h1 class="h3 mb-3 fw-normal">Войдите</h1>
+        <br><br>
+        <div style="color: red" th:if="${param.error}">
+            Неверные логин или пароль.</div>
+        <div style="color: darkgray" th:if="${param.logout}">
+            Выход из аккаунта.</div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Логин">
+            <label for="floatingInput">Логин</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Пароль">
+            <label for="floatingPassword">Пароль</label>
+        </div>
+
+        <div class="form-check text-start my-3">
+            <a href="/registration">Зарегистрироваться</a>
+        </div>
+        <button class="btn btn-primary w-100 py-2" type="submit">Войти</button>
+    </form>
+</main>
+
 </body>
 </html>
