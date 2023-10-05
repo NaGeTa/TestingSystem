@@ -46,15 +46,18 @@
                                 <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a class="dropdown-item" th:href="@{/newTest}">Создать тест</a></li>
-                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a class="dropdown-item" th:href="@{/myTests}">Мои тесты</a></li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a
+                                        class="dropdown-item" th:href="@{/newTest}">Создать тест</a></li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a
+                                        class="dropdown-item" th:href="@{/myTests}">Мои тесты</a></li>
                             </ul>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/profile}">Профиль</a>
                         </li>
                     </ul>
                     <form class="d-flex mt-3 mt-lg-0" role="search" th:action="@{/tests}">
-                        <input name="searchTitle" class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
+                        <input name="searchTitle" class="form-control me-2" type="search" placeholder="Поиск"
+                               aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Найти</button>
                     </form>
                 </div>
@@ -62,14 +65,13 @@
         </div>
     </nav>
 </main>
-
-<h1 th:text="'Здравствуйте, ' + ${#authentication.getPrincipal().getFirst_name}"></h1>
+<br>
+<h1 th:text="'  &nbsp;Здравствуйте, ' + ${#authentication.getPrincipal().getFirst_name}"></h1>
 <hr>
 <br><br>
-<a href="/tests">Пройти тесты</a>
-<br><br><br>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Выйти">
+&nbsp;
+<form th:action="@{/tests}">
+    <button class="btn btn-primary w-100 py-2 bg-black" style="max-width: 330px;">Начать тестирование</button>
 </form>
 </body>
 </html>

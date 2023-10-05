@@ -3,26 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <title>Профиль</title>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </head>
+
 <body>
+
+<main>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}">Testing System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2"
+                    aria-controls="offcanvasNavbar2" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2"
+                 aria-labelledby="offcanvasNavbar2Label">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbar2Label">12345</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" th:href="@{/menu}">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a sec:authorize="hasAuthority('ADMIN_ROLE')" class="nav-link" th:href="@{/users}">Пользователи</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Тесты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" th:href="@{/tests}">Решить тесты</a></li>
+                                <li><a class="dropdown-item" th:href="@{/statistic}">Мои решения</a></li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a
+                                        class="dropdown-item" th:href="@{/newTest}">Создать тест</a></li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a
+                                        class="dropdown-item" th:href="@{/myTests}">Мои тесты</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/profile}">Профиль</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</main>
+<br>
+
+
 <h1>Профиль</h1>
-<p th:text="'ID: ' + ${user.getId()}"></p>
-<p th:text="'Имя: ' + ${user.getFirst_name()}"></p>
-<p th:text="'Фамилия: ' + ${user.getLast_name()}"></p>
-<p th:text="'Логин: ' + ${user.getLogin()}"></p>
-<p th:text="'Почта: ' + ${user.getEmail()}"></p>
-<p th:text="'Дата рождения: ' + ${user.getDate_of_birth()}"></p>
-<p th:text="'Статус: ' + ${user.getRole().value}"></p>
-<p th:text="'Дата регистрации: ' + ${user.getDate_of_registration()}"></p>
+<br><br>
+<p th:text="'&nbsp;ID: ' + ${user.getId()}"></p>
+<p th:text="'&nbsp;Имя: ' + ${user.getFirst_name()}"></p>
+<p th:text="'&nbsp;Фамилия: ' + ${user.getLast_name()}"></p>
+<p th:text="'&nbsp;Логин: ' + ${user.getLogin()}"></p>
+<p th:text="'&nbsp;Почта: ' + ${user.getEmail()}"></p>
+<p th:text="'&nbsp;Дата рождения: ' + ${user.getDate_of_birth()}"></p>
+<p th:text="'&nbsp;Статус: ' + ${user.getRole().value}"></p>
+<p th:text="'&nbsp;Дата регистрации: ' + ${user.getDate_of_registration()}"></p>
 <p>
-    <a th:text="'Количество решений тестов: ' + ${countOfSolutions}" href="http://localhost:8080/statistic"></a>
+    <a th:text="'&nbsp;Количество решений тестов: ' + ${countOfSolutions}" th:href="@{/statistic}"></a>
 </p>
 <span sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
-    <a th:text="'Количество созданных тестов:' + ${countOfCreatedTests}" href="http://localhost:8080/myTests"></a>
+    <a th:text="'&nbsp;Количество созданных тестов:' + ${countOfCreatedTests}" th:href="@{/myTests}"></a>
 </span>
 <br><br>
 <form th:action="@{/logout}" method="post">
-    <input type="submit" value="Выйти из аккаунта">
+    &nbsp;<button class="btn btn-primary w-100 py-2 bg-black" style="max-width: 300px;">Выйти</button>
 </form>
 </body>
 </html>

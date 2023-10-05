@@ -2,8 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{css/bootstrap.min.css}">
-    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script src="../../static/js/bootstrap.bundle.min.js" th:src="@{js/bootstrap.bundle.min.js}"></script>
 <!--    <script src="../../static/js/color-modes.js" th:src="@{js/color-modes.js}"></script>-->
     <title>Тесты</title>
@@ -92,19 +91,5 @@
     </div>
 </div>
 
-
-<!--<br><br>-->
-<!--<div th:each="test: *{tests}">-->
-<!--    <div class="test-block">-->
-<!--        <h2 th:text="${test.getTitle()}"></h2>-->
-<!--        <p th:text="'Категория: ' + ${test.getCategory().value}"></p>-->
-<!--        <p th:text="'Количество вопросов: ' + ${test.getCountOfQuestions}"></p>-->
-<!--        <br>-->
-<!--        <form th:action="@{/tests/{id}(id=${test.getId()})}">-->
-<!--            <input type="submit" value="Пройти">-->
-<!--        </form>-->
-<!--    </div>-->
-<!--    <br><br>-->
-<!--</div>-->
 </body>
 </html>

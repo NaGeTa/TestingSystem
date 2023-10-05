@@ -86,13 +86,22 @@ public class TestsController {
 
         solution.rating();
         solution.getTest().setCountOfSolutions(solution.getTest().getCountOfSolutions() + 1);
-        solutionService.saveSolution(solution);
+//        solutionService.saveSolution(solution);
 
-        try {
-            restTemplate.postForEntity(new URI("http://localhost:8090/"), solution, Object.class);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        Runnable r = ()->{
+            try {
+                restTemplate.postForEntity(new URI("http://localhost:8090/"), solution, Object.class);
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+
+            System.out.println("\u001B[32m Письмо успешно отправлено "+"\u001B[0m");
+        };
+
+        Thread thread = new Thread(r, "MailThread");
+
+        thread.start();
+
 
         model.addAttribute("solution", solution);
 

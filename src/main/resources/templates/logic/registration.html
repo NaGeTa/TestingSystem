@@ -3,61 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <title>Регистрация</title>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label, input, select {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"], input[type="email"], input[type="date"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-<h1>Регистрация</h1>
-<br><br>
-<form th:action="@{/registration}" method="post" th:object="${user}">
-    <p>
-        <label for="first_name">Имя: </label>
-        <input th:field="*{first_name}" type="text" name="first_name" id="first_name" placeholder="Имя">
-        <div style="color: red" th:if="${#fields.hasErrors('first_name')}" th:errors="*{first_name}"></div>
-    </p>
-
-    <p>
-        <label for="last_name">Фамилия: </label>
-        <input th:field="*{last_name}" type="text" name="last_name" id="last_name" placeholder="Фамилия">
-        <div style="color: red" th:if="${#fields.hasErrors('last_name')}" th:errors="*{last_name}"></div>
-    </p>
-
-    <p>
-        <label for="login">Логин: </label>
-        <input th:field="*{login}" type="text" name="login" id="login" placeholder="Логин">
-        <p style="color: red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></p>
-    </p>
-
-    <p>
-        <label for="email">Почта: </label>
-        <input th:field="*{email}" type="text" name="email" id="email" placeholder="Почта">
-        <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-    </p>
-
-    <p>
-        <label for="date_of_birth">Дата рождения: </label>
-        <input th:field="*{date_of_birth}" type="date" name="date_of_birth" id="date_of_birth">
-        <div style="color: red" th:if="${#fields.hasErrors('date_of_birth')}" th:errors="*{date_of_birth}"></div>
-    </p>
-
-
-        <label for="role1">Выберите кто вы: </label>
+<div class="container">
+    <h2>Регистрация</h2>
+    <form th:action="@{/registration}" method="POST" th:object="${user}">
         <div>
-            <input type="radio" id="role1" name="role" checked value="STUDENT_ROLE" />
-            <label for="role1">Студент</label>
-            <input type="radio" id="role2" name="role" value="TEACHER_ROLE" />
-            <label for="role2">Преподаватель</label>
+            <label for="first-name">Имя:</label>
+            <input type="text" id="first-name" name="firstName" th:field="*{first_name}">
+            <div style="color: red" th:if="${#fields.hasErrors('first_name')}" th:errors="*{first_name}"></div>
         </div>
-
-
-    <p>
-        <label for="password">Пароль: </label>
-        <input th:field="*{password}" type="password" name="password" id="password" placeholder="Пароль">
-        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-    </p>
-
-    <br>
-
-    <input type="submit" value="Зарегистрироваться">
-</form>
-
+        <div>
+            <label for="last-name">Фамилия:</label>
+            <input type="text" id="last-name" name="lastName" th:field="*{last_name}">
+            <div style="color: red" th:if="${#fields.hasErrors('last_name')}" th:errors="*{last_name}"></div>
+        </div>
+        <div>
+            <label for="username">Логин:</label>
+            <input type="text" id="username" name="username" th:field="*{login}">
+            <p style="color: red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></p>
+        </div>
+        <div>
+            <label for="email">Почта:</label>
+            <input type="email" id="email" name="email" th:field="*{email}">
+            <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+        <div>
+            <label for="dob">Дата рождения:</label>
+            <input type="date" id="dob" name="dob" th:field="*{date_of_birth}">
+            <div style="color: red" th:if="${#fields.hasErrors('date_of_birth')}" th:errors="*{date_of_birth}"></div>
+        </div>
+            <div>
+                <label for="role">Выберите кто вы: </label>
+                <select id="role" name="role" th:field="*{role}">
+                    <option value="STUDENT_ROLE">Студент</option>
+                    <option value="TEACHER_ROLE">Преподаватель</option>
+                </select>
+            </div>
+        <div>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" th:field="*{password}">
+            <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
+        <br>
+        <div>
+            <button class="btn btn-primary w-100 py-2 bg-black" style="max-width: 200px;">Зарегистрироваться</button>
+        </div>
+    </form>
+</div>
 </body>
 </html>

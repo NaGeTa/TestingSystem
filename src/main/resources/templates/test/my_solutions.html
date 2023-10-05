@@ -3,17 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <title>Мои результаты</title>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </head>
+
 <body>
-<h1>Ваши результаты</h1>
-    <div th:each="solution: ${solutions}">
-      <br><br>
-      <h2 th:text="${solution.getTest().getTitle()}"></h2>
-      <p th:text="'Дата: ' + ${solution.getDateOfSolution()}"></p>
-      <p th:text="'Количество правильных ответов: '+${solution.getCountOfRightAnswers()}+'/'+${solution.getCountOfQuestions()}"></p>
-      <p th:text="'Оценка: ' + ${solution.getMark().value}"></p>
+
+<main>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}">Testing System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2"
+                    aria-controls="offcanvasNavbar2" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2"
+                 aria-labelledby="offcanvasNavbar2Label">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbar2Label">12345</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" th:href="@{/menu}">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a sec:authorize="hasAuthority('ADMIN_ROLE')" class="nav-link" th:href="@{/users}">Пользователи</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Тесты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" th:href="@{/tests}">Решить тесты</a></li>
+                                <li><a class="dropdown-item" th:href="@{/statistic}">Мои решения</a></li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a
+                                        class="dropdown-item" th:href="@{/newTest}">Создать тест</a></li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a
+                                        class="dropdown-item" th:href="@{/myTests}">Мои тесты</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/profile}">Профиль</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</main>
+<br>
+<h1>Результаты</h1>
+<br><br>
+<div th:each="solution: ${solutions}">
+    <div style="background-color: #f1f1f1; padding: 20px;">
+        <h3 th:text="${solution.getTest().getTitle()}"></h3>
+        <p th:text="'Дата: ' + ${solution.getDateOfSolution()}"></p>
+        <p th:text="'Количество правильных ответов: '+${solution.getCountOfRightAnswers()}+'/'+${solution.getCountOfQuestions()}"></p>
+        <p th:text="'Оценка: ' + ${solution.getMark().value}"></p>
     </div>
-<br><br><br>
-<a href="/tests">Вернуться</a>
+    <br><br>
+</div>
+<form th:action="@{/tests}">
+    <button class="btn btn-primary w-100 py-2 bg-black" style="max-width: 330px;">Вернуться</button>
+</form>
 </body>
 </html>

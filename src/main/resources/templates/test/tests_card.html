@@ -3,85 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <title th:text="${answersList.getAnswers().get(0).getTest().getTitle()}"></title>
+  <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <script src="../../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </head>
 
 <body>
 
-<header>
-  <div class="header">
-    <div class="logo"><a href="http://localhost:8080/menu">Testing System</a></div>
-
-    <div>
-      <form class="search-form" th:action="@{/tests}">
-        <input type="text" name="searchTitle" placeholder="Поиск">
-        <button type="submit">Найти</button>
-      </form>
-    </div>
-
-    <div class="menu-buttons">
-      <div class="dropdown">
-
-        <button>Тесты</button>
-        <div class="dropdown-content">
-          <ul>
-            <li>
-              <div>
-                <form th:action="@{/tests}">
-                  <input class="menu-buttons" type="submit" value="Пройти тесты">
-                </form>
-              </div>
-              <br>
+<main>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
+    <div class="container-fluid">
+      <a class="navbar-brand" th:href="@{/}">Testing System</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2"
+              aria-controls="offcanvasNavbar2" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2"
+           aria-labelledby="offcanvasNavbar2Label">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavbar2Label">12345</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                  aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" th:href="@{/menu}">Главная</a>
             </li>
-            <li>
-              <div>
-                <form th:action="@{/statistic}">
-                  <input class="menu-buttons" type="submit" value="Мои результаты">
-                </form>
-              </div>
-              <br>
+            <li class="nav-item">
+              <a sec:authorize="hasAuthority('ADMIN_ROLE')" class="nav-link" th:href="@{/users}">Пользователи</a>
             </li>
-            <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
-              <div>
-                <form th:action="@{/newTest}">
-                  <input class="menu-buttons" type="submit" value="Создать новый тест">
-                </form>
-              </div>
-              <br>
-            </li>
-            <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
-              <div>
-                <form th:action="@{/myTests}">
-                  <input class="menu-buttons" type="submit" value="Мои тесты">
-                </form>
-              </div>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                 aria-expanded="false">
+                Тесты
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" th:href="@{/tests}">Решить тесты</a></li>
+                <li><a class="dropdown-item" th:href="@{/statistic}">Мои решения</a></li>
+                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+                  <hr class="dropdown-divider">
+                </li>
+                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a class="dropdown-item" th:href="@{/newTest}">Создать тест</a></li>
+                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a class="dropdown-item" th:href="@{/myTests}">Мои тесты</a></li>
+              </ul>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/profile}">Профиль</a>
             </li>
           </ul>
         </div>
-
-        <button>Профиль</button>
       </div>
     </div>
-
-  </div>
-</header>
-
-
+  </nav>
+</main>
+<br><br>
 <div class="test-block">
-  <h2 th:text="${answersList.getAnswers().get(0).getTest().getTitle()}"></h2>
-  <p th:text="'Категория: ' + ${answersList.getAnswers().get(0).getTest().getCategory().value}"></p>
-  <p th:text="'Количество вопросов: ' + ${answersList.getAnswers().get(0).getTest().getCountOfQuestions}"></p>
-  <p th:text="'Автор: ' + ${answersList.getAnswers().get(0).getTest().creator.getFirst_name()} + ' ' + ${answersList.getAnswers().get(0).getTest().creator.getLast_name()}"></p>
-  <p th:text="'Дата создания: ' + ${answersList.getAnswers().get(0).getTest().getDateOfCreation()}"></p>
+  <h2 th:text="' '+${answersList.getAnswers().get(0).getTest().getTitle()}"></h2>
+  <br>
+  <p th:text="'&nbsp;Категория: ' + ${answersList.getAnswers().get(0).getTest().getCategory().value}"></p>
+  <p th:text="'&nbsp;Количество вопросов: ' + ${answersList.getAnswers().get(0).getTest().getCountOfQuestions}"></p>
+  <p th:text="'&nbsp;Автор: ' + ${answersList.getAnswers().get(0).getTest().creator.getFirst_name()} + ' ' + ${answersList.getAnswers().get(0).getTest().creator.getLast_name()}"></p>
+  <p th:text="'&nbsp;Дата создания: ' + ${answersList.getAnswers().get(0).getTest().getDateOfCreation()}"></p>
 </div>
 <hr>
-<br><br><br>
+<br><br>
 
 <form th:action="@{/tests}" method="post" th:object="${answersList}">
 
   <input type="hidden" th:field="*{answers[__${0}__].test}" />
 
   <div th:each="question, stat: *{answers}">
-    <div>
+    <div style="background-color: #f1f1f1; padding: 20px;">
 
       <h3 th:text="${question.getNumOfQuestion()} + '. ' + ${question.getTitle()}"></h3>
 
@@ -105,9 +96,11 @@
       <input type="hidden" th:field="*{answers[__${stat.index}__].rightAnswer}" />
 
     </div>
-    <br><br><br>
+    <br><br>
   </div>
-  <input type="submit" value="Завершить">
+  &nbsp;
+  <button class="btn btn-primary w-100 py-2 bg-black" style="max-width: 200px;">Завершить</button>
+  <label></label>
 </form>
 
 </body>
