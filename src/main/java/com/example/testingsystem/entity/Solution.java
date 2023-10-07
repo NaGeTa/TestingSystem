@@ -7,9 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "solutions")
-@Setter
-@Getter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Solution {

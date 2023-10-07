@@ -2,6 +2,9 @@ package com.example.testingsystem.controller;
 
 import com.example.testingsystem.entity.*;
 import com.example.testingsystem.model.AnswersList;
+import com.example.testingsystem.model.MapstructConfig;
+import com.example.testingsystem.model.SolutionMapper;
+import com.example.testingsystem.model.SolutionMapperImpl;
 import com.example.testingsystem.service.QuestionService;
 import com.example.testingsystem.service.SolutionService;
 import com.example.testingsystem.service.TestService;
@@ -14,6 +17,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 
+import org.modelmapper.ModelMapper;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,12 +41,12 @@ import java.util.List;
 @AllArgsConstructor
 public class TestsController {
 
-
     private final RestTemplate restTemplate;
     private final UserService userService;
     private final TestService testService;
     private final QuestionService questionService;
     private final SolutionService solutionService;
+    private final MapstructConfig mapstructConfig;
 
 
     @GetMapping("/tests")
@@ -86,11 +90,12 @@ public class TestsController {
 
         solution.rating();
         solution.getTest().setCountOfSolutions(solution.getTest().getCountOfSolutions() + 1);
-//        solutionService.saveSolution(solution);
+        solutionService.saveSolution(solution);
 
         Runnable r = ()->{
             try {
-                restTemplate.postForEntity(new URI("http://localhost:8090/"), solution, Object.class);
+                SolutionMapper solutionMapper = mapstructConfig.getMapper().map(solution, SolutionMapper.class);
+                restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
             }
