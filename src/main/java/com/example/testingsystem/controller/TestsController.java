@@ -2,13 +2,13 @@ package com.example.testingsystem.controller;
 
 import com.example.testingsystem.entity.*;
 import com.example.testingsystem.model.AnswersList;
-import com.example.testingsystem.model.MapstructConfig;
 import com.example.testingsystem.model.SolutionMapper;
-import com.example.testingsystem.model.SolutionMapperImpl;
 import com.example.testingsystem.service.QuestionService;
 import com.example.testingsystem.service.SolutionService;
 import com.example.testingsystem.service.TestService;
 import com.example.testingsystem.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -17,10 +17,10 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 
-import org.modelmapper.ModelMapper;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -46,7 +46,9 @@ public class TestsController {
     private final TestService testService;
     private final QuestionService questionService;
     private final SolutionService solutionService;
-    private final MapstructConfig mapstructConfig;
+    private final SolutionMapper solutionMapper;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
 
 
     @GetMapping("/tests")
@@ -94,9 +96,11 @@ public class TestsController {
 
         Runnable r = ()->{
             try {
-                SolutionMapper solutionMapper = mapstructConfig.getMapper().map(solution, SolutionMapper.class);
-                restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
-            } catch (URISyntaxException e) {
+//                restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
+
+                kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
+
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
 

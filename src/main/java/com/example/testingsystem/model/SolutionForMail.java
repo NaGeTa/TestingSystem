@@ -9,5 +9,5 @@ public class SolutionForMail {
     private String lastName;
     private String title;
     private String creatorsMail;
-    private Mark mark;
+    private String mark;
 }
