@@ -1,4 +1,4 @@
-package com.example.testingsystem.model;
+package com.example.testingsystem.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package com.example.testingsystem.model;
+package com.example.testingsystem.config;
 
 
 import com.example.testingsystem.entity.User;

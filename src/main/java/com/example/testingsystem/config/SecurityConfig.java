@@ -1,6 +1,5 @@
 package com.example.testingsystem.config;
 
-import com.example.testingsystem.model.MyLogoutHandler;
 import com.example.testingsystem.security.UserDetailsServiceImp;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

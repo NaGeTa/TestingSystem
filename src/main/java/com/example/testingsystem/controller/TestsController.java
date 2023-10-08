@@ -2,10 +2,13 @@ package com.example.testingsystem.controller;
 
 import com.example.testingsystem.entity.*;
 import com.example.testingsystem.model.AnswersList;
+import com.example.testingsystem.model.SolutionMapper;
 import com.example.testingsystem.service.QuestionService;
 import com.example.testingsystem.service.SolutionService;
 import com.example.testingsystem.service.TestService;
 import com.example.testingsystem.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -17,6 +20,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -37,12 +41,14 @@ import java.util.List;
 @AllArgsConstructor
 public class TestsController {
 
-
     private final RestTemplate restTemplate;
     private final UserService userService;
     private final TestService testService;
     private final QuestionService questionService;
     private final SolutionService solutionService;
+    private final SolutionMapper solutionMapper;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
 
 
     @GetMapping("/tests")
@@ -86,21 +92,24 @@ public class TestsController {
 
         solution.rating();
         solution.getTest().setCountOfSolutions(solution.getTest().getCountOfSolutions() + 1);
-//        solutionService.saveSolution(solution);
+        solutionService.saveSolution(solution);
 
-        Runnable r = ()->{
-            try {
-                restTemplate.postForEntity(new URI("http://localhost:8090/"), solution, Object.class);
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
+        if(solution.getTest().getCreator().isDoSend()) {
+            Runnable r = () -> {
+                try {
+                    restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
 
-            System.out.println("\u001B[32m Письмо успешно отправлено "+"\u001B[0m");
-        };
+//                kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
 
-        Thread thread = new Thread(r, "MailThread");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.println("\u001B[32m Письмо успешно отправлено " + "\u001B[0m");
+            };
 
-        thread.start();
+            Thread thread = new Thread(r, "MailThread");
+            thread.start();
+        }
 
 
         model.addAttribute("solution", solution);

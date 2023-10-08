@@ -57,6 +57,9 @@ public class User {
     @Column(name = "role")
     private Role role;
 
+    @Column(name = "do_send")
+    private boolean doSend = true;
+
     public boolean isBlocked(){
         return role == Role.BLOCKED;
     }

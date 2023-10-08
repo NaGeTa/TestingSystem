@@ -77,6 +77,23 @@
     <a th:text="'&nbsp;Количество созданных тестов:' + ${countOfCreatedTests}" th:href="@{/myTests}"></a>
 </span>
 <br><br>
+<span sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+    <form th:action="@{/updateProfile/{id}(id=${user.getId()})}" method="post" th:object="${user}">
+            <input type="hidden" th:field="*{first_name}">
+            <input type="hidden" th:field="*{last_name}">
+            <input type="hidden" th:field="*{login}">
+            <input type="hidden" th:field="*{email}">
+            <input type="hidden" th:field="*{role}">
+            <input type="hidden" th:field="*{date_of_birth}">
+            <input type="hidden" th:field="*{password}">
+        &nbsp;
+        <input id="send" type="checkbox" th:checked="*{doSend}" th:field="*{doSend}">
+            <label th:for="send">Отправлять результаты прохождения тестов на почту</label>
+        &nbsp;
+            <button class="btn btn-primary w-100 py-2 bg-black" style="max-width: 100px;">Сохранить</button>
+    </form>
+</span>
+<br><br>
 <form th:action="@{/logout}" method="post">
     &nbsp;<button class="btn btn-primary w-100 py-2 bg-black" style="max-width: 300px;">Выйти</button>
 </form>
