@@ -94,22 +94,22 @@ public class TestsController {
         solution.getTest().setCountOfSolutions(solution.getTest().getCountOfSolutions() + 1);
         solutionService.saveSolution(solution);
 
-        Runnable r = ()->{
-            try {
-//                restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
+        if(solution.getTest().getCreator().isDoSend()) {
+            Runnable r = () -> {
+                try {
+                    restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
 
-                kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
+//                kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
 
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.println("\u001B[32m Письмо успешно отправлено " + "\u001B[0m");
+            };
 
-            System.out.println("\u001B[32m Письмо успешно отправлено "+"\u001B[0m");
-        };
-
-        Thread thread = new Thread(r, "MailThread");
-
-        thread.start();
+            Thread thread = new Thread(r, "MailThread");
+            thread.start();
+        }
 
 
         model.addAttribute("solution", solution);

@@ -47,6 +47,7 @@
 <div class="container">
     <h2>Регистрация</h2>
     <form th:action="@{/registration}" method="POST" th:object="${user}">
+        <input type="hidden" th:field="*{doSend}">
         <div>
             <label for="first-name">Имя:</label>
             <input type="text" id="first-name" name="firstName" th:field="*{first_name}">

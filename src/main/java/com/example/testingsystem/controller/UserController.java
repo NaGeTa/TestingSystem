@@ -10,10 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -101,10 +98,17 @@ public class UserController {
             user.setRole(userForRole.getRole());
         }
 
-
         userService.update(user);
 
         return "redirect:/users/" + user.getId();
+    }
+
+    @PostMapping("/updateProfile/{id}")
+    public String updateProfile(@ModelAttribute("user") User user, @PathVariable int id){
+        User userForSave = userService.getUserById(id);
+        userForSave.setDoSend(user.isDoSend());
+        userService.update(userForSave);
+        return "redirect:/profile";
     }
 
 }
