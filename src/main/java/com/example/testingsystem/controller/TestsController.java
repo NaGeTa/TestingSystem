@@ -3,11 +3,7 @@ package com.example.testingsystem.controller;
 import com.example.testingsystem.entity.*;
 import com.example.testingsystem.model.AnswersList;
 import com.example.testingsystem.model.SolutionMapper;
-import com.example.testingsystem.service.QuestionService;
-import com.example.testingsystem.service.SolutionService;
-import com.example.testingsystem.service.TestService;
-import com.example.testingsystem.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.testingsystem.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
@@ -32,8 +28,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +35,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TestsController {
 
+    private final TestsControllerService service;
     private final RestTemplate restTemplate;
     private final UserService userService;
     private final TestService testService;
@@ -76,43 +71,7 @@ public class TestsController {
     @PostMapping("/tests")
     public String finishTestsSolution(@ModelAttribute("answersList") AnswersList answersList, Model model) {
 
-        Solution solution = new Solution();
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
-        solution.setUser(userService.getUserByLogin(login));
-        solution.setTest(answersList.getAnswers().get(0).getTest());
-
-        answersList.getAnswers().forEach((question) -> {
-            if (question.isRight()) {
-                solution.setCountOfRightAnswers(solution.getCountOfRightAnswers() + 1);
-            }
-            solution.setCountOfQuestions(solution.getCountOfQuestions() + 1);
-        });
-
-        solution.rating();
-        solution.getTest().setCountOfSolutions(solution.getTest().getCountOfSolutions() + 1);
-        solutionService.saveSolution(solution);
-
-        if(solution.getTest().getCreator().isDoSend()) {
-            Runnable r = () -> {
-                try {
-                    restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
-
-//                kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
-
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                System.out.println("\u001B[32m Письмо успешно отправлено " + "\u001B[0m");
-            };
-
-            Thread thread = new Thread(r, "MailThread");
-            thread.start();
-        }
-
-
-        model.addAttribute("solution", solution);
+        model.addAttribute("solution", service.finishTestsSolution(answersList));
 
         return "test/tests_result";
     }
@@ -147,8 +106,7 @@ public class TestsController {
     }
 
     @PostMapping("/newTest/questions")
-    public String createQuestion(@ModelAttribute("test") @Valid Test test,
-                                 BindingResult bindingResult, Model model) {
+    public String createQuestion(@ModelAttribute("test") @Valid Test test, BindingResult bindingResult, Model model) {
 
         if (testService.countTestByTitle(test.getTitle()) > 0) {
             bindingResult.addError(new FieldError("test.getTitle()", "title",
@@ -159,20 +117,20 @@ public class TestsController {
             return "test/test_create";
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String login = authentication.getName();
+//
+//        test.setCreator(userService.getUserByLogin(login));
+//
+//        AnswersList answersList = new AnswersList(new ArrayList<>());
+//        int count = test.getCountOfQuestions();
+//        for (int i = 0; i < count; i++) {
+//            answersList.getAnswers().add(new Question());
+//            answersList.getAnswers().get(i).setTest(test);
+//            answersList.getAnswers().get(i).setNumOfQuestion(i + 1);
+//        }
 
-        test.setCreator(userService.getUserByLogin(login));
-
-        AnswersList answersList = new AnswersList(new ArrayList<>());
-        int count = test.getCountOfQuestions();
-        for (int i = 0; i < count; i++) {
-            answersList.getAnswers().add(new Question());
-            answersList.getAnswers().get(i).setTest(test);
-            answersList.getAnswers().get(i).setNumOfQuestion(i + 1);
-        }
-
-        model.addAttribute("answersList", answersList);
+        model.addAttribute("answersList", service.createQuestion(test));
 
         return "test/questions_create";
     }
@@ -229,63 +187,64 @@ public class TestsController {
     @GetMapping("/saveResults/{id}")
     public ResponseEntity<ByteArrayResource> saveResults(@PathVariable int id){
 
-        List<Solution> list = solutionService.getSolutionsByTestId(id);
+//        List<Solution> list = solutionService.getSolutionsByTestId(id);
+//
+//        if(list.isEmpty())
+//            return null;
+//
+//        Document document = new Document();
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//
+//        try {
+//            PdfWriter.getInstance(document, outputStream);
+//        } catch (DocumentException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        document.open();
+//
+//        BaseFont baseFont;
+//        String path = "static/font/font.ttf";
+//        try {
+//            baseFont = BaseFont.createFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true);
+//        } catch (DocumentException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        Font font = new Font(baseFont, 16);
+//
+//        Paragraph paragraph;
+//
+//        paragraph = new Paragraph(list.get(0).getTest().getTitle() +
+//                "\n  Категория: " + list.get(0).getTest().getCategory().value +
+//                "\n  Кол-во вопросов: " + list.get(0).getTest().getCountOfQuestions() +
+//                "\n  Кол-во решений: " + list.get(0).getTest().getCountOfSolutions() +
+//                "\n  Дата создания: " + list.get(0).getTest().getDateOfCreation() + "\n" +
+//                "\nРешения:\n\n", font);
+//
+//        try {
+//            document.add(paragraph);
+//        } catch (DocumentException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        font = new Font(baseFont, 13);
+//
+//
+//        for (Solution solution : list) {
+//            paragraph = new Paragraph("\nСтудент: " + solution.getUser().getFirst_name()  + " " + solution.getUser().getLast_name()
+//                    + "\n Оценка: " + solution.getMark().value
+//                    + "\n Дата: " + solution.getDateOfSolution()
+//                    + "\n Количество правильных ответов: " + solution.getCountOfRightAnswers(), font);
+//            try {
+//                document.add(paragraph);
+//            } catch (DocumentException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//
+//        document.close();
 
-        if(list.isEmpty())
-            return null;
-
-        Document document = new Document();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        try {
-            PdfWriter.getInstance(document, outputStream);
-        } catch (DocumentException e) {
-            throw new RuntimeException(e);
-        }
-
-        document.open();
-
-        BaseFont baseFont;
-        String path = "static/font/font.ttf";
-        try {
-            baseFont = BaseFont.createFont(path, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true);
-        } catch (DocumentException | IOException e) {
-            throw new RuntimeException(e);
-        }
-        Font font = new Font(baseFont, 16);
-
-        Paragraph paragraph;
-
-        paragraph = new Paragraph(list.get(0).getTest().getTitle() +
-                "\n  Категория: " + list.get(0).getTest().getCategory().value +
-                "\n  Кол-во вопросов: " + list.get(0).getTest().getCountOfQuestions() +
-                "\n  Кол-во решений: " + list.get(0).getTest().getCountOfSolutions() +
-                "\n  Дата создания: " + list.get(0).getTest().getDateOfCreation() + "\n" +
-                "\nРешения:\n\n", font);
-
-        try {
-            document.add(paragraph);
-        } catch (DocumentException e) {
-            throw new RuntimeException(e);
-        }
-
-        font = new Font(baseFont, 13);
-
-
-        for (Solution solution : list) {
-            paragraph = new Paragraph("\nСтудент: " + solution.getUser().getFirst_name()  + " " + solution.getUser().getLast_name()
-                    + "\n Оценка: " + solution.getMark().value
-                    + "\n Дата: " + solution.getDateOfSolution()
-                    + "\n Количество правильных ответов: " + solution.getCountOfRightAnswers(), font);
-            try {
-                document.add(paragraph);
-            } catch (DocumentException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        document.close();
-
+        ByteArrayOutputStream outputStream = service.saveResults(id);
 
         return ResponseEntity
                 .ok()
