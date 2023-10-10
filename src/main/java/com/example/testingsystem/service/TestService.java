@@ -51,8 +51,8 @@ public class TestService {
         testRepository.save(test);
     }
 
-    public List<Test> getTestByTitle(String title) {
-        return testRepository.findAllByTitle(title);
+    public List<Test> getTestsByTitle(String title) {
+        return testRepository.findTestsByTitleContaining(title);
     }
 
     public List<Test> getAllTestsByCreatorId(int id) {

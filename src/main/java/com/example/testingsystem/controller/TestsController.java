@@ -52,7 +52,7 @@ public class TestsController {
         if ((searchTitle == null) || (searchTitle.equals(""))) {
             model.addAttribute("tests", testService.getAllTests());
         } else {
-            model.addAttribute("tests", testService.getTestByTitle(searchTitle));
+            model.addAttribute("tests", testService.getTestsByTitle(searchTitle));
         }
 
         return "test/tests";
@@ -93,16 +93,23 @@ public class TestsController {
     @GetMapping("/newTest")
     public String createTest(Model model) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
-        User user = userService.getUserByLogin(login);
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String login = authentication.getName();
+//        User user = userService.getUserByLogin(login);
+//
+//        if (user.getRole() != Role.STUDENT_ROLE) {
+//            model.addAttribute("test", new Test());
+//            return "test/test_create";
+//        } else {
+//            return "logic/error";
+//        }
 
-        if (user.getRole() != Role.STUDENT_ROLE) {
-            model.addAttribute("test", new Test());
-            return "test/test_create";
-        } else {
+        if(!userService.hasAccess(Role.TEACHER_ROLE, Role.ADMIN_ROLE)){
             return "logic/error";
         }
+
+        model.addAttribute("test", new Test());
+        return "test/test_create";
     }
 
     @PostMapping("/newTest/questions")
@@ -158,13 +165,16 @@ public class TestsController {
     @GetMapping("/myTests")
     public String getAllMyTests(Model model) {
 
+        if (!userService.hasAccess(Role.TEACHER_ROLE, Role.ADMIN_ROLE)) {
+            return "logic/error";
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
         User user = userService.getUserByLogin(login);
-
-        if (user.getRole() == Role.STUDENT_ROLE) {
-            return "logic/error";
-        }
+//        if (user.getRole() == Role.STUDENT_ROLE) {
+//            return "logic/error";
+//        }
 
         model.addAttribute("tests", testService.getAllTestsByCreatorId(user.getId()));
 

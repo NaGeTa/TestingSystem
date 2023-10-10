@@ -74,7 +74,7 @@
     <a th:text="'&nbsp;Количество решений тестов: ' + ${countOfSolutions}" th:href="@{/statistic}"></a>
 </p>
 <span sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
-    <a th:text="'&nbsp;Количество созданных тестов:' + ${countOfCreatedTests}" th:href="@{/myTests}"></a>
+    <a th:text="'&nbsp;Количество созданных тестов: ' + ${countOfCreatedTests}" th:href="@{/myTests}"></a>
 </span>
 <br><br>
 <span sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
