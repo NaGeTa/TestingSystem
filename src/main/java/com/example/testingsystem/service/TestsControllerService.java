@@ -58,9 +58,9 @@ public class TestsControllerService {
         if (solution.getTest().getCreator().isDoSend()) {
             Runnable r = () -> {
                 try {
-                    restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
+//                    restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
 
-//                kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
+                    kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
 
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -140,7 +140,8 @@ public class TestsControllerService {
             paragraph = new Paragraph("\nСтудент: " + solution.getUser().getFirst_name()  + " " + solution.getUser().getLast_name()
                     + "\n Оценка: " + solution.getMark().value
                     + "\n Дата: " + solution.getDateOfSolution()
-                    + "\n Количество правильных ответов: " + solution.getCountOfRightAnswers(), font);
+                    + "\n Количество правильных ответов: " + solution.getCountOfRightAnswers()
+                    + "\n_________________________________________", font);
             try {
                 document.add(paragraph);
             } catch (DocumentException e) {
