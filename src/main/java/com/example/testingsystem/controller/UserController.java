@@ -44,13 +44,6 @@ public class UserController {
     @GetMapping("/users")
     public String getUsers(Model model) {
 
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String login = authentication.getName();
-//
-//        if(userService.getUserByLogin(login).getRole() != Role.ADMIN_ROLE){
-//            return "logic/error";
-//        }
-
         if(!userService.hasAccess(Role.ADMIN_ROLE)){
             return "logic/error";
         }
@@ -62,13 +55,6 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String getUserCard(@PathVariable int id, Model model) {
-
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String login = authentication.getName();
-//
-//        if(userService.getUserByLogin(login).getRole() != Role.ADMIN_ROLE){
-//            return "logic/error";
-//        }
 
         if(!userService.hasAccess(Role.ADMIN_ROLE)){
             return "logic/error";
@@ -88,9 +74,6 @@ public class UserController {
 
     @PostMapping("users/{id}")
     public String banUser(@PathVariable int id, @ModelAttribute("user") User userForRole){
-
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String login = authentication.getName();
 
         if(!userService.hasAccess(Role.ADMIN_ROLE)){
             return "logic/error";

@@ -10,7 +10,6 @@ import lombok.ToString;
 @Table(name = "questions")
 @Getter
 @Setter
-@ToString
 public class Question {
     @Id
     @Column(name = "id")

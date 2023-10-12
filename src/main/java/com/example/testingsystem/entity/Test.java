@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.Date;
 
@@ -12,7 +11,6 @@ import java.util.Date;
 @Table(name = "tests")
 @Getter
 @Setter
-@ToString
 public class Test {
     @Id
     @Column(name = "id")

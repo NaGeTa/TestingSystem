@@ -4,7 +4,7 @@ import com.example.testingsystem.entity.Question;
 import com.example.testingsystem.entity.Solution;
 import com.example.testingsystem.entity.Test;
 import com.example.testingsystem.model.AnswersList;
-import com.example.testingsystem.model.SolutionMapper;
+import com.example.testingsystem.mapper.SolutionMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -58,9 +58,9 @@ public class TestsControllerService {
         if (solution.getTest().getCreator().isDoSend()) {
             Runnable r = () -> {
                 try {
-//                    restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
+                    restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
 
-                    kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
+//                    kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
 
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -69,8 +69,9 @@ public class TestsControllerService {
             };
 
             Thread thread = new Thread(r, "MailThread");
-            thread.start();
+            thread.start(); //TODO перенести в отдельный сервис
         }
+
         return solution;
     }
 
@@ -95,8 +96,9 @@ public class TestsControllerService {
 
         List<Solution> list = solutionService.getSolutionsByTestId(id);
 
-        if(list.isEmpty())
+        if(list.isEmpty()) {
             return null;
+        }
 
         Document document = new Document();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
