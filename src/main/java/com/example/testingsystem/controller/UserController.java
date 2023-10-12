@@ -4,13 +4,15 @@ import com.example.testingsystem.entity.Role;
 import com.example.testingsystem.entity.User;
 import com.example.testingsystem.service.SolutionService;
 import com.example.testingsystem.service.TestService;
+import com.example.testingsystem.service.UserControllerService;
 import com.example.testingsystem.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 @Controller
@@ -20,23 +22,12 @@ public class UserController {
     private final UserService userService;
     private final SolutionService solutionService;
     private final TestService testService;
+    private final UserControllerService userControllerService;
 
     @GetMapping("/profile")
     public String getProfile(Model model) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
-        User user = userService.getUserByLogin(login);
-
-        int countOfSolutions = solutionService.getCountOfSolutionsByUserId(user.getId());
-
-        if (user.getRole() != Role.STUDENT_ROLE) {
-            int countOfCreatedTests = testService.getCountOfCreatedTests(user.getId());
-            model.addAttribute("countOfCreatedTests", countOfCreatedTests);
-        }
-
-        model.addAttribute("user", user);
-        model.addAttribute("countOfSolutions", countOfSolutions);
+        userControllerService.getProfile(model);
 
         return "user/profile";
     }
@@ -79,25 +70,14 @@ public class UserController {
             return "logic/error";
         }
 
-        User user = userService.getUserById(id);
-
-        if(!user.isBlocked()){
-            user.setRole(Role.BLOCKED);
-
-        } else{
-            user.setRole(userForRole.getRole());
-        }
-
-        userService.update(user);
-
-        return "redirect:/users/" + user.getId();
+        return "redirect:/users/" + userControllerService.banUser(id, userForRole).getId();
     }
 
     @PostMapping("/updateProfile/{id}")
     public String updateProfile(@ModelAttribute("user") User user, @PathVariable int id){
-        User userForSave = userService.getUserById(id);
-        userForSave.setDoSend(user.isDoSend());
-        userService.update(userForSave);
+
+        userControllerService.updateProfile(id, user);
+
         return "redirect:/profile";
     }
 

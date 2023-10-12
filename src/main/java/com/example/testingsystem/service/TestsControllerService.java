@@ -3,9 +3,8 @@ package com.example.testingsystem.service;
 import com.example.testingsystem.entity.Question;
 import com.example.testingsystem.entity.Solution;
 import com.example.testingsystem.entity.Test;
+import com.example.testingsystem.entity.User;
 import com.example.testingsystem.model.AnswersList;
-import com.example.testingsystem.mapper.SolutionMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -13,15 +12,13 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.ui.Model;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +28,9 @@ public class TestsControllerService {
 
     private final UserService userService;
     private final SolutionService solutionService;
-    private final RestTemplate restTemplate;
-    private final SolutionMapper solutionMapper;
-    private final KafkaTemplate<String, String> kafkaTemplate;
-    private final ObjectMapper objectMapper;
+    private final SendService sendService;
+    private final TestService testService;
+    private final QuestionService questionService;
 
     public Solution finishTestsSolution(AnswersList answersList) {
         Solution solution = new Solution();
@@ -56,20 +52,7 @@ public class TestsControllerService {
         solutionService.saveSolution(solution);
 
         if (solution.getTest().getCreator().isDoSend()) {
-            Runnable r = () -> {
-                try {
-                    restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
-
-//                    kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
-
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                System.out.println("\u001B[32m Письмо успешно отправлено " + "\u001B[0m");
-            };
-
-            Thread thread = new Thread(r, "MailThread");
-            thread.start(); //TODO перенести в отдельный сервис
+            sendService.send(solution);
         }
 
         return solution;
@@ -154,5 +137,57 @@ public class TestsControllerService {
         document.close();
 
         return outputStream;
+    }
+
+    public void getTests(Model model, String searchTitle){
+        if ((searchTitle == null) || (searchTitle.equals(""))) {
+            model.addAttribute("tests", testService.getAllTests());
+        } else {
+            model.addAttribute("tests", testService.getTestsByTitle(searchTitle));
+        }
+    }
+
+    public void getStatistic(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        int id = userService.getUserByLogin(login).getId();
+
+        List<Solution> solutions = solutionService.getSolutionsByUserId(id);
+
+        model.addAttribute("solutions", solutions);
+    }
+
+    public void saveTest(AnswersList answersList){
+        Test test = answersList.getAnswers().get(0).getTest();
+
+        testService.saveTest(test);
+
+        answersList.getAnswers().forEach(question -> {
+            question.setTest(test);
+            questionService.saveQuestion(question);
+        });
+    }
+
+    public void getAllMyTests(Model model){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        User user = userService.getUserByLogin(login);
+
+        model.addAttribute("tests", testService.getAllTestsByCreatorId(user.getId()));
+    }
+
+    public void getTestsCard(Model model, int id){
+        AnswersList answersList = new AnswersList(questionService.getQuestionsList(id));
+
+        model.addAttribute("answersList", answersList);
+    }
+
+    public void getMyTest(Model model, int id){
+        Test test = testService.getTestById(id);
+        List<Solution> solutions = solutionService.getSolutionsByTestId(test.getId());
+
+        model.addAttribute("test", test);
+        model.addAttribute("solutions", solutions);
     }
 }
