@@ -22,7 +22,6 @@ public class TestService {
 
     //интерфейсы
     public int countTestByTitle(String title) {
-
         return testRepository.countTestByTitle(title);
     }
 
