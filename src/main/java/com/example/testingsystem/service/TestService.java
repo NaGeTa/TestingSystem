@@ -15,13 +15,14 @@ public class TestService {
 
     private final TestRepository testRepository;
 
+    public List<Test> getAllTests(){
 
-    public List<Test> getAllTests() {
         return testRepository.findAll();
     }
 
     //интерфейсы
     public int countTestByTitle(String title) {
+
         return testRepository.countTestByTitle(title);
     }
 
