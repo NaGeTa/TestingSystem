@@ -2,174 +2,64 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <link href="../../static/css/style.css" rel="stylesheet" th:href="@{css/style.css}">
-    <script src="../../static/js/script.js" th:src="@{js/script.js}"></script>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <title>Тесты</title>
 </head>
-<style>
-    .test-block {
-        background-color: #f3f3f3;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        width: 300px;
-    }
 
-    .test-block h2 {
-        margin-top: 0;
-    }
-
-    .test-block p {
-        margin: 0;
-    }
-
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #f2f2f2;
-        padding: 20px;
-    }
-
-    .logo {
-        font-size: 24px;
-        font-weight: bold;
-    }
-
-    .menu-buttons {
-        display: flex;
-        gap: 10px;
-    }
-
-    .menu-buttons button {
-        padding: 10px 20px;
-        border: none;
-        background-color: #ccc;
-        color: #333;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .menu-buttons button:hover {
-        background-color: #939393;
-    }
-
-    .search-form {
-        display: flex;
-    }
-
-    .search-form input[type="text"] {
-        height: 30px;
-        padding: 5px;
-        border-radius: 5px 0 0 5px;
-        border: 1px solid #ccc;
-    }
-
-    .search-form button {
-        padding: 10px 20px;
-        border: none;
-        background-color: #ccc;
-        color: #333;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .search-form button:hover {
-        background-color: #939393;
-    }
-
-    a {
-        text-decoration: none; /* уберет подчеркивание */
-        color: inherit; /* наследует цвет ссылки */
-    }
-
-    .dropdown {
-        position: relative;
-        display: inline-block;
-    }
-
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #fff;
-        min-width: 100px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        padding: 12px 16px;
-        z-index: 1;
-    }
-
-    li {
-        list-style-type: none;
-    }
-
-    .result-block {
-        background-color: #f2f2f2;
-        padding: 10px;
-        margin-bottom: 10px;
-    }
-</style>
 
 <body>
-<header>
-    <div class="header">
-        <div class="logo"><a href="http://localhost:8080/menu">Testing System</a></div>
-
-        <div>
-            <form class="search-form" th:action="@{/tests}">
-                <input type="text" name="searchTitle" placeholder="Поиск">
-                <button type="submit">Найти</button>
-            </form>
-        </div>
-
-        <div class="menu-buttons">
-            <div class="dropdown">
-
-                <button>Тесты</button>
-                <div class="dropdown-content">
-                    <ul>
-                        <li>
-                            <div>
-                                <form th:action="@{/tests}">
-                                    <input class="menu-buttons" type="submit" value="Пройти тесты">
-                                </form>
-                            </div>
-                            <br>
+<main>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}">Testing System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2"
+                    aria-controls="offcanvasNavbar2" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2"
+                 aria-labelledby="offcanvasNavbar2Label">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbar2Label">12345</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" th:href="@{/menu}">Главная</a>
                         </li>
-                        <li>
-                            <div>
-                                <form th:action="@{/statistic}">
-                                    <input class="menu-buttons" type="submit" value="Мои результаты">
-                                </form>
-                            </div>
-                            <br>
+                        <li class="nav-item">
+                            <a sec:authorize="hasAuthority('ADMIN_ROLE')" class="nav-link" th:href="@{/users}">Пользователи</a>
                         </li>
-                        <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
-                            <div>
-                                <form th:action="@{/newTest}">
-                                    <input class="menu-buttons" type="submit" value="Создать новый тест">
-                                </form>
-                            </div>
-                            <br>
-                        </li>
-                        <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
-                            <div>
-                                <form th:action="@{/myTests}">
-                                    <input class="menu-buttons" type="submit" value="Мои тесты">
-                                </form>
-                            </div>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Тесты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" th:href="@{/tests}">Решить тесты</a></li>
+                                <li><a class="dropdown-item" th:href="@{/statistic}">Мои решения</a></li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')">
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a
+                                        class="dropdown-item" th:href="@{/newTest}">Создать тест</a></li>
+                                <li sec:authorize="hasAuthority('TEACHER_ROLE') or hasAuthority('ADMIN_ROLE')"><a
+                                        class="dropdown-item" th:href="@{/myTests}">Мои тесты</a></li>
+                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/profile}">Профиль</a>
                         </li>
                     </ul>
                 </div>
-
-                <button>Профиль</button>
             </div>
         </div>
+    </nav>
+</main>
 
-    </div>
-</header>
-
-
-<div class="test-block">
+<br>
+<div>
     <h2 th:text="${test.getTitle()}"></h2>
     <p th:text="'Категория: ' + ${test.getCategory().value}"></p>
     <p th:text="'Количество вопросов: ' + ${test.getCountOfQuestions}"></p>
@@ -180,7 +70,7 @@
 <br><br><br>
 
 <div th:each="solution: *{solutions}">
-    <div class="result-block">
+    <div style="background-color: #f1f1f1; padding: 20px;">
         <h2 th:text="${solution.getUser().getFirst_name()} + ' ' + ${solution.getUser().getLast_name()}"></h2>
         <p>Оценка: <span th:text="${solution.getMark().value}"></span></p>
         <p>Дата: <span th:text="${solution.getDateOfSolution()}"></span></p>
@@ -190,7 +80,7 @@
 </div>
 <br><br>
 <form th:if="${!solutions.isEmpty()}" th:action="@{/saveResults/{id}(id=${test.getId()})}">
-    <input type="submit" value="Сохранить список в виде PDF">
+    <button class="btn btn-primary w-100 py-2 bg-black" style="max-width: 200px;">Сохранить список в виде PDF</button>
 </form>
 </body>
 </html>

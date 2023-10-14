@@ -15,31 +15,33 @@ public class TestService {
 
     private final TestRepository testRepository;
 
-    public List<Test> getAllTests(){
+    public List<Test> getAllTests() {
         return testRepository.findAll();
     }
-//интерфейсы
-    public int countTestByTitle(String title){
+
+    //интерфейсы
+    public int countTestByTitle(String title) {
         return testRepository.countTestByTitle(title);
     }
 
-    public void saveTest(Test test){
+    public void saveTest(Test test) {
         testRepository.save(test);
     }
 
-    public List<Test> getTestByTitle(String title){
-        return testRepository.findAllByTitle(title);
+    public List<Test> getTestsByTitle(String title) {
+        return testRepository.findTestsByTitleContaining(title);
     }
 
-    public List<Test> getAllTestsByCreatorId(int id){
+    public List<Test> getAllTestsByCreatorId(int id) {
         return testRepository.findAllByCreatorId(id);
     }
 
-    public Test getTestById(int id){
+    public Test getTestById(int id) {
         return testRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
     }
 
-    public int getCountOfCreatedTests(int id){
+    public int getCountOfCreatedTests(int id) {
         return testRepository.countTestByCreatorId(id);
     }
+
 }

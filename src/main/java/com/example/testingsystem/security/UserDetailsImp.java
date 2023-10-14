@@ -2,6 +2,7 @@ package com.example.testingsystem.security;
 
 import com.example.testingsystem.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
+@Builder
 public class UserDetailsImp implements UserDetails {
 
     private int id;
@@ -29,8 +31,14 @@ public class UserDetailsImp implements UserDetails {
     public static UserDetailsImp build(User user) {
         List<GrantedAuthority> authorityList = List.of(new SimpleGrantedAuthority(user.getRole().name()));
 
-        return new UserDetailsImp(user.getId(), user.getFirst_name(), user.getLast_name(), user.getLogin(),
-                user.getEmail(), user.getPassword(), user.getDate_of_birth(), authorityList);
+        return new UserDetailsImp(user.getId(),
+                user.getFirst_name(),
+                user.getLast_name(),
+                user.getLogin(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getDate_of_birth(),
+                authorityList);
     }
 
     @Override

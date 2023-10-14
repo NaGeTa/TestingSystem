@@ -4,13 +4,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "questions")
 @Getter
 @Setter
-@ToString
 public class Question {
     @Id
     @Column(name = "id")

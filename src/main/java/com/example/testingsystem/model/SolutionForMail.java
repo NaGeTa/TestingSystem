@@ -1,6 +1,5 @@
 package com.example.testingsystem.model;
 
-import com.example.testingsystem.entity.Mark;
 import lombok.Data;
 
 @Data

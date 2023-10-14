@@ -8,7 +8,7 @@ import java.util.List;
 public interface TestRepository extends JpaRepository<Test, Integer> {
     int countTestByTitle(String title);
 
-    List<Test> findAllByTitle(String title);
+    List<Test> findTestsByTitleContaining(String title);
 
     List<Test> findAllByCreatorId(int id);
 

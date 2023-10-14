@@ -1,10 +1,12 @@
 package com.example.testingsystem.service;
 
+import com.example.testingsystem.entity.Role;
 import com.example.testingsystem.entity.User;
 import com.example.testingsystem.repository.UserRepository;
-import com.example.testingsystem.security.UserDetailsServiceImp;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -50,5 +52,12 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404)));
     }
 
+    public boolean hasAccess(Role ... role){
+        List<Role> roles = List.of(role);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        User user = getUserByLogin(login);
 
+        return roles.contains(user.getRole());
+    }
 }

@@ -1,7 +1,7 @@
 package com.example.testingsystem.entity;
 
 public enum Mark {
-    A("ОТЛ"),
+    A("ОТЛ"), //TODO BusinnessException
     B("ХОР"),
     C("УДОВ"),
     D("НЕУД");

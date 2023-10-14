@@ -1,6 +1,7 @@
-package com.example.testingsystem.model;
+package com.example.testingsystem.mapper;
 
 import com.example.testingsystem.entity.Solution;
+import com.example.testingsystem.model.SolutionForMail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
