@@ -3,6 +3,7 @@ package com.example.testingsystem.service;
 import com.example.testingsystem.entity.Role;
 import com.example.testingsystem.entity.User;
 import lombok.AllArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class UserControllerService {
     private final UserService userService;
     private final SolutionService solutionService;
     private final TestService testService;
+    private static final Logger logger = Logger.getLogger(UserControllerService.class);
 
     public void getProfile(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -30,6 +32,8 @@ public class UserControllerService {
 
         model.addAttribute("user", user);
         model.addAttribute("countOfSolutions", countOfSolutions);
+
+        logger.debug("Profile was got");
     }
 
     public User banUser(int id, User userForRole){
@@ -37,9 +41,11 @@ public class UserControllerService {
 
         if(!user.isBlocked()){
             user.setRole(Role.BLOCKED);
+            logger.info(user.getLogin() + " was blocked");
 
         } else{
             user.setRole(userForRole.getRole());
+            logger.info(user.getLogin() + " was unblocked");
         }
 
         userService.update(user);
@@ -54,5 +60,7 @@ public class UserControllerService {
         userForSave.setDoSend(user.isDoSend());
 
         userService.update(userForSave);
+
+        logger.info(user.getLogin() + " was update");
     }
 }

@@ -113,9 +113,9 @@ public class TestsController {
     }
 
     @GetMapping("/myTests/{id}")
-    public String getMyTest(@PathVariable("id") int id, Model model) {
+    public String getMyTestsSolutions(@PathVariable("id") int id, Model model) {
 
-        testsControllerService.getMyTest(model, id);
+        testsControllerService.getMyTestsSolutions(model, id);
 
         return "test/my_tests_solutions";
     }
