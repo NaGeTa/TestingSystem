@@ -16,7 +16,6 @@ public class TestService {
     private final TestRepository testRepository;
 
     public List<Test> getAllTests(){
-
         return testRepository.findAll();
     }
 
