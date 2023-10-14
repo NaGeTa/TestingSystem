@@ -14,8 +14,6 @@ import java.util.List;
 public class TestService {
 
     private final TestRepository testRepository;
-    private final SolutionService solutionService;
-    private final UserService userService;
 
 
     public List<Test> getAllTests() {
