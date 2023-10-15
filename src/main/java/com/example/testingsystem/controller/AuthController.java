@@ -4,6 +4,7 @@ import com.example.testingsystem.entity.User;
 import com.example.testingsystem.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,9 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @AllArgsConstructor
-public class MainController {
+public class AuthController {
 
     private final UserService userService;
+    private final static Logger logger = Logger.getLogger(AuthController.class);
 
     @GetMapping("/")
     public String getMainPage(){
@@ -57,6 +59,8 @@ public class MainController {
             return "/logic/registration";
         }
         userService.save(user);
+
+        logger.info("New user '" + user.getLogin() + "' was created");
 
         return "redirect:/login";
     }
