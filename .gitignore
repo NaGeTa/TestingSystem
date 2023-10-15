@@ -17,10 +17,10 @@ target/
 
 ### IntelliJ IDEA ###
 .idea
+.logs
 *.iws
 *.iml
 *.ipr
-logs.log
 
 ### NetBeans ###
 /nbproject/private/
