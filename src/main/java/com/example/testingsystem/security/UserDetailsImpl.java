@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Builder
-public class UserDetailsImp implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
 
     private int id;
     private String first_name;
@@ -28,10 +28,10 @@ public class UserDetailsImp implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 
 
-    public static UserDetailsImp build(User user) {
+    public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorityList = List.of(new SimpleGrantedAuthority(user.getRole().name()));
 
-        return new UserDetailsImp(user.getId(),
+        return new UserDetailsImpl(user.getId(),
                 user.getFirst_name(),
                 user.getLast_name(),
                 user.getLogin(),

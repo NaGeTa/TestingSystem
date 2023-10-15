@@ -2,6 +2,7 @@ package com.example.testingsystem.service;
 
 import com.example.testingsystem.entity.Solution;
 import com.example.testingsystem.mapper.SolutionMapper;
+import com.example.testingsystem.model.BusinessException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -27,7 +28,7 @@ public class SendService {
 //                kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
 
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new BusinessException("Error when result sending");
             }
             System.out.println("\u001B[32m Письмо успешно отправлено " + "\u001B[0m");
         };

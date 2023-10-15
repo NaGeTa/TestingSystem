@@ -4,6 +4,7 @@ package com.example.testingsystem.security;
 import com.example.testingsystem.entity.User;
 import com.example.testingsystem.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,9 +12,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class UserDetailsServiceImp implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final static Logger logger = Logger.getLogger(UserDetailsServiceImpl.class);
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -24,7 +26,9 @@ public class UserDetailsServiceImp implements UserDetailsService {
                 throw new UsernameNotFoundException("Пользователь заблокирован");
         }
 
-        return UserDetailsImp.build(user);
+        logger.info(username + " was auth");
+
+        return UserDetailsImpl.build(user);
     }
 }
 

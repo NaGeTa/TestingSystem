@@ -3,7 +3,6 @@ package com.example.testingsystem.service;
 import com.example.testingsystem.entity.Role;
 import com.example.testingsystem.entity.User;
 import com.example.testingsystem.repository.UserRepository;
-import com.example.testingsystem.security.UserDetailsServiceImp;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.Authentication;
@@ -12,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service

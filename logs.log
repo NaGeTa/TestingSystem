@@ -9,3 +9,6 @@
 2023-10-14 23:24:08 INFO  UserControllerService:44 - akakiy was blocked
 2023-10-14 23:24:13 DEBUG TestsControllerService:158 - All tests was got
 2023-10-14 23:24:22 INFO  UserControllerService:48 - akakiy was unblocked
+2023-10-15 20:58:49 DEBUG TestsControllerService:158 - All tests was got
+2023-10-15 21:06:36 INFO  UserDetailsServiceImpl:29 - patakhov was auth
+2023-10-15 21:06:37 DEBUG UserControllerService:36 - Profile was got
