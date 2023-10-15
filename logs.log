@@ -1,0 +1,11 @@
+2023-10-14 23:18:41 DEBUG TestsControllerService:202 - Test's car was opened
+2023-10-14 23:18:45 INFO  TestsControllerService:56 - Solution was saved
+2023-10-14 23:18:45 INFO  TestsControllerService:60 - Result was sent on dagestan200221@mail.ru
+2023-10-14 23:18:46 DEBUG TestsControllerService:158 - All tests was got
+2023-10-14 23:23:53 DEBUG TestsControllerService:202 - Test's card was opened
+2023-10-14 23:23:59 INFO  TestsControllerService:56 - Solution was saved
+2023-10-14 23:23:59 INFO  TestsControllerService:60 - Result was sent on dagestan200221@mail.ru
+2023-10-14 23:24:02 DEBUG TestsControllerService:158 - All tests was got
+2023-10-14 23:24:08 INFO  UserControllerService:44 - akakiy was blocked
+2023-10-14 23:24:13 DEBUG TestsControllerService:158 - All tests was got
+2023-10-14 23:24:22 INFO  UserControllerService:48 - akakiy was unblocked
