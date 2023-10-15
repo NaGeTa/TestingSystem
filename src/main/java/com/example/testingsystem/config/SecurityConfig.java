@@ -1,6 +1,6 @@
 package com.example.testingsystem.config;
 
-import com.example.testingsystem.security.UserDetailsServiceImp;
+import com.example.testingsystem.security.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 @AllArgsConstructor
 public class SecurityConfig {
 
-    UserDetailsServiceImp userDetailsService;
+    UserDetailsServiceImpl userDetailsService;
 
     private BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
