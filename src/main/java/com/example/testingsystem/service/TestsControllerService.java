@@ -59,7 +59,7 @@ public class TestsControllerService {
             sendService.send(solution);
             logger.info("Result was sent on " + solution.getTest().getCreator().getEmail());
         }
-
+        System.out.println(authentication.toString());
         return solution;
     }
 
@@ -85,6 +85,8 @@ public class TestsControllerService {
     public ByteArrayOutputStream saveResults(int id){
 
         List<Solution> list = solutionService.getSolutionsByTestId(id);
+
+        System.out.println(list);
 
         if(list.isEmpty()) {
             return null;

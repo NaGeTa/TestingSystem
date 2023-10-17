@@ -20,5 +20,4 @@ public class QuestionService {
     public void saveQuestion(Question question){
         questionRepository.save(question);
     }
-
 }

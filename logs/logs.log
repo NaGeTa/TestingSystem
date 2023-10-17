@@ -1,0 +1,27 @@
+2023-10-17 21:55:40 DEBUG TestsControllerService:146 - PDF was created
+2023-10-17 22:01:03 DEBUG TestsControllerService:148 - PDF was created
+2023-10-17 22:30:55 DEBUG TestsControllerService:148 - PDF was created
+2023-10-17 23:24:26 INFO  UserDetailsServiceImpl:29 - patakhov was auth
+2023-10-17 23:24:26 INFO  UserDetailsServiceImpl:29 - patakhov was auth
+2023-10-17 23:24:31 INFO  UserDetailsServiceImpl:29 - patakhov was auth
+2023-10-17 23:24:34 DEBUG TestsControllerService:162 - All tests was got
+2023-10-17 23:24:41 DEBUG TestsControllerService:206 - Test's card was opened
+2023-10-17 23:24:50 INFO  TestsControllerService:58 - Solution was saved
+2023-10-17 23:24:50 INFO  TestsControllerService:62 - Result was sent on dagestan200221@mail.ru
+2023-10-17 23:24:50 INFO  SendService:37 - Error when result sending on mail
+2023-10-17 23:26:39 DEBUG TestsControllerService:206 - Test's card was opened
+2023-10-17 23:26:42 INFO  TestsControllerService:58 - Solution was saved
+2023-10-17 23:26:42 INFO  TestsControllerService:62 - Result was sent on dagestan200221@mail.ru
+2023-10-17 23:26:42 INFO  SendService:37 - Error when result sending on mail
+2023-10-17 23:27:27 DEBUG TestsControllerService:162 - All tests was got
+2023-10-17 23:27:30 DEBUG TestsControllerService:206 - Test's card was opened
+2023-10-17 23:27:30 DEBUG TestsControllerService:162 - All tests was got
+2023-10-17 23:27:31 DEBUG TestsControllerService:162 - All tests was got
+2023-10-17 23:27:32 DEBUG TestsControllerService:206 - Test's card was opened
+2023-10-17 23:27:33 INFO  TestsControllerService:58 - Solution was saved
+2023-10-17 23:27:33 INFO  TestsControllerService:62 - Result was sent on dagestan200221@mail.ru
+2023-10-17 23:27:33 INFO  SendService:37 - Error when result sending on mail
+2023-10-17 23:45:48 DEBUG TestsControllerService:204 - Test's card was opened
+2023-10-17 23:45:51 INFO  TestsControllerService:56 - Solution was saved
+2023-10-17 23:45:51 INFO  TestsControllerService:60 - Result was sent on dagestan200221@mail.ru
+2023-10-17 23:45:51 INFO  SendService:37 - Error when result sending on mail

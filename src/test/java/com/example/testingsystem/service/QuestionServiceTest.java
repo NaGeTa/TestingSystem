@@ -14,14 +14,19 @@ public class QuestionServiceTest {
     @Mock
     QuestionRepository questionRepository;
 
-    @Test
-    public void getQuestionsList(int id){
-        questionRepository.findQuestionsByTestId(id);
+    QuestionService questionService;
 
-        Mockito.verify(questionRepository).findQuestionsByTestId(id);
+    @Test
+    public void getQuestionsList(){
+        questionRepository.findQuestionsByTestId(1);
+
+        Mockito.verify(questionRepository).findQuestionsByTestId(1);
     }
 
-    public void saveQuestion(Question question){
+    @Test
+    public void saveQuestion(){
+        Question question = new Question();
+
         questionRepository.save(question);
 
         Mockito.verify(questionRepository).save(question);
