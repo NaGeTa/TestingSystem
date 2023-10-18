@@ -2,19 +2,9 @@ package com.example.testingsystem.service;
 
 import com.example.testingsystem.entity.*;
 import com.example.testingsystem.model.AnswersList;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfWriter;
-import lombok.AllArgsConstructor;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +21,10 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class TestsControllerServiceTest {
+
+    @Autowired
+    TestsControllerService testsControllerService;
+
     @MockBean
     UserService userService;
     @MockBean
@@ -45,45 +36,38 @@ public class TestsControllerServiceTest {
     @MockBean
     QuestionService questionService;
     @MockBean
-    SecurityContextHolder securityContextHolder;
+    Authentication authentication;
+    @MockBean
+    Model model;
 
-    @Autowired
-    TestsControllerService testsControllerService;
+    @Test
+    public void finishTestsSolution() {
+        User user = new User(1, " ", " ", " ", " ", " ", new Date(), null, Role.STUDENT_ROLE, false);
+        com.example.testingsystem.entity.Test test = new com.example.testingsystem.entity.Test(1, " ", 0, 0, new Date(), user, Category.BIOLOGY);
+        List<Question> list = List.of(new Question(0, null, 0, 1, null, null, null, null, test, 1));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-//    @Test
-//    public void finishTestsSolution() {
-//
-//        com.example.testingsystem.entity.Test test = new com.example.testingsystem.entity.Test(1, " ", 0, 0, new Date(), null, Category.BIOLOGY);
-//        List<Question> list = List.of(new Question(0, null, 0, 1, null, null, null, null, test, 1));
-//        User user = new User(1, " ", " ", " ", " ", " ", new Date(), null, Role.STUDENT_ROLE, false);
-//        Solution solution = new Solution(0, user, test, new Date(), 1, 1, Mark.A);
-//
-//        Mockito.when(SecurityContextHolder.getContext().getAuthentication()).thenReturn()
-//
-//        Solution solution1 = testsControllerService.finishTestsSolution(new AnswersList(list));
-//
-//        Assertions.assertEquals(solution, solution1);
-//
-//    }
-//
-//    public AnswersList createQuestion(Test test) {
-//
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String login = authentication.getName();
-//
-//        test.setCreator(userService.getUserByLogin(login));
-//
-//        AnswersList answersList = new AnswersList(new ArrayList<>());
-//        int count = test.getCountOfQuestions();
-//        for (int i = 0; i < count; i++) {
-//            answersList.getAnswers().add(new Question());
-//            answersList.getAnswers().get(i).setTest(test);
-//            answersList.getAnswers().get(i).setNumOfQuestion(i + 1);
-//        }
-//
-//        return answersList;
-//    }
-//
+        Solution solution = testsControllerService.finishTestsSolution(new AnswersList(list));
+        Solution solutionTest = new Solution(0, null, test, solution.getDateOfSolution(), 1, 1, Mark.A);
+
+        Assertions.assertEquals(solutionTest, solution);
+    }
+
+    @Test
+    public void createQuestion() {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        User user = new User(1, " ", " ", " ", " ", " ", new Date(), null, Role.STUDENT_ROLE, false);
+        com.example.testingsystem.entity.Test test = new com.example.testingsystem.entity.Test(1, " ", 0, 0, new Date(), user, Category.BIOLOGY);
+        String login = "nickname";
+        Mockito.when(authentication.getName()).thenReturn(login);
+        Mockito.when(userService.getUserByLogin(login)).thenReturn(user);
+
+        AnswersList answersListTest = new AnswersList(new ArrayList<>());
+        AnswersList answersList = testsControllerService.createQuestion(test);
+
+        Assertions.assertEquals(answersListTest, answersList);
+    }
+
     @Test
     public void saveResults(){
         int id = 1;
@@ -96,62 +80,87 @@ public class TestsControllerServiceTest {
         testsControllerService.saveResults(id);
 
     }
-//
-//    public void getTests(Model model, String searchTitle){
-//        if ((searchTitle == null) || (searchTitle.equals(""))) {
-//            model.addAttribute("tests", testService.getAllTests());
-//        } else {
-//            model.addAttribute("tests", testService.getTestsByTitle(searchTitle));
-//        }
-//
-//    }
-//
-//    public void getStatistic(Model model){
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String login = authentication.getName();
-//        int id = userService.getUserByLogin(login).getId();
-//
-//        List<Solution> solutions = solutionService.getSolutionsByUserId(id);
-//
-//        model.addAttribute("solutions", solutions);
-//
-//    }
-//
-//    public void saveTest(AnswersList answersList){
-//        Test test = answersList.getAnswers().get(0).getTest();
-//
-//        testService.saveTest(test);
-//
-//        answersList.getAnswers().forEach(question -> {
-//            question.setTest(test);
-//            questionService.saveQuestion(question);
-//        });
-//
-//    }
-//
-//    public void getAllMyTests(Model model){
-//
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String login = authentication.getName();
-//        User user = userService.getUserByLogin(login);
-//
-//        model.addAttribute("tests", testService.getAllTestsByCreatorId(user.getId()));
-//
-//    }
-//
-//    public void getTestsCard(Model model, int id){
-//        AnswersList answersList = new AnswersList(questionService.getQuestionsList(id));
-//
-//        model.addAttribute("answersList", answersList);
-//
-//    }
-//
-//    public void getMyTestsSolutions(Model model, int id){
-//        Test test = testService.getTestById(id);
-//        List<Solution> solutions = solutionService.getSolutionsByTestId(test.getId());
-//
-//        model.addAttribute("test", test);
-//        model.addAttribute("solutions", solutions);
-//
-//    }
+
+    @Test
+    public void getTests(){
+        String searchTitle = "title";
+        testsControllerService.getTests(model, searchTitle);
+
+        Mockito.verify(model).addAttribute("tests", testService.getTestsByTitle(searchTitle));
+    }
+
+    @Test
+    public void getStatistic(){
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        com.example.testingsystem.entity.Test test = new com.example.testingsystem.entity.Test(1, " ", 0, 0, new Date(), null, Category.BIOLOGY);
+        User user = new User(1, " ", " ", " ", " ", " ", new Date(), null, Role.STUDENT_ROLE, false);
+        List<Solution> list = List.of(new Solution(1, user, test, new Date(), 0, 0, Mark.A));
+        String login = "nickname";
+
+        Mockito.when(authentication.getName()).thenReturn(login);
+        Mockito.when(userService.getUserByLogin(login)).thenReturn(user);
+        Mockito.when(solutionService.getSolutionsByUserId(user.getId())).thenReturn(list);
+
+        testsControllerService.getStatistic(model);
+        Mockito.verify(model).addAttribute("solutions", list);
+
+    }
+
+    @Test
+    public void saveTest(){
+        com.example.testingsystem.entity.Test test = new com.example.testingsystem.entity.Test(1, " ", 0, 0, new Date(), null, Category.BIOLOGY);
+        AnswersList answersList = new AnswersList(List.of(new Question(1, "", 1, 1, "", "", "", "", test, 1)));
+
+        testsControllerService.saveTest(answersList);
+
+        Mockito.verify(testService).saveTest(test);
+        Mockito.verify(questionService).saveQuestion(answersList.getAnswers().get(0));
+
+    }
+
+    @Test
+    public void getAllMyTests(){
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        User user = new User(1, " ", " ", " ", " ", " ", new Date(), null, Role.STUDENT_ROLE, false);
+        String login = "nickname";
+
+        Mockito.when(authentication.getName()).thenReturn(login);
+        Mockito.when(userService.getUserByLogin(login)).thenReturn(user);
+
+        testsControllerService.getAllMyTests(model);
+
+        Mockito.verify(model).addAttribute("tests", testService.getAllTestsByCreatorId(user.getId()));
+
+    }
+
+    @Test
+    public void getTestsCard(){
+        User user = new User(1, " ", " ", " ", " ", " ", new Date(), null, Role.STUDENT_ROLE, false);
+        com.example.testingsystem.entity.Test test = new com.example.testingsystem.entity.Test(1, " ", 0, 0, new Date(), user, Category.BIOLOGY);
+        List<Question> list = List.of(new Question(0, null, 0, 1, null, null, null, null, test, 1));
+        int id = 1;
+
+        Mockito.when(questionService.getQuestionsList(id)).thenReturn(list);
+
+        testsControllerService.getTestsCard(model, id);
+
+        Mockito.verify(model).addAttribute("answersList", new AnswersList(list));
+
+    }
+
+    @Test
+    public void getMyTestsSolutions(){
+        int id = 1;
+        User user = new User(1, " ", " ", " ", " ", " ", new Date(), null, Role.STUDENT_ROLE, false);
+        com.example.testingsystem.entity.Test test = new com.example.testingsystem.entity.Test(1, " ", 0, 0, new Date(), user, Category.BIOLOGY);
+        List<Solution> list = List.of(new Solution(1, user, test, new Date(), 0, 0, Mark.A));
+
+        Mockito.when(testService.getTestById(id)).thenReturn(test);
+        Mockito.when(solutionService.getSolutionsByTestId(id)).thenReturn(list);
+
+        testsControllerService.getMyTestsSolutions(model, id);
+
+        Mockito.verify(model).addAttribute("test", test);
+        Mockito.verify(model).addAttribute("solutions", list);
+    }
 }
