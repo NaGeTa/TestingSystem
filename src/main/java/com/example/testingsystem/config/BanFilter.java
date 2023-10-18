@@ -2,7 +2,7 @@ package com.example.testingsystem.config;
 
 
 import com.example.testingsystem.entity.User;
-import com.example.testingsystem.service.UserService;
+import com.example.testingsystem.service.UserServiceImpl;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,7 +20,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class BanFilter implements Filter {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final LogoutHandler logoutHandler;
 
     @Override
@@ -35,7 +35,7 @@ public class BanFilter implements Filter {
         String login = authentication.getName();
 
         if(!login.equals("anonymousUser")){
-            User user = userService.getUserByLogin(login);
+            User user = userServiceImpl.getUserByLogin(login);
 
             if (user.isBlocked()) {
                 logoutHandler.logout((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse, authentication);

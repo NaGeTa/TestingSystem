@@ -9,14 +9,16 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class QuestionServiceImpl {
+public class QuestionServiceImpl implements QuestionService{
 
     private final QuestionRepository questionRepository;
 
+    @Override
     public List<Question> getQuestionsList(int id){
         return questionRepository.findQuestionsByTestId(id);
     }
 
+    @Override
     public void saveQuestion(Question question){
         questionRepository.save(question);
     }

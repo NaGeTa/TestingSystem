@@ -18,10 +18,10 @@ import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class UserServiceTest {
+public class UserServiceImplTest {
 
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
 
     @MockBean
     UserRepository userRepository;

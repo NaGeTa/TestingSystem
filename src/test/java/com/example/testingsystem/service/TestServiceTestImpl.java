@@ -14,10 +14,10 @@ import java.util.Date;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class TestServiceTest {
+public class TestServiceTestImpl {
 
     @Autowired
-    TestService testService;
+    TestServiceImpl testServiceImpl;
 
     @Mock
     TestRepository testRepository;

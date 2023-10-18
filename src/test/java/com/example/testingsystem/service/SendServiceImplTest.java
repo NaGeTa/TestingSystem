@@ -18,10 +18,10 @@ import java.util.Date;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class SendServiceTest { //TODO
+public class SendServiceImplTest { //TODO
 
     @Autowired
-    SendService sendService;
+    SendServiceImpl sendServiceImpl;
 
     @MockBean
     RestTemplate restTemplate;
@@ -34,7 +34,7 @@ public class SendServiceTest { //TODO
         User user = new User(1, " ", " ", " ", " ", " ", new Date(), null, Role.STUDENT_ROLE, false);
         Solution solution = new Solution(1, user, test, new Date(), 0, 0, Mark.A);
 
-        sendService.send(solution);
+        sendServiceImpl.send(solution);
 
         try {
             Mockito.verify(restTemplate).postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution),

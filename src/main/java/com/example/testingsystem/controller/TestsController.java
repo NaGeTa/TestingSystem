@@ -3,9 +3,9 @@ package com.example.testingsystem.controller;
 import com.example.testingsystem.entity.Role;
 import com.example.testingsystem.entity.Test;
 import com.example.testingsystem.model.AnswersList;
-import com.example.testingsystem.service.TestService;
-import com.example.testingsystem.service.TestsControllerService;
-import com.example.testingsystem.service.UserService;
+import com.example.testingsystem.service.TestServiceImpl;
+import com.example.testingsystem.service.TestsControllerServiceImpl;
+import com.example.testingsystem.service.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -23,14 +23,14 @@ import java.io.ByteArrayOutputStream;
 @AllArgsConstructor
 public class TestsController {
 
-    private final TestsControllerService testsControllerService;
-    private final UserService userService;
-    private final TestService testService;
+    private final TestsControllerServiceImpl testsControllerServiceImpl;
+    private final UserServiceImpl userServiceImpl;
+    private final TestServiceImpl testServiceImpl;
 
     @GetMapping("/tests")
     public String getTests(@RequestParam(required = false, value = "searchTitle") String searchTitle, Model model) {
 
-        testsControllerService.getTests(model, searchTitle);
+        testsControllerServiceImpl.getTests(model, searchTitle);
 
         return "test/tests";
     }
@@ -38,7 +38,7 @@ public class TestsController {
     @GetMapping("/tests/{id}")
     public String getTestsCard(@PathVariable("id") int id, Model model) {
 
-        testsControllerService.getTestsCard(model, id);
+        testsControllerServiceImpl.getTestsCard(model, id);
 
         return "test/tests_card";
     }
@@ -46,7 +46,7 @@ public class TestsController {
     @PostMapping("/tests")
     public String finishTestsSolution(@ModelAttribute("answersList") AnswersList answersList, Model model) {
 
-        model.addAttribute("solution", testsControllerService.finishTestsSolution(answersList));
+        model.addAttribute("solution", testsControllerServiceImpl.finishTestsSolution(answersList));
 
         return "test/tests_result";
     }
@@ -54,7 +54,7 @@ public class TestsController {
     @GetMapping("/statistic")
     public String getStatistic(Model model) {
 
-        testsControllerService.getStatistic(model);
+        testsControllerServiceImpl.getStatistic(model);
 
         return "test/my_solutions";
     }
@@ -62,7 +62,7 @@ public class TestsController {
     @GetMapping("/newTest")
     public String createTest(Model model) {
 
-        if(!userService.hasAccess(Role.TEACHER_ROLE, Role.ADMIN_ROLE)){
+        if(!userServiceImpl.hasAccess(Role.TEACHER_ROLE, Role.ADMIN_ROLE)){
             return "logic/error";
         }
 
@@ -74,7 +74,7 @@ public class TestsController {
     @PostMapping("/newTest/questions")
     public String createQuestion(@ModelAttribute("test") @Valid Test test, BindingResult bindingResult, Model model) {
 
-        if (testService.countTestByTitle(test.getTitle()) > 0) {
+        if (testServiceImpl.countTestByTitle(test.getTitle()) > 0) {
             bindingResult.addError(new FieldError("test.getTitle()", "title",
                     "Тест с таким названием уже существует"));
         }
@@ -83,7 +83,7 @@ public class TestsController {
             return "test/test_create";
         }
 
-        model.addAttribute("answersList", testsControllerService.createQuestion(test));
+        model.addAttribute("answersList", testsControllerServiceImpl.createQuestion(test));
 
         return "test/questions_create";
     }
@@ -95,7 +95,7 @@ public class TestsController {
             return "test/questions_create";
         }
 
-        testsControllerService.saveTest(answersList);
+        testsControllerServiceImpl.saveTest(answersList);
 
         return "redirect:/tests";
     }
@@ -103,11 +103,11 @@ public class TestsController {
     @GetMapping("/myTests")
     public String getAllMyTests(Model model) {
 
-        if (!userService.hasAccess(Role.TEACHER_ROLE, Role.ADMIN_ROLE)) {
+        if (!userServiceImpl.hasAccess(Role.TEACHER_ROLE, Role.ADMIN_ROLE)) {
             return "logic/error";
         }
 
-        testsControllerService.getAllMyTests(model);
+        testsControllerServiceImpl.getAllMyTests(model);
 
         return "test/my_tests";
     }
@@ -115,7 +115,7 @@ public class TestsController {
     @GetMapping("/myTests/{id}")
     public String getMyTestsSolutions(@PathVariable("id") int id, Model model) {
 
-        testsControllerService.getMyTestsSolutions(model, id);
+        testsControllerServiceImpl.getMyTestsSolutions(model, id);
 
         return "test/my_tests_solutions";
     }
@@ -124,7 +124,7 @@ public class TestsController {
     @GetMapping("/saveResults/{id}")
     public ResponseEntity<ByteArrayResource> saveResults(@PathVariable int id){
 
-        ByteArrayOutputStream outputStream = testsControllerService.saveResults(id);
+        ByteArrayOutputStream outputStream = testsControllerServiceImpl.saveResults(id);
 
         return ResponseEntity
                 .ok()

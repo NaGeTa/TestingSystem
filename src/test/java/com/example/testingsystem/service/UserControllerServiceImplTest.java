@@ -18,17 +18,17 @@ import java.util.Date;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class UserControllerServiceTest {
+public class UserControllerServiceImplTest {
 
     @Autowired
-    UserControllerService userControllerService;
+    UserControllerServiceImpl userControllerServiceImpl;
 
     @MockBean
-    UserService userService;
+    UserServiceImpl userServiceImpl;
     @MockBean
-    SolutionService solutionService;
+    SolutionServiceImpl solutionServiceImpl;
     @MockBean
-    TestService testService;
+    TestServiceImpl testServiceImpl;
     @MockBean
     Authentication authentication;
     @MockBean
@@ -42,10 +42,10 @@ public class UserControllerServiceTest {
         User user = new User(1, " ", " ", " ", " ", " ", new Date(), null, Role.STUDENT_ROLE, false);
 
         Mockito.when(authentication.getName()).thenReturn(login);
-        Mockito.when(userService.getUserByLogin(login)).thenReturn(user);
-        Mockito.when(solutionService.getCountOfSolutionsByUserId(user.getId())).thenReturn(count);
+        Mockito.when(userServiceImpl.getUserByLogin(login)).thenReturn(user);
+        Mockito.when(solutionServiceImpl.getCountOfSolutionsByUserId(user.getId())).thenReturn(count);
 
-        userControllerService.getProfile(model);
+        userControllerServiceImpl.getProfile(model);
 
         Mockito.verify(model).addAttribute("user", user);
         Mockito.verify(model).addAttribute("countOfSolutions", count);
@@ -58,9 +58,9 @@ public class UserControllerServiceTest {
         User userTest = new User(1, " ", " ", " ", " ", " ", new Date(), null, Role.ADMIN_ROLE, false);
         int id = 1;
 
-        Mockito.when(userService.getUserById(id)).thenReturn(user);
+        Mockito.when(userServiceImpl.getUserById(id)).thenReturn(user);
 
-        User returnedUser = userControllerService.banUser(id, userForRole);
+        User returnedUser = userControllerServiceImpl.banUser(id, userForRole);
 
         Assertions.assertEquals(returnedUser, userTest);
     }
@@ -71,10 +71,10 @@ public class UserControllerServiceTest {
         User userForDoSend = new User(1, " ", " ", " ", " ", " ", new Date(), null, Role.STUDENT_ROLE, true);
         int id = 1;
 
-        Mockito.when(userService.getUserById(id)).thenReturn(user);
+        Mockito.when(userServiceImpl.getUserById(id)).thenReturn(user);
 
-        userControllerService.updateProfile(id, userForDoSend);
+        userControllerServiceImpl.updateProfile(id, userForDoSend);
 
-        Mockito.verify(userService).update(user);
+        Mockito.verify(userServiceImpl).update(user);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.testingsystem.controller;
 
 import com.example.testingsystem.entity.User;
-import com.example.testingsystem.service.UserService;
+import com.example.testingsystem.service.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.apache.log4j.Logger;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @AllArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final static Logger logger = Logger.getLogger(AuthController.class);
 
     @GetMapping("/")
@@ -45,12 +45,12 @@ public class AuthController {
     public String saveUser(@ModelAttribute("user") @Valid  User user,
                            BindingResult bindingResult){
 
-        if(userService.countUsersByEmail(user.getEmail())>0){
+        if(userServiceImpl.countUsersByEmail(user.getEmail())>0){
             bindingResult.addError(new FieldError("user.getEmail()", "email",
                     "Данная почта уже занята"));
         }
 
-        if(userService.countUsersByLogin(user.getLogin())>0){
+        if(userServiceImpl.countUsersByLogin(user.getLogin())>0){
             bindingResult.addError(new FieldError("user.getLogin()", "login",
                     "Данный логин уже занят"));
         }
@@ -58,7 +58,7 @@ public class AuthController {
         if(bindingResult.hasErrors()){
             return "/logic/registration";
         }
-        userService.save(user);
+        userServiceImpl.save(user);
 
         logger.info("New user '" + user.getLogin() + "' was created");
 
