@@ -2,13 +2,11 @@ package com.example.testingsystem.model;
 
 import com.example.testingsystem.entity.Question;
 import jakarta.validation.Valid;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class AnswersList {
 
     @Valid

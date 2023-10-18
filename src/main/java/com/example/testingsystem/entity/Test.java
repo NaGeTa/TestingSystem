@@ -2,7 +2,9 @@ package com.example.testingsystem.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -11,6 +13,8 @@ import java.util.Date;
 @Table(name = "tests")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Test {
     @Id
     @Column(name = "id")

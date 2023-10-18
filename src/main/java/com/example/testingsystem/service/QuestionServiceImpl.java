@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class QuestionService {
+public class QuestionServiceImpl {
 
     private final QuestionRepository questionRepository;
 
@@ -20,5 +20,4 @@ public class QuestionService {
     public void saveQuestion(Question question){
         questionRepository.save(question);
     }
-
 }
