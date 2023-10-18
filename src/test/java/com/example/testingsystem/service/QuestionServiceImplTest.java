@@ -12,10 +12,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class QuestionServiceTest {
+public class QuestionServiceImplTest {
 
     @Autowired
-    QuestionService questionService;
+    QuestionServiceImpl questionServiceImpl;
 
     @MockBean
     QuestionRepository questionRepository;
@@ -24,7 +24,7 @@ public class QuestionServiceTest {
     public void getQuestionsList(){
         int id = 1;
 
-        questionService.getQuestionsList(id);
+        questionServiceImpl.getQuestionsList(id);
 
         Mockito.verify(questionRepository).findQuestionsByTestId(id);
     }

@@ -31,7 +31,7 @@ public class TestsControllerService {
     private final SolutionService solutionService;
     private final SendService sendService;
     private final TestService testService;
-    private final QuestionService questionService;
+    private final QuestionServiceImpl questionServiceImpl;
     private static final Logger logger = Logger.getLogger(TestsControllerService.class);
 
     public Solution finishTestsSolution(AnswersList answersList) {
@@ -179,7 +179,7 @@ public class TestsControllerService {
 
         answersList.getAnswers().forEach(question -> {
             question.setTest(test);
-            questionService.saveQuestion(question);
+            questionServiceImpl.saveQuestion(question);
         });
 
         logger.info("Test was saved");
@@ -197,7 +197,7 @@ public class TestsControllerService {
     }
 
     public void getTestsCard(Model model, int id){
-        AnswersList answersList = new AnswersList(questionService.getQuestionsList(id));
+        AnswersList answersList = new AnswersList(questionServiceImpl.getQuestionsList(id));
 
         model.addAttribute("answersList", answersList);
 

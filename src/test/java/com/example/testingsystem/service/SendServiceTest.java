@@ -2,6 +2,7 @@ package com.example.testingsystem.service;
 
 import com.example.testingsystem.entity.*;
 import com.example.testingsystem.mapper.SolutionMapper;
+import com.example.testingsystem.model.BusinessException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -17,7 +18,7 @@ import java.util.Date;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class SendServiceTest {
+public class SendServiceTest { //TODO
 
     @Autowired
     SendService sendService;
@@ -28,14 +29,18 @@ public class SendServiceTest {
     SolutionMapper solutionMapper;
 
     @Test
-    public void send() throws URISyntaxException {
+    public void send() {
         com.example.testingsystem.entity.Test test = new com.example.testingsystem.entity.Test(1, " ", 0, 0, new Date(), null, Category.BIOLOGY);
         User user = new User(1, " ", " ", " ", " ", " ", new Date(), null, Role.STUDENT_ROLE, false);
         Solution solution = new Solution(1, user, test, new Date(), 0, 0, Mark.A);
 
         sendService.send(solution);
 
-        Mockito.verify(restTemplate).postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution),
-                Object.class);
+        try {
+            Mockito.verify(restTemplate).postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution),
+                    Object.class);
+        } catch (URISyntaxException e) {
+            throw new BusinessException("._.");
+        }
     }
 }

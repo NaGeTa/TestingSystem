@@ -117,3 +117,34 @@
 2023-10-18 22:54:33 INFO  UserControllerService:48 -   was unblocked
 2023-10-18 22:54:33 DEBUG UserControllerService:36 - Profile was got
 2023-10-18 22:57:47 INFO  SendService:33 - Result was sent on mail
+2023-10-18 23:21:01 INFO  SendService:33 - Result was sent on mail
+2023-10-18 23:23:01 DEBUG TestsControllerService:172 - Statistic was got
+2023-10-18 23:23:01 INFO  TestsControllerService:185 - Test was saved
+2023-10-18 23:23:01 DEBUG TestsControllerService:196 - My tests was got
+2023-10-18 23:23:01 INFO  TestsControllerService:56 - Solution was saved
+2023-10-18 23:23:01 DEBUG TestsControllerService:204 - Test's card was opened
+2023-10-18 23:23:01 INFO  TestsControllerService:80 - Questions was created
+2023-10-18 23:23:01 DEBUG TestsControllerService:214 - My tests solutions was got
+2023-10-18 23:23:02 DEBUG TestsControllerService:148 - PDF was created
+2023-10-18 23:23:02 DEBUG TestsControllerService:160 - All tests was got
+2023-10-18 23:23:08 INFO  SendService:33 - Result was sent on mail
+2023-10-18 23:23:14 INFO  UserControllerService:64 -   was update
+2023-10-18 23:23:14 INFO  UserControllerService:48 -   was unblocked
+2023-10-18 23:23:14 DEBUG UserControllerService:36 - Profile was got
+2023-10-18 23:24:24 INFO  SendService:33 - Result was sent on mail
+2023-10-18 23:25:15 INFO  SendService:33 - Result was sent on mail
+2023-10-18 23:26:26 DEBUG TestsControllerService:172 - Statistic was got
+2023-10-18 23:26:26 INFO  TestsControllerService:185 - Test was saved
+2023-10-18 23:26:26 DEBUG TestsControllerService:196 - My tests was got
+2023-10-18 23:26:26 INFO  TestsControllerService:56 - Solution was saved
+2023-10-18 23:26:26 DEBUG TestsControllerService:204 - Test's card was opened
+2023-10-18 23:26:26 INFO  TestsControllerService:80 - Questions was created
+2023-10-18 23:26:26 DEBUG TestsControllerService:214 - My tests solutions was got
+2023-10-18 23:26:27 DEBUG TestsControllerService:148 - PDF was created
+2023-10-18 23:26:27 DEBUG TestsControllerService:160 - All tests was got
+2023-10-18 23:26:33 INFO  SendService:33 - Result was sent on mail
+2023-10-18 23:26:43 INFO  UserControllerService:64 -   was update
+2023-10-18 23:26:43 INFO  UserControllerService:48 -   was unblocked
+2023-10-18 23:26:43 DEBUG UserControllerService:36 - Profile was got
+2023-10-18 23:31:17 INFO  SendService:37 - Error when result sending on mail
+2023-10-18 23:32:14 INFO  SendService:33 - Result was sent on mail

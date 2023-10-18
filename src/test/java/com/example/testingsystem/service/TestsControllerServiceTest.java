@@ -34,7 +34,7 @@ public class TestsControllerServiceTest {
     @MockBean
     TestService testService;
     @MockBean
-    QuestionService questionService;
+    QuestionServiceImpl questionServiceImpl;
     @MockBean
     Authentication authentication;
     @MockBean
@@ -114,7 +114,7 @@ public class TestsControllerServiceTest {
         testsControllerService.saveTest(answersList);
 
         Mockito.verify(testService).saveTest(test);
-        Mockito.verify(questionService).saveQuestion(answersList.getAnswers().get(0));
+        Mockito.verify(questionServiceImpl).saveQuestion(answersList.getAnswers().get(0));
 
     }
 
@@ -140,7 +140,7 @@ public class TestsControllerServiceTest {
         List<Question> list = List.of(new Question(0, null, 0, 1, null, null, null, null, test, 1));
         int id = 1;
 
-        Mockito.when(questionService.getQuestionsList(id)).thenReturn(list);
+        Mockito.when(questionServiceImpl.getQuestionsList(id)).thenReturn(list);
 
         testsControllerService.getTestsCard(model, id);
 

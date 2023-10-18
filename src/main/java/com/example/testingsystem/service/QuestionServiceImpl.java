@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class QuestionService {
+public class QuestionServiceImpl {
 
     private final QuestionRepository questionRepository;
 
