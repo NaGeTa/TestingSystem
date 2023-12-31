@@ -120,6 +120,18 @@ public class TestsController {
         return "test/my_tests_solutions";
     }
 
+    @PostMapping("/deleteTest/{id}")
+    public String deleteTest(@PathVariable("id") int id){
+
+        if (!userServiceImpl.hasAccess(Role.TEACHER_ROLE, Role.ADMIN_ROLE)) {
+            return "logic/error";
+        }
+
+        testsControllerServiceImpl.deleteTest(id);
+
+        return "redirect:/tests";
+    }
+
     @ResponseBody
     @GetMapping("/saveResults/{id}")
     public ResponseEntity<ByteArrayResource> saveResults(@PathVariable int id){

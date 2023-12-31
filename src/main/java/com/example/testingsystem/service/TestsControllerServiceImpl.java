@@ -222,4 +222,12 @@ public class TestsControllerServiceImpl implements TestsControllerService{
 
         logger.debug("My tests solutions was got");
     }
+
+    @Override
+    public void deleteTest(int id) {
+        testServiceImpl.deleteTestById(id);
+
+        logger.info("Test '" + testServiceImpl.getTestById(id).getTitle() + "' was deleted");
+    }
+
 }

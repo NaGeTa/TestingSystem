@@ -71,6 +71,9 @@
         <form th:action="@{/myTests/{id}(id=${test.getId()})}">
             <input type="submit" value="Подробнее">
         </form>
+        <form th:action="@{/deleteTest/{id}(id=${test.getId()})}" th:method="post">
+            <input type="submit" value="Удалить">
+        </form>
     </div>
     <br><br>
 </div>

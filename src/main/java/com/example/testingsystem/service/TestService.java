@@ -12,4 +12,5 @@ public interface TestService {
     List<Test> getAllTestsByCreatorId(int id);
     Test getTestById(int id);
     int getCountOfCreatedTests(int id);
+    void deleteTestById(int id);
 }

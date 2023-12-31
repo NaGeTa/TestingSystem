@@ -20,7 +20,7 @@ public class Solution {
     @JoinColumn(name = "users_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "tests_id")
     private Test test;
 

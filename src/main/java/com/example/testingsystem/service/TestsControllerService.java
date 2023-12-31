@@ -17,4 +17,5 @@ public interface TestsControllerService {
     void getAllMyTests(Model model);
     void getTestsCard(Model model, int id);
     void getMyTestsSolutions(Model model, int id);
+    void deleteTest(int id);
 }

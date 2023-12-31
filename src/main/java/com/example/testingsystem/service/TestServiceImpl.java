@@ -50,4 +50,10 @@ public class TestServiceImpl implements TestService{
         return testRepository.countTestByCreatorId(id);
     }
 
+    @Override
+    public void deleteTestById(int id) {
+        testRepository.delete(getTestById(id));
+    }
+
+
 }
