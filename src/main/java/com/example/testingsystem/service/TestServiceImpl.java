@@ -3,9 +3,12 @@ package com.example.testingsystem.service;
 import com.example.testingsystem.entity.Test;
 import com.example.testingsystem.repository.TestRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 
@@ -16,8 +19,8 @@ public class TestServiceImpl implements TestService{
     private final TestRepository testRepository;
 
     @Override
-    public List<Test> getAllTests() {
-        return testRepository.findAll();
+    public Page<Test> getAllTests(Pageable pageable) {
+        return testRepository.findAll(pageable);
     }
 
     @Override
@@ -31,10 +34,9 @@ public class TestServiceImpl implements TestService{
     }
 
     @Override
-    public List<Test> getTestsByTitle(String title) {
-        return testRepository.findTestsByTitleContaining(title);
+    public Page<Test> getTestsByTitle(String title, Pageable pageable) {
+        return testRepository.findTestsByTitleContaining(title, pageable);
     }
-
     @Override
     public List<Test> getAllTestsByCreatorId(int id) {
         return testRepository.findAllByCreatorId(id);

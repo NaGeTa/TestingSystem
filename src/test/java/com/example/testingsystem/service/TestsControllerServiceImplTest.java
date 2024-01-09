@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
@@ -84,9 +85,10 @@ public class TestsControllerServiceImplTest {
     @Test
     public void getTests(){
         String searchTitle = "title";
-        testsControllerServiceImpl.getTests(model, searchTitle);
+        testsControllerServiceImpl.getTests(model, searchTitle, 0);
 
-        Mockito.verify(model).addAttribute("tests", testServiceImpl.getTestsByTitle(searchTitle));
+        Mockito.verify(model).addAttribute("tests", testServiceImpl.getTestsByTitle(searchTitle,
+                PageRequest.of(0, 6)));
     }
 
     @Test

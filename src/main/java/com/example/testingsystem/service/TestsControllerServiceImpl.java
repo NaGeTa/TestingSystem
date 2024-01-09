@@ -5,6 +5,7 @@ import com.example.testingsystem.entity.Solution;
 import com.example.testingsystem.entity.Test;
 import com.example.testingsystem.entity.User;
 import com.example.testingsystem.model.AnswersList;
+import com.example.testingsystem.repository.TestRepository;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -13,6 +14,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
 import org.apache.log4j.Logger;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,7 @@ public class TestsControllerServiceImpl implements TestsControllerService{
     private final SendServiceImpl sendServiceImpl;
     private final TestServiceImpl testServiceImpl;
     private final QuestionServiceImpl questionServiceImpl;
+    TestRepository testRepository;
     private static final Logger logger = Logger.getLogger(TestsControllerServiceImpl.class);
 
     @Override
@@ -154,11 +157,18 @@ public class TestsControllerServiceImpl implements TestsControllerService{
     }
 
     @Override
-    public void getTests(Model model, String searchTitle){
+    public void getTests(Model model, String searchTitle, int page){
+//        if ((searchTitle == null) || (searchTitle.equals(""))) {
+//            model.addAttribute("tests", testServiceImpl.getAllTests());
+//        } else {
+//            model.addAttribute("tests", testServiceImpl.getTestsByTitle(searchTitle));
+//        }
+
         if ((searchTitle == null) || (searchTitle.equals(""))) {
-            model.addAttribute("tests", testServiceImpl.getAllTests());
+            model.addAttribute("tests", testServiceImpl.getAllTests(PageRequest.of(page, 6)));
         } else {
-            model.addAttribute("tests", testServiceImpl.getTestsByTitle(searchTitle));
+            model.addAttribute("tests", testServiceImpl.getTestsByTitle(searchTitle,
+                    PageRequest.of(page, 6)));
         }
 
         logger.debug("All tests was got");

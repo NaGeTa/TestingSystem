@@ -6,6 +6,31 @@
     <script src="../../static/js/bootstrap.bundle.min.js" th:src="@{js/bootstrap.bundle.min.js}"></script>
 <!--    <script src="../../static/js/color-modes.js" th:src="@{js/color-modes.js}"></script>-->
     <title>Тесты</title>
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
+        .pagination li {
+            margin-right: 5px;
+        }
+        .pagination a {
+            display: block;
+            padding: 5px 10px;
+            background-color: #f2f2f2;
+            color: #000000;
+            text-decoration: none;
+        }
+        .pagination a:hover {
+            background-color: #ddd;
+        }
+        .pagination .active a {
+            background-color: #000000;
+            color: white;
+        }
+    </style>
 
 </head>
 <body>
@@ -90,6 +115,14 @@
         </div>
     </div>
 </div>
+<br>
+<ul class="pagination">
+    <th:block th:each="pageNumber : ${#numbers.sequence(0, tests.totalPages-1)}">
+        <li th:class="${pageNumber == tests.number} ? 'active' : ''">
+            <a th:href="@{/tests(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+        </li>
+    </th:block>
+</ul>
 
 </body>
 </html>

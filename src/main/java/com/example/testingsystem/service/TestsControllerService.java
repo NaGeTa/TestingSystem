@@ -11,7 +11,7 @@ public interface TestsControllerService {
     Solution finishTestsSolution(AnswersList answersList);
     AnswersList createQuestion(Test test);
     ByteArrayOutputStream saveResults(int id);
-    void getTests(Model model, String searchTitle);
+    void getTests(Model model, String searchTitle, int page);
     void getStatistic(Model model);
     void saveTest(AnswersList answersList);
     void getAllMyTests(Model model);

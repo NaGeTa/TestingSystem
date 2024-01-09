@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Date;
 
@@ -52,9 +53,9 @@ public class TestServiceTestImpl {
     public void getTestsByTitle() {
         String title = "title";
 
-        testRepository.findTestsByTitleContaining(title);
+        testRepository.findTestsByTitleContaining(title, PageRequest.of(0, 6));
 
-        Mockito.verify(testRepository).findTestsByTitleContaining(title);
+        Mockito.verify(testRepository).findTestsByTitleContaining(title, PageRequest.of(0, 6));
     }
 
     @org.junit.jupiter.api.Test

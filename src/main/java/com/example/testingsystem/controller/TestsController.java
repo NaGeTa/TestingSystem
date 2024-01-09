@@ -28,9 +28,10 @@ public class TestsController {
     private final TestServiceImpl testServiceImpl;
 
     @GetMapping("/tests")
-    public String getTests(@RequestParam(required = false, value = "searchTitle") String searchTitle, Model model) {
+    public String getTests(@RequestParam(required = false, value = "searchTitle") String searchTitle, Model model,
+                           @RequestParam(defaultValue = "0") int page) {
 
-        testsControllerServiceImpl.getTests(model, searchTitle);
+        testsControllerServiceImpl.getTests(model, searchTitle, page);
 
         return "test/tests";
     }
