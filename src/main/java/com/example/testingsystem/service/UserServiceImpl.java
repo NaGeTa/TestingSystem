@@ -62,10 +62,19 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean hasAccess(Role ... role){
         List<Role> roles = List.of(role);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
-        User user = getUserByLogin(login);
+        User user = getUserByLogin(getCurrUsername());
 
         return roles.contains(user.getRole());
     }
+
+    public String getCurrUsername(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
+    public boolean isPswdCorrect(String pass, String encrPass){
+        return encoder().matches(pass, encrPass);
+    }
+
+
 }

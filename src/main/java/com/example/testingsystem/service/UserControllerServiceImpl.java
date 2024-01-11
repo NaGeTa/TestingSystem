@@ -4,8 +4,6 @@ import com.example.testingsystem.entity.Role;
 import com.example.testingsystem.entity.User;
 import lombok.AllArgsConstructor;
 import org.apache.log4j.Logger;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -20,9 +18,7 @@ public class UserControllerServiceImpl implements UserControllerService{
 
     @Override
     public void getProfile(Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
-        User user = userServiceImpl.getUserByLogin(login);
+        User user = userServiceImpl.getUserByLogin(userServiceImpl.getCurrUsername());
 
         int countOfSolutions = solutionServiceImpl.getCountOfSolutionsByUserId(user.getId());
 
@@ -64,5 +60,27 @@ public class UserControllerServiceImpl implements UserControllerService{
         userServiceImpl.update(userForSave);
 
         logger.info(user.getLogin() + " was update");
+    }
+
+    @Override
+    public String changePswd(String newPass1, String newPass2, String pass, Model model) {
+
+        if (!userServiceImpl.isPswdCorrect(pass, userServiceImpl.getUserByLogin(userServiceImpl.getCurrUsername()).getPassword())){
+            model.addAttribute("passError", "Неверный пароль");
+            return "user/pswd_change";
+        }
+
+        if (newPass1.length()==0 || newPass2.length()==0 || (!newPass1.equals(newPass2))){
+            model.addAttribute("newPassError", "Пароли не совпадают");
+            return "user/pswd_change";
+        }
+
+        User user = userServiceImpl.getUserByLogin(userServiceImpl.getCurrUsername());
+        user.setPassword(newPass1);
+        userServiceImpl.save(user);
+
+        logger.info(userServiceImpl.getCurrUsername() + " change password");
+
+        return "redirect:/profile";
     }
 }

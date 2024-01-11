@@ -5,7 +5,6 @@ import com.example.testingsystem.entity.Solution;
 import com.example.testingsystem.entity.Test;
 import com.example.testingsystem.entity.User;
 import com.example.testingsystem.model.AnswersList;
-import com.example.testingsystem.repository.TestRepository;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -34,16 +33,13 @@ public class TestsControllerServiceImpl implements TestsControllerService{
     private final SendServiceImpl sendServiceImpl;
     private final TestServiceImpl testServiceImpl;
     private final QuestionServiceImpl questionServiceImpl;
-    TestRepository testRepository;
     private static final Logger logger = Logger.getLogger(TestsControllerServiceImpl.class);
 
     @Override
     public Solution finishTestsSolution(AnswersList answersList) {
         Solution solution = new Solution();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
-        solution.setUser(userServiceImpl.getUserByLogin(login));
+        solution.setUser(userServiceImpl.getUserByLogin(userServiceImpl.getCurrUsername()));
         solution.setTest(answersList.getAnswers().get(0).getTest());
 
         answersList.getAnswers().forEach((question) -> {
@@ -70,10 +66,7 @@ public class TestsControllerServiceImpl implements TestsControllerService{
     @Override
     public AnswersList createQuestion(Test test) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
-
-        test.setCreator(userServiceImpl.getUserByLogin(login));
+        test.setCreator(userServiceImpl.getUserByLogin(userServiceImpl.getCurrUsername()));
 
         AnswersList answersList = new AnswersList(new ArrayList<>());
         int count = test.getCountOfQuestions();
@@ -203,10 +196,7 @@ public class TestsControllerServiceImpl implements TestsControllerService{
 
     @Override
     public void getAllMyTests(Model model){
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = authentication.getName();
-        User user = userServiceImpl.getUserByLogin(login);
+        User user = userServiceImpl.getUserByLogin(userServiceImpl.getCurrUsername());
 
         model.addAttribute("tests", testServiceImpl.getAllTestsByCreatorId(user.getId()));
 

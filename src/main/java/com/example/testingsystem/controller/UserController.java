@@ -9,10 +9,7 @@ import com.example.testingsystem.service.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -79,6 +76,21 @@ public class UserController {
         userControllerServiceImpl.updateProfile(id, user);
 
         return "redirect:/profile";
+    }
+
+    @GetMapping("/changePassword")
+    public String getPswdChangePage(Model model){
+
+        model.addAttribute("user", new User());
+
+        return "user/pswd_change";
+    }
+
+    @PostMapping("/changePassword")
+    public String changePswd(@RequestParam("newPassword1") String newPass1, @RequestParam("newPassword2") String newPass2,
+                           @RequestParam("password") String pass, Model model){
+
+        return userControllerServiceImpl.changePswd(newPass1, newPass2, pass, model);
     }
 
 }

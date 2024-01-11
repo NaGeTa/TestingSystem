@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,7 +70,7 @@ public class AuthController {
 
     @GetMapping("/passwordReset")
     public String getPswdResetPage() {
-        return "logic/pswdReset";
+        return "logic/pswd_reset";
     }
 
     @PostMapping("/passwordReset")
