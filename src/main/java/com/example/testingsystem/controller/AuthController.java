@@ -1,6 +1,7 @@
 package com.example.testingsystem.controller;
 
 import com.example.testingsystem.entity.User;
+import com.example.testingsystem.service.PswdResetServiceImpl;
 import com.example.testingsystem.service.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -9,53 +10,56 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @AllArgsConstructor
 public class AuthController {
 
     private final UserServiceImpl userServiceImpl;
+    private final PswdResetServiceImpl pswdResetService;
     private final static Logger logger = Logger.getLogger(AuthController.class);
 
     @GetMapping("/")
-    public String getMainPage(){
+    public String getMainPage() {
         return "logic/main";
     }
 
     @GetMapping("/menu")
-    public String getMenuPage(){
+    public String getMenuPage() {
         return "logic/menu";
     }
 
     @GetMapping("/login")
-    public String getLoginPage(){
+    public String getLoginPage() {
         return "logic/login";
     }
 
     @GetMapping("/registration")
-    public String getRegPage(Model model){
+    public String getRegPage(Model model) {
         model.addAttribute("user", new User());
         return "logic/registration";
     }
 
     @PostMapping("/registration")
-    public String saveUser(@ModelAttribute("user") @Valid  User user,
-                           BindingResult bindingResult){
+    public String saveUser(@ModelAttribute("user") @Valid User user,
+                           BindingResult bindingResult) {
 
-        if(userServiceImpl.countUsersByEmail(user.getEmail())>0){
+        if (userServiceImpl.countUsersByEmail(user.getEmail()) > 0) {
             bindingResult.addError(new FieldError("user.getEmail()", "email",
                     "Данная почта уже занята"));
         }
 
-        if(userServiceImpl.countUsersByLogin(user.getLogin())>0){
+        if (userServiceImpl.countUsersByLogin(user.getLogin()) > 0) {
             bindingResult.addError(new FieldError("user.getLogin()", "login",
                     "Данный логин уже занят"));
         }
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "/logic/registration";
         }
         userServiceImpl.save(user);
@@ -63,6 +67,23 @@ public class AuthController {
         logger.info("New user '" + user.getLogin() + "' was created");
 
         return "redirect:/login";
+    }
+
+    @GetMapping("/passwordReset")
+    public String getPswdResetPage() {
+        return "logic/pswdReset";
+    }
+
+    @PostMapping("/passwordReset")
+    public String pswdReset(@RequestParam("login") String login) {
+
+//        if (userServiceImpl.countUsersByLogin(login) == 0){
+//            bindingResult.addError(new ObjectError("login", "Пользователь с таким логином не найден"));
+//        }
+
+        pswdResetService.resetPassword(login);
+
+        return "logic/ok";
     }
 
 }

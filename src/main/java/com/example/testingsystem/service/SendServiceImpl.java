@@ -1,8 +1,11 @@
 package com.example.testingsystem.service;
 
+import com.example.testingsystem.entity.Mark;
 import com.example.testingsystem.entity.Solution;
 import com.example.testingsystem.mapper.SolutionMapper;
 import com.example.testingsystem.model.BusinessException;
+import com.example.testingsystem.model.ResetForMail;
+import com.example.testingsystem.model.SolutionForMail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.apache.log4j.Logger;
@@ -14,7 +17,7 @@ import java.net.URI;
 
 @Service
 @AllArgsConstructor
-public class SendServiceImpl implements SendService{
+public class SendServiceImpl /*implements SendService*/{
 
     private final RestTemplate restTemplate;
     private final KafkaTemplate<String, String> kafkaTemplate;
@@ -22,11 +25,11 @@ public class SendServiceImpl implements SendService{
     private final ObjectMapper objectMapper;
     private final static Logger logger = Logger.getLogger(SendServiceImpl.class);
 
-    @Override
+//    @Override
     public void send(Solution solution){
         Runnable r = () -> {
             try {
-                restTemplate.postForEntity(new URI("http://localhost:8090/"), solutionMapper.toMail(solution), Object.class);
+                restTemplate.postForEntity(new URI("http://localhost:8090/sendSolution"), solutionMapper.toMail(solution), Object.class);
 
 //                kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
 
@@ -42,7 +45,30 @@ public class SendServiceImpl implements SendService{
 
         };
 
-        Thread thread = new Thread(r, "MailThread");
+        Thread thread = new Thread(r, "SolutionMailThread");
+        thread.start();
+    }
+
+//    @Override
+    public void sendPassword(/*ResetForMail resetForMail*/ String mail, String URL) {
+        Runnable r = () -> {
+            try {
+//                restTemplate.postForEntity(new URI("http://localhost:8090/sendReset"), new ResetForMail(mail, URL), Object.class);
+//                kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
+
+                System.out.println("\u001B[32m Письмо успешно отправлено " + "\u001B[0m");
+                logger.info("Result was sent on mail");
+
+            } catch (Exception e) {
+                System.out.println("\u001B[31m Ошибка при отправке письма " + "\u001B[0m");
+                logger.info("Error when reset-mail sending");
+
+                throw new BusinessException("Error when reset mail sending");
+            }
+
+        };
+
+        Thread thread = new Thread(r, "ResetMailThread");
         thread.start();
     }
 }

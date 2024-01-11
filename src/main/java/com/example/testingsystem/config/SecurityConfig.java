@@ -36,6 +36,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/registration").permitAll()
+                        .requestMatchers("/passwordReset").permitAll()
                         .requestMatchers("/").permitAll()
                         .anyRequest().authenticated())
                 .formLogin((form) -> form.loginPage("/login")
