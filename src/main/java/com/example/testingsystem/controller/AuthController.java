@@ -1,6 +1,7 @@
 package com.example.testingsystem.controller;
 
 import com.example.testingsystem.entity.User;
+import com.example.testingsystem.service.AuthControllerServiceImpl;
 import com.example.testingsystem.service.PswdResetServiceImpl;
 import com.example.testingsystem.service.UserServiceImpl;
 import jakarta.validation.Valid;
@@ -10,10 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @AllArgsConstructor
@@ -21,6 +19,7 @@ public class AuthController {
 
     private final UserServiceImpl userServiceImpl;
     private final PswdResetServiceImpl pswdResetService;
+    private final AuthControllerServiceImpl authControllerService;
     private final static Logger logger = Logger.getLogger(AuthController.class);
 
     @GetMapping("/")
@@ -70,19 +69,28 @@ public class AuthController {
 
     @GetMapping("/passwordReset")
     public String getPswdResetPage() {
-        return "logic/pswd_reset";
+        return "logic/login_for_reset";
     }
 
     @PostMapping("/passwordReset")
-    public String pswdReset(@RequestParam("login") String login) {
+    public String sendPswdReset(@RequestParam("login") String login, Model model) {
 
-//        if (userServiceImpl.countUsersByLogin(login) == 0){
-//            bindingResult.addError(new ObjectError("login", "Пользователь с таким логином не найден"));
-//        }
-
-        pswdResetService.resetPassword(login);
-
-        return "logic/ok";
+        return pswdResetService.resetPassword(login, model);
     }
 
+    @GetMapping("/passwordReset/{encryptedLogin}")
+    public String getPswdReset(@PathVariable("encryptedLogin") String encryptedLogin, Model model) {
+
+        model.addAttribute("encryptedLogin", encryptedLogin);
+
+        return "logic/password_reset";
+    }
+
+    @PostMapping("/passwordReset/{encryptedLogin}")
+    public String pswdReset(@PathVariable("encryptedLogin") String encryptedLogin, @RequestParam("newPassword1") String pass1,
+                            @RequestParam("newPassword2") String pass2, Model model) {
+
+        return authControllerService.pswdReset(encryptedLogin, pass1, pass2, model);
+
+    }
 }

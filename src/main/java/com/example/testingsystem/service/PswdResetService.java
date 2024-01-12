@@ -1,6 +1,8 @@
 package com.example.testingsystem.service;
 
+import org.springframework.ui.Model;
+
 public interface PswdResetService {
 
-    void resetPassword(String login);
+    String resetPassword(String login, Model model);
 }

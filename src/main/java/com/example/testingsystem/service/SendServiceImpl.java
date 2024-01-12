@@ -1,11 +1,9 @@
 package com.example.testingsystem.service;
 
-import com.example.testingsystem.entity.Mark;
 import com.example.testingsystem.entity.Solution;
 import com.example.testingsystem.mapper.SolutionMapper;
 import com.example.testingsystem.model.BusinessException;
 import com.example.testingsystem.model.ResetForMail;
-import com.example.testingsystem.model.SolutionForMail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.apache.log4j.Logger;
@@ -50,10 +48,10 @@ public class SendServiceImpl /*implements SendService*/{
     }
 
 //    @Override
-    public void sendPassword(/*ResetForMail resetForMail*/ String mail, String URL) {
+    public void sendLogin(ResetForMail resetForMail) {
         Runnable r = () -> {
             try {
-//                restTemplate.postForEntity(new URI("http://localhost:8090/sendReset"), new ResetForMail(mail, URL), Object.class);
+                restTemplate.postForEntity(new URI("http://localhost:8090/sendReset"), resetForMail, Object.class);
 //                kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
 
                 System.out.println("\u001B[32m Письмо успешно отправлено " + "\u001B[0m");
@@ -63,7 +61,7 @@ public class SendServiceImpl /*implements SendService*/{
                 System.out.println("\u001B[31m Ошибка при отправке письма " + "\u001B[0m");
                 logger.info("Error when reset-mail sending");
 
-                throw new BusinessException("Error when reset mail sending");
+                throw new BusinessException("Error when reset mail sending: " + e.getMessage());
             }
 
         };

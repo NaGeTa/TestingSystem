@@ -4,23 +4,31 @@ import com.example.testingsystem.entity.User;
 import com.example.testingsystem.model.ResetForMail;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 @Service
 @AllArgsConstructor
 public class PswdResetServiceImpl implements PswdResetService{
 
-    private final UserServiceImpl userService;
-    private final SendServiceImpl sendService;
+    private final UserServiceImpl userServiceImpl;
+    private final SendServiceImpl sendServiceImpl;
+    private final EncryptionServiceImpl encryptionServiceImpl;
 
     @Override
-    public void resetPassword(String login) {
+    public String resetPassword(String login, Model model) {
 
-        User user = userService.getUserByLogin(login);
-        String password = user.getPassword();
+        if (userServiceImpl.countUsersByLogin(login) == 0){
+            model.addAttribute("error", "Пользователь с таким логином не найден");
+            return "logic/pswd_reset";
+        }
 
-        String URL = "http://localhost:8080/resetPassword/" + password;
+        User user = userServiceImpl.getUserByLogin(login);
+        String code = encryptionServiceImpl.encrypt(login);
 
-        sendService.sendPassword(/*new ResetForMail(user.getEmail(), URL)*/ user.getEmail(), URL);
-//        sendService.sendPassword("213");
+        String URL = "http://localhost:8080/passwordReset/" + code;
+
+        sendServiceImpl.sendLogin(new ResetForMail(user.getEmail(), URL));
+
+        return "logic/ok";
     }
 }
