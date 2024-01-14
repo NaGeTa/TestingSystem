@@ -5,5 +5,5 @@ import com.example.testingsystem.model.ResetForMail;
 
 public interface SendService {
     void send(Solution solution);
-    void sendPassword(ResetForMail resetForMail);
+    void sendLogin(ResetForMail resetForMail);
 }

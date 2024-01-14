@@ -15,7 +15,7 @@ import java.net.URI;
 
 @Service
 @AllArgsConstructor
-public class SendServiceImpl /*implements SendService*/{
+public class SendServiceImpl implements SendService{
 
     private final RestTemplate restTemplate;
     private final KafkaTemplate<String, String> kafkaTemplate;
@@ -27,9 +27,9 @@ public class SendServiceImpl /*implements SendService*/{
     public void send(Solution solution){
         Runnable r = () -> {
             try {
-                restTemplate.postForEntity(new URI("http://localhost:8090/sendSolution"), solutionMapper.toMail(solution), Object.class);
+//                restTemplate.postForEntity(new URI("http://localhost:8090/sendSolution"), solutionMapper.toMail(solution), Object.class);
 
-//                kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
+                kafkaTemplate.send("resultTopic", "result", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
 
                 System.out.println("\u001B[32m Письмо успешно отправлено " + "\u001B[0m");
                 logger.info("Result was sent on mail");
@@ -51,8 +51,9 @@ public class SendServiceImpl /*implements SendService*/{
     public void sendLogin(ResetForMail resetForMail) {
         Runnable r = () -> {
             try {
-                restTemplate.postForEntity(new URI("http://localhost:8090/sendReset"), resetForMail, Object.class);
-//                kafkaTemplate.send("mailTopic", "mail", objectMapper.writeValueAsString(solutionMapper.toMail(solution)));
+//                restTemplate.postForEntity(new URI("http://localhost:8090/sendReset"), resetForMail, Object.class);
+
+                kafkaTemplate.send("resetTopic", "reset", objectMapper.writeValueAsString(resetForMail));
 
                 System.out.println("\u001B[32m Письмо успешно отправлено " + "\u001B[0m");
                 logger.info("Result was sent on mail");

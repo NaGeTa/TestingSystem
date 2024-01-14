@@ -19,7 +19,7 @@ public class PswdResetServiceImpl implements PswdResetService{
 
         if (userServiceImpl.countUsersByLogin(login) == 0){
             model.addAttribute("error", "Пользователь с таким логином не найден");
-            return "logic/pswd_reset";
+            return "logic/password_reset";
         }
 
         User user = userServiceImpl.getUserByLogin(login);
