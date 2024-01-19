@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -225,9 +226,9 @@ public class TestsControllerServiceImpl implements TestsControllerService{
 
     @Override
     public void deleteTest(int id) {
-        testServiceImpl.deleteTestById(id);
-
         logger.info("Test '" + testServiceImpl.getTestById(id).getTitle() + "' was deleted");
+
+        testServiceImpl.deleteTestById(id);
     }
 
 }

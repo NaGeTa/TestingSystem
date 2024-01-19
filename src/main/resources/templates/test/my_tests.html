@@ -63,16 +63,17 @@
 <h1>Список ваших тестов</h1>
 <br><br>
 <div th:each="test: *{tests}">
-    <div class="test-block">
+    <div style="background-color: #f1f1f1; padding: 20px;">
         <h2 th:text="${test.getTitle()}"></h2>
         <p th:text="'Дата создания: ' + ${test.getDateOfCreation()}"></p>
         <p th:text="'Количество прохождений: ' + ${test.getCountOfSolutions()}"></p>
         <br>
         <form th:action="@{/myTests/{id}(id=${test.getId()})}">
-            <input type="submit" value="Подробнее">
+            <button class="btn btn-primary w-100 py-2 bg-black" style="max-width: 120px;">Подробнее</button>
         </form>
+        <br>
         <form th:action="@{/deleteTest/{id}(id=${test.getId()})}" th:method="post">
-            <input type="submit" value="Удалить">
+            <button class="btn btn-primary w-100 py-2 bg-black" style="max-width: 120px;">Удалить</button>
         </form>
     </div>
     <br><br>
