@@ -2,8 +2,7 @@
 
 HELP.md
 target/
-logs/
-!**/logs
+logs/logs.log
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
