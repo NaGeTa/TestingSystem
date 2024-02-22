@@ -86,8 +86,6 @@ public class TestsControllerServiceImpl implements TestsControllerService{
 
         List<Solution> list = solutionServiceImpl.getSolutionsByTestId(id);
 
-        System.out.println(list);
-
         if(list.isEmpty()) {
             return null;
         }

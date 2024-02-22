@@ -29,7 +29,7 @@ public class Test {
     @Min(value = 1, message = "Кол-во вопросов должно начинаться от 1")
     private int countOfQuestions;
 
-    @Column(name = "count_of_decisions")
+    @Column(name = "count_of_solutions")
     private int countOfSolutions;
 
     @Column(name = "date_of_creation")

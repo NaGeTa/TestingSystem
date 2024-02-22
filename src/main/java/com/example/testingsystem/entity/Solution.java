@@ -24,7 +24,7 @@ public class Solution {
     @JoinColumn(name = "tests_id")
     private Test test;
 
-    @Column(name = "time_of_decision")
+    @Column(name = "date_of_solution")
     @Temporal(TemporalType.DATE)
     private Date dateOfSolution = new Date();
 

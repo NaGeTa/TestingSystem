@@ -19,7 +19,7 @@ public class Question {
     @NotBlank(message = "Поле для вопроса не может быть пустым")
     private String title;
 
-    @Column(name = "number_of_question")
+    @Column(name = "number_of_questions")
     private int numOfQuestion;
 
     @Column(name = "correct_answer_id")

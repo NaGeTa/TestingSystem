@@ -22,7 +22,7 @@ public class User {
 
     @Column(name = "first_name")
     @NotBlank(message = "Имя не может быть пустым")
-    @Size(min = 2, max = 20, message = "Длина имени должна быть от 2 до 20 символов")
+    @Size(min = 2, max = 40, message = "Длина имени должна быть от 2 до 40 символов")
     private String first_name;
 
     @Column(name = "last_name")
@@ -50,7 +50,7 @@ public class User {
     @NotNull(message = "Укажите дату рождения")
     private Date date_of_birth;
 
-    @Column(name = "time_of_registration")
+    @Column(name = "date_of_registration")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date_of_registration = new Date();
 
@@ -58,7 +58,7 @@ public class User {
     @Column(name = "role")
     private Role role;
 
-    @Column(name = "do_send")
+    @Column(name = "do_send", columnDefinition = "default 'false'")
     private boolean doSend = true;
 
     public boolean isBlocked(){
