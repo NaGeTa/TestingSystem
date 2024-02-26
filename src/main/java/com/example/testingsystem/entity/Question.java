@@ -41,7 +41,7 @@ public class Question {
     @NotBlank(message = "Вариант ответа не может быть пустым")
     private String fourthAnswer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "tests_id")
     private Test test;
 

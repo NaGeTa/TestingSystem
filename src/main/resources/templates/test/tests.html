@@ -100,13 +100,17 @@
                 </svg>
                 <div class="card-body">
                     <p class="card-text">
-                    <p th:text="'Категория: ' + ${test.getCategory().value}"></p>
-                    <p th:text="'Количество вопросов: ' + ${test.getCountOfQuestions}"></p>
+                        <p th:text="'Категория: ' + ${test.getCategory().value}"></p>
+                        <p th:text="'Количество вопросов: ' + ${test.getCountOfQuestions}"></p>
                     </p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
                             <form th:action="@{/tests/{id}(id=${test.getId()})}">
                                 <button type="submit" class="btn btn-sm btn-outline-secondary">Пройти</button>
+                            </form>
+                            &nbsp; &nbsp;
+                            <form th:action="@{/deleteTest/{id}(id=${test.getId()})}" th:method="post">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">Удалить тест</button>
                             </form>
                         </div>
                     </div>
