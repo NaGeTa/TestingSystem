@@ -62,6 +62,18 @@
 <p th:text="'Дата: ' + ${solution.getDateOfSolution()}"></p>
 <p th:text="'Количество правильных ответов: '+${solution.getCountOfRightAnswers()}+'/'+${solution.getCountOfQuestions()}"></p>
 <p th:text="'Оценка: ' + ${solution.getMark().value}"></p>
+<br>
+<hr>
+<br>
+<div>
+    <div th:each="question: *{answerList.answers}">
+        <p th:text="${question.getTitle()}"></p>
+        <p th:if="${question.isRight()}" style="color: lightgreen" th:text="'Ваш ответ: ' + ${question.getChoiceAnswer()}"></p>
+        <p th:if="${!question.isRight()}" style="color: red" th:text="'Ваш ответ: ' + ${question.getChoiceAnswer()}"></p>
+        <p th:if="${!question.isRight()}" th:text="'Правильный ответ: ' + ${question.getRightAnswer()}"></p>
+        <br><br>
+    </div>
+</div>
 <br><br><br>
 <a href="/tests">Вернуться</a>
 </body>

@@ -48,6 +48,7 @@ public class TestsController {
     public String finishTestsSolution(@ModelAttribute("answersList") AnswersList answersList, Model model) {
 
         model.addAttribute("solution", testsControllerServiceImpl.finishTestsSolution(answersList));
+        model.addAttribute("answerList", answersList);
 
         return "test/tests_result";
     }
